@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_server_app/data/ssh/model/systemctl_command.dart';
 import 'package:ls_server_app/feature/edit_service/di/edit_service_provider.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/component/service_manager_loading.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/service_manager_event.dart';
@@ -55,8 +56,9 @@ class ServiceManagerScreen extends StatelessWidget {
                             .where((s) => s.favorite)
                             .map((service) => ServiceController(
                               service: service,
-                              onStart: () => onEvent(StartService(service: service.title)),
-                              onStop: () => onEvent(StopService(service: service.title)),
+                              onStart: () => onEvent(RunCtlCommand(command: SystemctlCommand.start, service: service.title)),
+                              onStop: () => onEvent(RunCtlCommand(command: SystemctlCommand.stop, service: service.title)),
+                              onRestart: () => onEvent(RunCtlCommand(command: SystemctlCommand.restart, service: service.title)),
                               onEdit: () => _showEditServiceDialog(context: context, serviceName: service.title),
                             )),
                         ],
@@ -81,8 +83,9 @@ class ServiceManagerScreen extends StatelessWidget {
                           .where((s) => !s.favorite)
                           .map((service) => ServiceController(
                             service: service,
-                            onStart: () => onEvent(StartService(service: service.title)),
-                            onStop: () => onEvent(StopService(service: service.title)),
+                            onStart: () => onEvent(RunCtlCommand(command: SystemctlCommand.start, service: service.title)),
+                            onStop: () => onEvent(RunCtlCommand(command: SystemctlCommand.stop, service: service.title)),
+                            onRestart: () => onEvent(RunCtlCommand(command: SystemctlCommand.restart, service: service.title)),
                             onEdit: () => _showEditServiceDialog(context: context, serviceName: service.title),
                           )),
                       ]

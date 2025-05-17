@@ -1,13 +1,14 @@
+import 'package:ls_server_app/data/ssh/model/systemctl_command.dart';
+
 sealed class ServiceManagerEvent {}
 
-class StartService extends ServiceManagerEvent {
+class RunCtlCommand extends ServiceManagerEvent {
+    final SystemctlCommand command;
     final String service;
-    StartService({required this.service});
-}
-
-class StopService extends ServiceManagerEvent {
-    final String service;
-    StopService({required this.service});
+    RunCtlCommand({
+        required this.command,
+        required this.service
+    });
 }
 
 class CloseError extends ServiceManagerEvent {}

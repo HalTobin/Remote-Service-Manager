@@ -4,6 +4,7 @@ import 'package:ls_server_app/presentation/main_viewmodel.dart';
 import 'package:ls_server_app/use_case/get_current_ssh_profile_use_case.dart';
 import 'package:ls_server_app/use_case/listen_ssh_connect_usecase.dart';
 import 'package:ls_server_app/use_case/main_usecases.dart';
+import 'package:ls_server_app/use_case/set_on_password_request_use_case.dart';
 import 'package:ls_server_app/use_case/ssh_log_out_usecase.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +18,13 @@ class MainProvider extends StatelessWidget {
         Provider(create: (context) => (ListenSshConnectUseCase(sshService: context.read()))),
         Provider(create: (context) => (SshLogOutUseCase(sshService: context.read()))),
         Provider(create: (context) => (GetCurrentSshProfileUseCase(sshService: context.read()))),
+        Provider(create: (context) => (SetOnPasswordRequestUseCase(sshService: context.read()))),
         Provider(create: (context) => (
           MainUseCases(
             listenSshConnectUseCase: context.read(),
             sshLogOutUseCase: context.read(),
-            getCurrentSshProfileUseCase: context.read()
+            getCurrentSshProfileUseCase: context.read(),
+            setOnPasswordRequestUseCase: context.read()
           )
         )),
 

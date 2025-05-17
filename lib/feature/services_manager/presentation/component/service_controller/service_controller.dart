@@ -7,6 +7,7 @@ class ServiceController extends StatelessWidget {
   final ServicePresentation service;
   final Function() onStart;
   final Function() onStop;
+  final Function() onRestart;
   final Function() onEdit;
 
   const ServiceController({
@@ -14,6 +15,7 @@ class ServiceController extends StatelessWidget {
     required this.service,
     required this.onStart,
     required this.onStop,
+    required this.onRestart,
     required this.onEdit
   });
 
@@ -31,22 +33,31 @@ class ServiceController extends StatelessWidget {
               active: service.active
             ),
           ),
+          if (service.active)
+            AnimatedServiceActionButton(
+              enable: service.active,
+              icon: Icons.stop,
+              color: Colors.red,
+              onPressed: service.active ? onStop : null,
+            ),
+          if (service.active)
+            AnimatedServiceActionButton(
+              enable: service.active,
+              icon: Icons.restart_alt,
+              color: Colors.orange,
+              onPressed: service.active ? onRestart : null,
+            ),
+          if (!service.active)
+            AnimatedServiceActionButton(
+              enable: !service.active,
+              icon: Icons.play_arrow,
+              color: Colors.green,
+              onPressed: service.active ? null : onStart,
+            ),
           IconButton(
               onPressed: onEdit,
               icon: Icon(Icons.edit)
           ),
-          AnimatedServiceActionButton(
-            enable: service.active,
-            icon: Icons.stop,
-            color: Colors.red,
-            onPressed: service.active ? onStop : null,
-          ),
-          AnimatedServiceActionButton(
-            enable: !service.active,
-            icon: Icons.play_arrow,
-            color: Colors.green,
-            onPressed: service.active ? null : onStart,
-          )
         ],
       ),
     );

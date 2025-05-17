@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/data/ssh/model/ssh_profile.dart';
 import 'package:ls_server_app/data/ssh/model/connection_status.dart';
 import 'package:ls_server_app/data/model/response_result.dart';
+import 'package:ls_server_app/data/ssh/model/systemctl_command.dart';
+import 'package:ls_server_app/data/ssh/utils/byte_decoder.dart';
 
 class SshService extends ChangeNotifier implements ValueListenable<bool> {
     SSHClient? _client;
@@ -21,6 +23,8 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
 
     @override
     bool get value => _isConnected;
+
+    Future<String> Function()? onPasswordRequest;
 
     Future<ConnectionStatus> connect({
         required String user,
@@ -45,9 +49,21 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
                 socket,
                 username: user,
                 identities: [
-                // A single private key file may contain multiple keys.
-                ...SSHKeyPair.fromPem(key, password)
-            ]);
+                    // A single private key file may contain multiple keys.
+                    ...SSHKeyPair.fromPem(key, password)
+                ],
+                onPasswordRequest: () async {
+                    if (kDebugMode) {
+                        print("Password request emitted");
+                    }
+                    if (onPasswordRequest != null) {
+                        final password = await onPasswordRequest!();
+                        return password;
+                    } else {
+                        throw Exception('No password request handler set.');
+                    }
+                }
+            );
 
             _profile = SshProfile(
                 url: serverUrl,
@@ -66,24 +82,88 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
         }
     }
 
-    Future<void> startService(String service) async {
-        _client?.execute("sudo systemctl start $service");
+    Future<ResponseResult<bool>> systemCtlCommand({
+        required SystemctlCommand command,
+        required String service
+    }) async {
+        final String fullCommand = "sudo systemctl ${command.command} $service";
+        if (kDebugMode) {
+            if (_client == null) { print("_client is null"); }
+            print("Run: $fullCommand");
+        }
+        final SSHSession? session = await _client?.execute(fullCommand);
+        await session?.done;
+        if (session != null) {
+            final int? exitCode = session.exitCode;
+            final SSHSessionExitSignal? exitSignal = session.exitSignal;
+            final stdoutStr = await session.stdout.decodeUtf8();
+            final stderrStr = await session.stderr.decodeUtf8();
+
+            if (kDebugMode) {
+                print("stdout: $stdoutStr");
+                print("stderr: $stderrStr");
+                print("Command exited with code: $exitCode");
+                print("Command exited with signal: ${exitSignal?.signalName}, message: ${exitSignal?.errorMessage}");
+            }
+
+            switch (exitCode) {
+                case 0:
+                    return ResponseSucceed(true);
+                case 1: {
+                    try {
+                        final String password = await onPasswordRequest!();
+                        return await _runSudoCommand(password, fullCommand);
+                    } catch (error) {
+                        return ResponseFailed(error: error.toString());
+                    }
+                }
+                default:
+                    return ResponseFailed(error: stderrStr);
+            }
+        }
+        else {
+            return ResponseFailed(error: "Session is null");
+        }
     }
 
-    Future<void> stopService(String service) async {
-        _client?.execute("sudo systemctl stop $service");
+    Future<ResponseResult<bool>> _runSudoCommand(String password, String command) async {
+        final process = await Process.start(
+            'sudo',
+            ['-S', command],
+            runInShell: true,
+        );
+
+        // Capture stdout
+        final outputPostCommand = await process.stdout.decodeUtf8();
+        if (kDebugMode) { print('Output post command: $outputPostCommand'); }
+
+        // Send the password followed by a newline
+        process.stdin.writeln(password);
+
+        // Optionally close stdin if no further input needed
+        await process.stdin.close();
+
+        // Capture stdout
+        final outputPostPassword = await process.stdout.decodeUtf8();
+        if (kDebugMode) { print('Output post password: $outputPostPassword'); }
+
+        // Capture stderr
+        final errors = await process.stderr.decodeUtf8();
+        if (kDebugMode) { print('Errors: $errors'); }
+
+        final exitCode = await process.exitCode;
+        if (kDebugMode) { print('Exit code: $exitCode'); }
+
+        if (exitCode == 0) { return ResponseSucceed(true); }
+        else { return ResponseFailed(error: errors); }
     }
 
     Future<bool> isServiceRunning(String service) async {
         final session = await _client?.execute('systemctl is-active $service');
         if (session != null) {
-            final outputBytes = await session.stdout.fold<BytesBuilder>(
-                BytesBuilder(),
-                    (builder, data) => builder..add(data),
-            );
-            final output = utf8.decode(outputBytes.takeBytes()).trim();
+            final output = await session.stdout.decodeUtf8();
             final status = output.trim();
-            if (kDebugMode) { print('Service: $service, status: $status'); }
+            //if (kDebugMode) { print('Service: $service, status: $status'); }
             return status == 'active';
         }
         if (kDebugMode) { print("session is null"); }

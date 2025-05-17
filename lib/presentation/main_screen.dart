@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:ls_server_app/feature/auth/di/auth_provider.dart';
 import 'package:ls_server_app/feature/services_manager/di/service_manager_provider.dart';
+import 'package:ls_server_app/presentation/component/app_dialog_layout.dart';
 import 'package:ls_server_app/presentation/component/offline_view.dart';
+import 'package:ls_server_app/presentation/component/password_required_dialog.dart';
 import 'package:ls_server_app/presentation/component/status_bar/connection_status_bar.dart';
 import 'package:ls_server_app/presentation/main_event.dart';
 import 'package:ls_server_app/presentation/main_state.dart';
@@ -32,6 +34,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+
     _state = SchedulerBinding.instance.lifecycleState;
     _listener = AppLifecycleListener(
       onExitRequested: () => _handleExit(),
@@ -40,6 +43,10 @@ class _MainScreenState extends State<MainScreen> {
     if (!widget.state.isConnected && !_dialogShown) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showAuthDialog(context);
+
+        widget.onEvent(SetOnPasswordRequest(
+          onPasswordRequest: () async => await _showPasswordDialog(context),
+        ));
       });
     }
   }
@@ -101,13 +108,28 @@ class _MainScreenState extends State<MainScreen> {
       return showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (_) => Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+        builder: (_) => AppDialogLayout(
+          padding: EdgeInsets.all(24),
           child: AuthProvider(),
         ),
       );
     }
+  }
+
+  Future<String> _showPasswordDialog(BuildContext context) async {
+    if (kDebugMode) {
+      print("_showAuthDialog()");
+    }
+    final password = await showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AppDialogLayout(
+        padding: EdgeInsets.all(12),
+        child: PasswordRequiredDialog(
+          onPasswordEntered: (password) => Navigator.of(context).pop(password)
+        ),
+      )
+    );
+    return password ?? '';
   }
 }

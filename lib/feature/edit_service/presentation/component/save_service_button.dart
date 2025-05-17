@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ls_server_app/presentation/component/app_button.dart';
 
 class SaveServiceButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -11,16 +12,10 @@ class SaveServiceButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 384),
-        child: SizedBox(
-          height: 40,
-          child: FilledButton.icon(
-            onPressed: onPressed,
-            icon: Icon(Icons.save),
-            label: const Text('SAVE'),
-          ),
-        ),
+      child: AppButton(
+        icon: Icons.save,
+        text: "SAVE",
+        onClick: onPressed
       ),
     );
   }

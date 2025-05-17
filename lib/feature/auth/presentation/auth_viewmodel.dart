@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/data/model/server_profile.dart';
 import 'package:ls_server_app/data/ssh/model/connection_status.dart';
@@ -17,6 +19,9 @@ class AuthViewModel extends ChangeNotifier {
     final AuthUseCases _useCases;
     AuthState _state = AuthState();
     AuthState get state => _state;
+
+    final _uiEvent = StreamController<AuthUiEvent>();
+    Stream<AuthUiEvent> get uiEvent => _uiEvent.stream;
 
     Future<void> _init() async {
         await _loadProfiles();
@@ -69,27 +74,21 @@ class AuthViewModel extends ChangeNotifier {
 
     Future<void> _loadProfile(ServerProfile profile) async {
         _state = _state.copyWith(
+            profile: profile,
             serverUrl: profile.url,
             serverPort: profile.port,
             user: profile.user,
             sshFilePath: profile.keyPath,
         );
         _loadSshFile(profile.keyPath);
+        _uiEvent.add(SelectProfile(profile: profile));
     }
 
     Future<void> _loadPreferences() async {
         final ServerProfile? profile = await _useCases.loadAuthPreferencesUseCase.execute();
         if (profile != null) {
             if (kDebugMode) { print("preferences found for: ${profile.getIdentifier()}"); }
-            _state = _state.copyWith(
-                profile: profile,
-                serverUrl: profile.url,
-                serverPort: profile.port,
-                user: profile.user,
-                sshFilePath: profile.keyPath,
-            );
-            _loadSshFile(profile.keyPath);
-            notifyListeners();
+            _loadProfile(profile);
         }
     }
 
@@ -189,4 +188,11 @@ class AuthViewModel extends ChangeNotifier {
                 _setError(connectionStatus.error);
         }
     }
+}
+
+sealed class AuthUiEvent {}
+
+class SelectProfile extends AuthUiEvent {
+    final ServerProfile profile;
+    SelectProfile({required this.profile});
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:ls_server_app/data/model/response_result.dart';
+import 'package:ls_server_app/data/ssh/model/systemctl_command.dart';
 import 'package:ls_server_app/feature/services_manager/data/service_presentation.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/service_manager_event.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/service_manager_state.dart';
@@ -27,13 +29,27 @@ class ServiceManagerViewmodel extends ChangeNotifier {
 
     Future<void> onEvent(ServiceManagerEvent event) async {
         switch (event) {
-            case StartService():
-                _useCases.startServiceUseCase.execute(event.service);
-            case StopService():
-                _useCases.stopServiceUseCase.execute(event.service);
+            case RunCtlCommand(): {
+                final ResponseResult<bool> response = await _useCases.runSystemctlCommandUseCase
+                    .execute(
+                        command: event.command,
+                        service: event.service
+                    );
+                switch (response) {
+                    case ResponseFailed():
+                        _setError(response.error);
+                    case ResponseSucceed():
+                        _setError("");
+                }
+            }
             case CloseError():
-                _state = _state.copyWith(error: "");
+                _setError("");
         }
+    }
+
+    void _setError(String error) {
+        _state = _state.copyWith(error: error);
+        notifyListeners();
     }
 
     void _observeSshConnectionStatus() {

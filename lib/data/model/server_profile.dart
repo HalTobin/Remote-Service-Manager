@@ -24,6 +24,23 @@ class ServerProfile {
         user: "",
         keyPath: ""
     );
+
+    @override
+    bool operator ==(Object other) {
+        if (identical(this, other)) return true;
+
+        return other is ServerProfile &&
+            other.id == id &&
+            other.url == url &&
+            other.port == port &&
+            other.user == user &&
+            other.keyPath == keyPath;
+    }
+
+    @override
+    int get hashCode {
+        return Object.hash(id, url, port, user, keyPath);
+    }
 }
 
 class NewServerProfile {

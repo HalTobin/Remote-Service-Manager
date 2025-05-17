@@ -4,7 +4,8 @@ class AnimatedGlobalErrorWarning extends StatelessWidget {
   final String error;
   final Function() onClose;
 
-  AnimatedGlobalErrorWarning({
+  const AnimatedGlobalErrorWarning({
+    super.key,
     required this.error,
     required this.onClose
   });
@@ -50,7 +51,8 @@ class GlobalErrorWarning extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(
             Icons.warning_amber_rounded,

@@ -110,9 +110,9 @@ class ServiceWatcherUseCase {
                         favorite = null;
                     }
 
-                    if (favorite != null) {
+                    /*if (favorite != null) {
                         if (kDebugMode) { print("Matching favorite service: ${favorite.toString()}"); }
-                    }
+                    }*/
 
                     final serviceUi = ServicePresentation(
                         active: await _sshService.isServiceRunning(service),

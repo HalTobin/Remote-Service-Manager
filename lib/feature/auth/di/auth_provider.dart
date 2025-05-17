@@ -48,7 +48,9 @@ class AuthProvider extends StatelessWidget {
           )
         ),
         ChangeNotifierProvider(
-          create: (context) => AuthViewModel(authUseCases: context.read()),
+          create: (context) => AuthViewModel(
+            authUseCases: context.read()
+          ),
         )
       ],
       child: Consumer<AuthViewModel>(
@@ -56,6 +58,7 @@ class AuthProvider extends StatelessWidget {
           return AuthScreen(
             state: viewmodel.state,
             onEvent: viewmodel.onEvent,
+            uiEvent: viewmodel.uiEvent,
           );
         },
       )
