@@ -19,7 +19,7 @@ The Drift's database requires some simple configuration to work.
 Open your terminal, navigate to the project's directory and then run one of this command:
 
 If this is the first time opening the project:
-`dart run build_runner build`
+```dart run build_runner build```
 
 If you've already run the configuration command before and updated the database structure:
-`dart run build_runner watch`
+```dart run build_runner watch```
