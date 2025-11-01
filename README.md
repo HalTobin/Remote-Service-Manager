@@ -1,16 +1,25 @@
 # ls_server_app
 
-Basic app for basic administration of the LS server.
+Simple app to administrate services on a remote server through SSH
+
+## About this project
+
+This project is made with Flutter/Dart, and targets:
+- Windows
+- MacOS
+- Linux
+- Android
+- iOS
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Drift's database configuration
 
-A few resources to get you started if this is your first Flutter project:
+The Drift's database requires some simple configuration to work.
+Open your terminal, navigate to the project's directory and then run one of this command:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+If this is the first time opening the project:
+`dart run build_runner build`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+If you've already run the configuration command before and updated the database structure:
+`dart run build_runner watch`
