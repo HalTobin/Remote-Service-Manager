@@ -1,4 +1,4 @@
-# ls_server_app
+# RemoteServiceManager
 
 Simple app to administrate services on a remote server through SSH
 
