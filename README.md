@@ -15,12 +15,12 @@ This project is made with Flutter/Dart, and targets:
 
 This project works thanks to these libraries:
 - [font_awesome_flutter](https://pub.dev/packages/font_awesome_flutter)
-- [provider](https://pub.dev/packages/provider):
-- [path_provider](https://pub.dev/packages/path_provider):
-- [file_picker](https://pub.dev/packages/file_picker):
-- [dartssh2](https://pub.dev/packages/dartssh2):
-- [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage):
-- [drift](https://pub.dev/packages/drift):
+- [provider](https://pub.dev/packages/provider)
+- [path_provider](https://pub.dev/packages/path_provider)
+- [file_picker](https://pub.dev/packages/file_picker)
+- [dartssh2](https://pub.dev/packages/dartssh2)
+- [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage)
+- [drift](https://pub.dev/packages/drift)
 
 ## Getting Started
 

@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 class DialogHeader extends StatelessWidget {
   final IconData icon;
   final String title;
+  final bool dismissible;
+  final Function() onDismiss;
 
   const DialogHeader({
     super.key,
     required this.icon,
-    required this.title
+    required this.title,
+    this.dismissible = false,
+    this.onDismiss = _defaultOnDismiss,
   });
+
+  static void _defaultOnDismiss() {}
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +29,18 @@ class DialogHeader extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
+        Expanded(
+          child: SizedBox.shrink()
+        ),
+        if (dismissible)
+          IconButton(
+            onPressed: onDismiss,
+            icon: const Icon(Icons.close),
+          )
       ],
     );
   }

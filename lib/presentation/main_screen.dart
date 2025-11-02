@@ -41,12 +41,15 @@ class _MainScreenState extends State<MainScreen> {
     );
 
     if (!widget.state.isConnected && !_dialogShown) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         _showAuthDialog(context);
 
-        widget.onEvent(SetOnPasswordRequest(
-          onPasswordRequest: () async => await _showPasswordDialog(context),
-        ));
+        final String? password = await _showPasswordDialog(context);
+        if (password != null) {
+          widget.onEvent(SetOnPasswordRequest(
+            onPasswordRequest: () async => password,
+          ));
+        }
       });
     }
   }
@@ -116,7 +119,7 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  Future<String> _showPasswordDialog(BuildContext context) async {
+  Future<String?> _showPasswordDialog(BuildContext context) async {
     if (kDebugMode) {
       print("_showAuthDialog()");
     }
@@ -126,10 +129,11 @@ class _MainScreenState extends State<MainScreen> {
       builder: (_) => AppDialogLayout(
         padding: EdgeInsets.all(12),
         child: PasswordRequiredDialog(
-          onPasswordEntered: (password) => Navigator.of(context).pop(password)
+          onPasswordEntered: (password) => Navigator.of(context).pop(password),
+          onDismiss: () => Navigator.of(context).pop(),
         ),
       )
     );
-    return password ?? '';
+    return password;
   }
 }

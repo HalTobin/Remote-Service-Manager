@@ -12,6 +12,13 @@ import '../../../data/db/server_profile_database.dart';
 import '../../../data/ssh/ssh_service.dart';
 import 'notifier/service_status_notifier.dart';
 
+/***
+ * TODO - THIS IS NOT A USE_CASE, BUT A SERVICE /!\
+ * 1. Migrate this code to ServiceWatcherService
+ * 2. Create the following UseCases: 'ListenServicesUseCase' and 'DisposeServiceListenerUseCase'
+ *
+ * Or just update this class to make sure it automatically dispose itself when there's no listener
+ ***/
 class ServiceWatcherUseCase {
     ServiceWatcherUseCase({
         required SshService sshService,
