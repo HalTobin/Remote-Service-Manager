@@ -11,7 +11,12 @@ import 'package:provider/provider.dart';
 import '../presentation/auth_screen.dart';
 
 class AuthProvider extends StatelessWidget {
-  const AuthProvider({super.key});
+  final Future<String?> Function() onPasswordRequest;
+
+  const AuthProvider({
+    super.key,
+    required this.onPasswordRequest
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +64,7 @@ class AuthProvider extends StatelessWidget {
             state: viewmodel.state,
             onEvent: viewmodel.onEvent,
             uiEvent: viewmodel.uiEvent,
+            onPasswordRequest: onPasswordRequest,
           );
         },
       )

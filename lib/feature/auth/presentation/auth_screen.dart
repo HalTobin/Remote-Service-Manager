@@ -16,12 +16,14 @@ class AuthScreen extends StatefulWidget {
   final AuthState state;
   final Function(AuthEvent event) onEvent;
   final Stream<AuthUiEvent> uiEvent;
+  final Future<String?> Function() onPasswordRequest;
 
   const AuthScreen({
     super.key,
     required this.state,
     required this.onEvent,
-    required this.uiEvent
+    required this.uiEvent,
+    required this.onPasswordRequest
   });
 
   @override
@@ -239,14 +241,16 @@ class _AuthScreenState extends State<AuthScreen> {
           loading: widget.state.loading,
           onPressed: () {
             //widget.onEvent(FakeConnect());
-            widget.onEvent(Connect(
+            final event = Connect(
               user: userController.text,
               serverUrl: urlController.text,
               serverPort: portController.text,
               sshFilePath: sshController.text,
               password: widget.state.passwordRequired ? passwordController.text : null,
               saveProfile: widget.state.saveProfile,
-            ));
+              passwordRequestCallback: widget.onPasswordRequest
+            );
+            widget.onEvent(event);
           },
         ),
       ],

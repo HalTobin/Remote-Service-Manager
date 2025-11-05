@@ -53,7 +53,8 @@ class AuthViewModel extends ChangeNotifier {
                         port: event.serverPort,
                         filePath: event.sshFilePath,
                         password: event.password,
-                        saveProfile: event.saveProfile
+                        saveProfile: event.saveProfile,
+                        passwordRequestCallback: event.passwordRequestCallback
                     );
                 }
                 _setLoadingState(false);
@@ -170,7 +171,8 @@ class AuthViewModel extends ChangeNotifier {
         required String port,
         required String filePath,
         required String? password,
-        required bool saveProfile
+        required bool saveProfile,
+        required Future<String?> Function() passwordRequestCallback
     }) async {
         final SshConnectDto dto = SshConnectDto(
             url: url,
@@ -178,7 +180,8 @@ class AuthViewModel extends ChangeNotifier {
             user: user,
             filePath: filePath,
             password: password,
-            saveProfile: saveProfile
+            saveProfile: saveProfile,
+            passwordRequestCallback: passwordRequestCallback
         );
         ConnectionStatus connectionStatus = await _useCases.sshConnectUseCase.execute(dto);
         switch (connectionStatus) {

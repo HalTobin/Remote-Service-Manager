@@ -24,14 +24,15 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
     @override
     bool get value => _isConnected;
 
-    Future<String> Function()? onPasswordRequest;
+    Future<String?> Function()? onPasswordRequest;
 
     Future<ConnectionStatus> connect({
         required String user,
         required String serverUrl,
         required String serverPort,
         required String sshFilePath,
-        required String? password
+        required String? password,
+        required Future<String?> Function() passwordRequestCallback
     }) async {
         try {
             if (kDebugMode) {
@@ -45,6 +46,7 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
 
             // Step 3: Create socket and client
             final socket = await SSHSocket.connect(serverUrl, port);
+            onPasswordRequest = passwordRequestCallback;
             _client = SSHClient(
                 socket,
                 username: user,
@@ -111,7 +113,17 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
                     return ResponseSucceed(true);
                 case 1: {
                     try {
-                        final String password = await onPasswordRequest!();
+                        if (onPasswordRequest == null) {
+                            if (kDebugMode) {
+                                print("Password request callback not defined");
+                            }
+                            return ResponseFailed(error: "Password request callback not defined");
+                        }
+
+                        final String? password = await onPasswordRequest!();
+                        if (password == null) {
+                            return ResponseFailed(error: "Password is null");
+                        }
                         return await _runSudoCommand(password, fullCommand);
                     } catch (error) {
                         return ResponseFailed(error: error.toString());
@@ -127,15 +139,49 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
     }
 
     Future<ResponseResult<bool>> _runSudoCommand(String password, String command) async {
-        final process = await Process.start(
+        if (kDebugMode) {
+            final startIndexReplace = (password.length/4).toInt();
+            final int replaced = password.length - startIndexReplace;
+            final String secret = password.replaceRange(startIndexReplace, null, "*" * replaced);
+            print("Password received: $secret");
+        }
+
+        final sanitizedCommand = command.startsWith('sudo ')
+            ? command.substring(5)
+            : command;
+        final sudoCommand = "echo '$password' | sudo -S $sanitizedCommand";
+
+        if (kDebugMode) {
+          print("Running over SSH: $sudoCommand");
+        }
+
+        final SSHSession? session = await _client?.execute(sudoCommand);
+        await session?.done;
+
+        if (session == null) {
+          return ResponseFailed(error: "SSH session is null");
+        }
+
+        final exitCode = session.exitCode;
+        final stdoutStr = await session.stdout.decodeUtf8();
+        final stderrStr = await session.stderr.decodeUtf8();
+
+        if (kDebugMode) {
+          print("stdout: $stdoutStr");
+          print("stderr: $stderrStr");
+          print("Exit code: $exitCode");
+        }
+
+        if (exitCode == 0) {
+          return ResponseSucceed(true);
+        } else {
+          return ResponseFailed(error: stderrStr);
+        }
+        /*final process = await Process.start(
             'sudo',
             ['-S', command],
             runInShell: true,
         );
-
-        // Capture stdout
-        final outputPostCommand = await process.stdout.decodeUtf8();
-        if (kDebugMode) { print('Output post command: $outputPostCommand'); }
 
         // Send the password followed by a newline
         process.stdin.writeln(password);
@@ -144,8 +190,8 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
         await process.stdin.close();
 
         // Capture stdout
-        final outputPostPassword = await process.stdout.decodeUtf8();
-        if (kDebugMode) { print('Output post password: $outputPostPassword'); }
+        final output = await process.stdout.decodeUtf8();
+        if (kDebugMode) { print('Output: $output'); }
 
         // Capture stderr
         final errors = await process.stderr.decodeUtf8();
@@ -155,7 +201,7 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
         if (kDebugMode) { print('Exit code: $exitCode'); }
 
         if (exitCode == 0) { return ResponseSucceed(true); }
-        else { return ResponseFailed(error: errors); }
+        else { return ResponseFailed(error: errors); }*/
     }
 
     Future<bool> isServiceRunning(String service) async {

@@ -24,13 +24,15 @@ class Connect extends AuthEvent {
     final String sshFilePath;
     final String? password;
     final bool saveProfile;
+    final Future<String?> Function() passwordRequestCallback;
     Connect({
         required this.user,
         required this.serverUrl,
         required this.serverPort,
         required this.sshFilePath,
         required this.password,
-        required this.saveProfile
+        required this.saveProfile,
+        required this.passwordRequestCallback
     });
 }
 

@@ -25,13 +25,15 @@ class SshConnectUseCase {
         final String sshFilePath = connectDto.filePath;
         final String? password = connectDto.password;
         final bool saveProfile = connectDto.saveProfile;
+        final Future<String?> Function() passwordRequestCallback = connectDto.passwordRequestCallback;
 
         final connectionStatus = await _sshService.connect(
             user: user,
             serverUrl: serverUrl,
             serverPort: serverPort,
             sshFilePath: sshFilePath,
-            password: password
+            password: password,
+            passwordRequestCallback: passwordRequestCallback
         );
         if (connectionStatus is ConnectionSucceed && saveProfile) {
             final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
@@ -75,6 +77,7 @@ class SshConnectDto {
     final String filePath;
     final String? password;
     final bool saveProfile;
+    final Future<String?> Function() passwordRequestCallback;
 
     SshConnectDto({
         required this.user,
@@ -82,6 +85,7 @@ class SshConnectDto {
         required this.port,
         required this.filePath,
         required this.password,
-        required this.saveProfile
+        required this.saveProfile,
+        required this.passwordRequestCallback
     });
 }

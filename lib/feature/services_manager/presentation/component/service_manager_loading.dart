@@ -5,8 +5,10 @@ class ServiceManagerLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(),
+    return Expanded(
+      child: Center(
+        child: CircularProgressIndicator(),
+      )
     );
   }
 }
