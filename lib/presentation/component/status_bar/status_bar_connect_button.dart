@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class StatusBarConnectButton extends StatelessWidget {
   final bool connected;
@@ -55,7 +56,7 @@ class ConnectionButton extends StatelessWidget {
   final bool connected;
   final Function() onPressed;
 
-  ConnectionButton({
+  const ConnectionButton({
     super.key,
     required this.connected,
     required this.onPressed
@@ -74,7 +75,7 @@ class ConnectionButton extends StatelessWidget {
           ),
           const SizedBox(width: 8), // Spacing between text and icon
           Icon(
-            connected ? Icons.logout : Icons.login,
+            connected ? LucideIcons.logOut : LucideIcons.logIn,
             color: Colors.white,
           ),
         ],

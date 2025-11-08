@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SshConnectButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -28,7 +29,7 @@ class SshConnectButton extends StatelessWidget {
                   Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
-            ) : Icon(Icons.public),
+            ) : Icon(LucideIcons.earthLock),
             label: const Text('CONNECT'),
           ),
         ),

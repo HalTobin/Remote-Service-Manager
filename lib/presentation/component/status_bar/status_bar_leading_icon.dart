@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class StatusBarLeadingIcon extends StatelessWidget {
   final bool connected;
@@ -20,8 +21,8 @@ class StatusBarLeadingIcon extends StatelessWidget {
           crossFadeState: connected
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
-          firstChild: const Icon(Icons.power_off, color: Colors.white, size: 28),
-          secondChild: const Icon(Icons.power, color: Colors.white, size: 28),
+          firstChild: const Icon(LucideIcons.plug, color: Colors.white, size: 28),
+          secondChild: const Icon(LucideIcons.unplug, color: Colors.white, size: 28),
           layoutBuilder: (topChild, topKey, bottomChild, bottomKey) {
             return Stack(
               alignment: Alignment.center,

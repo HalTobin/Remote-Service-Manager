@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class DialogHeader extends StatelessWidget {
   final IconData icon;
@@ -39,7 +40,7 @@ class DialogHeader extends StatelessWidget {
         if (dismissible)
           IconButton(
             onPressed: onDismiss,
-            icon: const Icon(Icons.close),
+            icon: const Icon(LucideIcons.x),
           )
       ],
     );

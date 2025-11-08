@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ls_server_app/feature/services_manager/data/service_presentation.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/component/service_controller/play_ripple_indicator.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class StatusIndicator extends StatelessWidget {
   final ServicePresentation service;
@@ -19,7 +20,7 @@ class StatusIndicator extends StatelessWidget {
       children: [
         active
           ? const PlayRippleIndicator()
-          : const Icon(Icons.pause_circle_outline, color: Colors.grey),
+          : const Icon(LucideIcons.circlePause, color: Colors.grey),
         Icon(service.icon, color: Colors.blue),
         Expanded(
           child: Column(

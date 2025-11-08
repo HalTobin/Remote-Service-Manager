@@ -1,4 +1,4 @@
-# RemoteServiceManager
+# MoinoServiceManager
 
 Simple app to administrate services on a remote server through SSH
 
@@ -14,7 +14,8 @@ This project is made with Flutter/Dart, and targets:
 ### Libraries
 
 This project works thanks to these libraries:
-- [font_awesome_flutter](https://pub.dev/packages/font_awesome_flutter)
+- [lucide-icons](https://github.com/lucide-icons/lucide)
+- [lucide-flutter](https://github.com/vqh2602/lucide-flutter-main)
 - [provider](https://pub.dev/packages/provider)
 - [path_provider](https://pub.dev/packages/path_provider)
 - [file_picker](https://pub.dev/packages/file_picker)

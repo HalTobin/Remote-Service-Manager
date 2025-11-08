@@ -8,6 +8,7 @@ import 'package:ls_server_app/feature/edit_service/presentation/edit_service_eve
 import 'package:ls_server_app/feature/edit_service/presentation/edit_service_state.dart';
 import 'package:ls_server_app/feature/services_manager/data/icon_set.dart';
 import 'package:ls_server_app/presentation/component/dialog_header.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class EditServiceView extends StatefulWidget {
   final EditServiceState state;
@@ -71,11 +72,11 @@ class _EditServiceState extends State<EditServiceView> {
                             : CrossFadeState.showFirst,
                           duration: const Duration(milliseconds: 300),
                           firstChild: const DialogHeader(
-                              icon: Icons.edit,
+                              icon: LucideIcons.pencil,
                               title: "Edit Service"
                           ),
                           secondChild: const DialogHeader(
-                              icon: Icons.delete,
+                              icon: LucideIcons.trash,
                               title: "Delete Service"
                           ),
                       ),
@@ -95,7 +96,7 @@ class _EditServiceState extends State<EditServiceView> {
                   ),
                 IconButton(
                   onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
-                  icon: const Icon(Icons.close)
+                  icon: const Icon(LucideIcons.x)
                 )
               ],
             ),

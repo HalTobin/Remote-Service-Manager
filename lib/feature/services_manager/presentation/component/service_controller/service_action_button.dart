@@ -6,7 +6,7 @@ class AnimatedServiceActionButton extends StatelessWidget {
   final Color color;
   final VoidCallback? onPressed;
 
-  AnimatedServiceActionButton({
+  const AnimatedServiceActionButton({
     super.key,
     required this.enable,
     required this.icon,

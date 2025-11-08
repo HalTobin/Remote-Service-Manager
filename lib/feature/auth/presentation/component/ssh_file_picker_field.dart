@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SshFilePickerField extends StatelessWidget {
   final bool enable;
@@ -25,7 +26,7 @@ class SshFilePickerField extends StatelessWidget {
         errorText: error ? "Select a valid SSH key" : null,
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
-          icon: const Icon(Icons.folder_open),
+          icon: const Icon(LucideIcons.folder),
           onPressed: () async {
             if (enable) {
               FilePickerResult? result = await FilePicker.platform.pickFiles();

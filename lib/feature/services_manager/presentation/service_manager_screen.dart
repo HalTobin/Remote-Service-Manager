@@ -5,7 +5,9 @@ import 'package:ls_server_app/feature/edit_service/di/edit_service_provider.dart
 import 'package:ls_server_app/feature/services_manager/presentation/component/service_manager_loading.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/service_manager_event.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/service_manager_state.dart';
+import 'package:ls_server_app/presentation/component/app_dialog_layout.dart';
 import 'package:ls_server_app/presentation/component/global_error_warning.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'component/service_controller/service_controller.dart';
 
@@ -45,7 +47,7 @@ class ServiceManagerScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               spacing: 8,
                               children: [
-                                const Icon(Icons.star),
+                                const Icon(LucideIcons.star),
                                 Text(
                                   "Favorites",
                                   style: Theme.of(context).textTheme.titleMedium,
@@ -72,7 +74,7 @@ class ServiceManagerScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               spacing: 8,
                               children: [
-                                const Icon(Icons.miscellaneous_services),
+                                const Icon(LucideIcons.monitorCog),
                                 Text(
                                   "Others",
                                   style: Theme.of(context).textTheme.titleMedium,
@@ -123,10 +125,8 @@ class ServiceManagerScreen extends StatelessWidget {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+      builder: (_) => AppDialogLayout(
+        padding: EdgeInsets.all(0),
         child: EditServiceProvider(
           serviceName: serviceName,
         ),

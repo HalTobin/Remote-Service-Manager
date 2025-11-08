@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 enum ServiceIconType {
     admin(id: 1),
@@ -32,25 +33,25 @@ extension ServiceIconData on ServiceIconType {
     IconData get icon {
         switch (this) {
             case ServiceIconType.admin:
-                return Icons.admin_panel_settings;
+                return LucideIcons.shieldUser;
             case ServiceIconType.public:
-                return Icons.public;
+                return LucideIcons.earth;
             case ServiceIconType.user:
-                return Icons.person;
+                return LucideIcons.user;
             case ServiceIconType.web:
-                return Icons.language;
+                return LucideIcons.globe;
             case ServiceIconType.database:
-                return Icons.storage;
+                return LucideIcons.database;
             case ServiceIconType.mail:
-                return Icons.email;
+                return LucideIcons.mail;
             case ServiceIconType.storage:
-                return Icons.sd_storage;
+                return LucideIcons.hardDrive;
             case ServiceIconType.compute:
-                return Icons.memory;
+                return LucideIcons.cpu;
             case ServiceIconType.analytics:
-                return Icons.bar_chart;
+                return LucideIcons.chartColumn;
             case ServiceIconType.unknown:
-                return Icons.help_outline;
+                return LucideIcons.messageCircleQuestionMark;
         }
     }
 

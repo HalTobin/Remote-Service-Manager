@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class AskDeletionButton extends StatelessWidget {
   final bool deleteMode;
@@ -16,11 +17,11 @@ class AskDeletionButton extends StatelessWidget {
       firstChild: IconButton(
           onPressed: () => onClick(),
           color: Colors.red,
-          icon: const Icon(Icons.delete)
+          icon: const Icon(LucideIcons.trash)
       ),
       secondChild: IconButton(
           onPressed: () => onClick(),
-          icon: const Icon(Icons.edit)
+          icon: const Icon(LucideIcons.pencil)
       ),
       crossFadeState: deleteMode
           ? CrossFadeState.showSecond

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ls_server_app/presentation/component/app_button.dart';
 import 'package:ls_server_app/presentation/component/dialog_header.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PasswordRequiredDialog extends StatefulWidget {
   final Function(String) onPasswordEntered;
@@ -31,7 +31,7 @@ class _PasswordRequiredDialogState extends State<PasswordRequiredDialog> {
         spacing: 12,
         children: [
           DialogHeader(
-            icon: Icons.key,
+            icon: LucideIcons.lockKeyhole,
             title: "Password required",
             dismissible: true,
             onDismiss: widget.onDismiss
@@ -46,17 +46,17 @@ class _PasswordRequiredDialogState extends State<PasswordRequiredDialog> {
                 onPressed: () => setState(() {
                   obscurePassword = !obscurePassword;
                 }),
-                icon: FaIcon(
+                icon: Icon(
                   obscurePassword
-                    ? FontAwesomeIcons.eye
-                    : FontAwesomeIcons.eyeSlash
+                    ? LucideIcons.eye
+                    : LucideIcons.eyeOff
                 )
               )
             ),
           ),
           Center(
             child: AppButton(
-              icon: Icons.key,
+              icon: LucideIcons.keyRound,
               text: "AUTHENTICATE",
               onClick: () => widget.onPasswordEntered(passwordController.text)
             )

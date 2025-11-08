@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ls_server_app/feature/services_manager/data/service_presentation.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/component/service_controller/service_action_button.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/component/service_controller/status_indicator.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ServiceController extends StatelessWidget {
   final ServicePresentation service;
@@ -36,27 +37,27 @@ class ServiceController extends StatelessWidget {
           if (service.active)
             AnimatedServiceActionButton(
               enable: service.active,
-              icon: Icons.stop,
+              icon: LucideIcons.square,
               color: Colors.red,
               onPressed: service.active ? onStop : null,
             ),
           if (service.active)
             AnimatedServiceActionButton(
               enable: service.active,
-              icon: Icons.restart_alt,
+              icon: LucideIcons.rotateCcw,
               color: Colors.orange,
               onPressed: service.active ? onRestart : null,
             ),
           if (!service.active)
             AnimatedServiceActionButton(
               enable: !service.active,
-              icon: Icons.play_arrow,
+              icon: LucideIcons.play,
               color: Colors.green,
               onPressed: service.active ? null : onStart,
             ),
           IconButton(
               onPressed: onEdit,
-              icon: Icon(Icons.edit)
+              icon: Icon(LucideIcons.pencil)
           ),
         ],
       ),

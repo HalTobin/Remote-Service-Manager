@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class DeleteServiceButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -18,7 +19,7 @@ class DeleteServiceButton extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: onPressed,
             icon: const Icon(
-              Icons.delete,
+              LucideIcons.trash,
               color: Colors.red,
             ),
             label: const Text(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PlayRippleIndicator extends StatefulWidget {
   const PlayRippleIndicator({super.key});
@@ -62,7 +63,7 @@ class _PlayRippleIndicatorState extends State<PlayRippleIndicator>
 
           // Centered Play Icon
           const Icon(
-            Icons.play_arrow,
+            LucideIcons.play,
             color: Colors.green,
             size: 24,
           ),

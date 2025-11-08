@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ls_server_app/feature/auth/presentation/auth_event.dart';
 import 'package:ls_server_app/feature/auth/presentation/auth_state.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/save_profile_checkbox.dart';
 import 'package:ls_server_app/presentation/component/global_error_warning.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/profiles_dropdown.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/ssh_connect_button.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../data/model/server_profile.dart';
 import '../../../presentation/component/dialog_header.dart';
@@ -67,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
       spacing: 16,
       children: [
         const DialogHeader(
-          icon: Icons.lock_outline,
+          icon: LucideIcons.lock,
           title: "SSH Connection"
         ),
 
@@ -215,10 +215,10 @@ class _AuthScreenState extends State<AuthScreen> {
             labelText: "Password",
             border: const OutlineInputBorder(),
             suffixIcon: IconButton(
-              icon: FaIcon(
+              icon: Icon(
                 widget.state.obscurePassword
-                  ? FontAwesomeIcons.eye
-                  : FontAwesomeIcons.eyeSlash
+                  ? LucideIcons.eye
+                  : LucideIcons.eyeOff
               ),
               onPressed: () => widget.onEvent(ObscurePassword(obscure: !widget.state.obscurePassword))
             )

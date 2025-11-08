@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ls_server_app/presentation/component/app_button.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SaveServiceButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -13,7 +14,7 @@ class SaveServiceButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: AppButton(
-        icon: Icons.save,
+        icon: LucideIcons.save,
         text: "SAVE",
         onClick: onPressed
       ),

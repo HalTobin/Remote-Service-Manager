@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class AnimatedGlobalErrorWarning extends StatelessWidget {
   final String error;
@@ -21,11 +22,11 @@ class AnimatedGlobalErrorWarning extends StatelessWidget {
         switchOutCurve: Curves.easeInOut,
         child: error.isNotEmpty
           ? GlobalErrorWarning(
-            key: ValueKey(error), // important for AnimatedSwitcher
+            key: ValueKey(error),
             error: error,
             onDismiss: () => onClose(),
           )
-          : const SizedBox.shrink(), // hidden when there's no error
+          : const SizedBox.shrink(),
       ),
     );
   }
@@ -55,7 +56,7 @@ class GlobalErrorWarning extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(
-            Icons.warning_amber_rounded,
+            LucideIcons.triangleAlert,
             color: Colors.red,
             size: 28,
           ),
@@ -74,7 +75,7 @@ class GlobalErrorWarning extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close, color: Colors.red),
+            icon: const Icon(LucideIcons.x, color: Colors.red),
             onPressed: () => onDismiss(),
             tooltip: 'Dismiss',
           )
