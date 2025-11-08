@@ -1,5 +1,5 @@
 name: ls_server_app
-description: "Basic app for basic administration of the LS server."
+description: "Basic app for basic management of remote services on a server through SSH."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

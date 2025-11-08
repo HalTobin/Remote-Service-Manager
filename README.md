@@ -1,4 +1,4 @@
-# MoinoServiceManager
+# Moino Service Manager
 
 Simple app to administrate services on a remote server through SSH
 

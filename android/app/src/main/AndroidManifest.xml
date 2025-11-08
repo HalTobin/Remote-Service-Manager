@@ -4,7 +4,7 @@
 
     <application
         android:requestLegacyExternalStorage="true"
-        android:label="ls_server_app"
+        android:label="Moino Service Manager"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
