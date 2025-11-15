@@ -17,6 +17,11 @@ class UpdateSaveProfile extends AuthEvent {
     UpdateSaveProfile({required this.saveProfile});
 }
 
+class UpdateEnableQuickConnect extends AuthEvent {
+    final bool enableQuickConnect;
+    UpdateEnableQuickConnect({required this.enableQuickConnect});
+}
+
 class Connect extends AuthEvent {
     final String user;
     final String serverUrl;
@@ -24,6 +29,7 @@ class Connect extends AuthEvent {
     final String sshFilePath;
     final String? password;
     final bool saveProfile;
+    final bool enableQuickConnect;
     final Future<String?> Function() passwordRequestCallback;
     Connect({
         required this.user,
@@ -32,6 +38,7 @@ class Connect extends AuthEvent {
         required this.sshFilePath,
         required this.password,
         required this.saveProfile,
+        required this.enableQuickConnect,
         required this.passwordRequestCallback
     });
 }

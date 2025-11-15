@@ -4,11 +4,14 @@ class AuthState {
     final ServerProfile profile;
     final List<ServerProfile> profiles;
 
+    final bool quickConnectAvailable;
+
     final String user;
     final String serverUrl;
     final String serverPort;
     final String sshFilePath;
     final bool saveProfile;
+    final bool enableQuickConnect;
 
     final bool passwordRequired;
     final bool obscurePassword;
@@ -27,11 +30,13 @@ class AuthState {
     AuthState({
         this.profile = ServerProfile.empty,
         this.profiles = const [],
+        this.quickConnectAvailable = false,
         this.user = "",
         this.serverUrl = "",
         this.serverPort = "",
         this.sshFilePath = "",
         this.saveProfile = true,
+        this.enableQuickConnect = false,
         this.passwordRequired = false,
         this.obscurePassword = true,
         this.password = "",
@@ -47,11 +52,13 @@ class AuthState {
     AuthState copyWith({
         ServerProfile? profile,
         List<ServerProfile>? profiles,
+        bool? quickConnectAvailable,
         String? user,
         String? serverUrl,
         String? serverPort,
         String? sshFilePath,
         bool? saveProfile,
+        bool? enableQuickConnect,
         bool? passwordRequired,
         bool? obscurePassword,
         String? globalError,
@@ -66,11 +73,13 @@ class AuthState {
         return AuthState(
             profile: profile ?? this.profile,
             profiles: profiles ?? this.profiles,
+            quickConnectAvailable: quickConnectAvailable ?? this.quickConnectAvailable,
             user: user ?? this.user,
             serverUrl: serverUrl ?? this.serverUrl,
             serverPort: serverPort ?? this.serverPort,
             sshFilePath: sshFilePath ?? this.sshFilePath,
             saveProfile: saveProfile ?? this.saveProfile,
+            enableQuickConnect: enableQuickConnect ?? this.enableQuickConnect,
             passwordRequired: passwordRequired ?? this.passwordRequired,
             obscurePassword: obscurePassword ?? this.obscurePassword,
             password: password ?? this.password,

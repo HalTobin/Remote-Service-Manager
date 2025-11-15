@@ -7,4 +7,5 @@ class ServerProfiles extends Table {
     TextColumn get port => text()();
     TextColumn get user => text()();
     TextColumn get keyPath => text()();
+    BoolColumn get quickConnectEnable => boolean()();
 }

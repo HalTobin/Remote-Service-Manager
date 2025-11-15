@@ -60,8 +60,28 @@ class $ServerProfilesTable extends ServerProfiles
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _quickConnectEnableMeta =
+      const VerificationMeta('quickConnectEnable');
   @override
-  List<GeneratedColumn> get $columns => [id, url, port, user, keyPath];
+  late final GeneratedColumn<bool> quickConnectEnable = GeneratedColumn<bool>(
+    'quick_connect_enable',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("quick_connect_enable" IN (0, 1))',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    url,
+    port,
+    user,
+    keyPath,
+    quickConnectEnable,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -109,6 +129,17 @@ class $ServerProfilesTable extends ServerProfiles
     } else if (isInserting) {
       context.missing(_keyPathMeta);
     }
+    if (data.containsKey('quick_connect_enable')) {
+      context.handle(
+        _quickConnectEnableMeta,
+        quickConnectEnable.isAcceptableOrUnknown(
+          data['quick_connect_enable']!,
+          _quickConnectEnableMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_quickConnectEnableMeta);
+    }
     return context;
   }
 
@@ -143,6 +174,11 @@ class $ServerProfilesTable extends ServerProfiles
             DriftSqlType.string,
             data['${effectivePrefix}key_path'],
           )!,
+      quickConnectEnable:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.bool,
+            data['${effectivePrefix}quick_connect_enable'],
+          )!,
     );
   }
 
@@ -159,12 +195,14 @@ class ServerProfileEntity extends DataClass
   final String port;
   final String user;
   final String keyPath;
+  final bool quickConnectEnable;
   const ServerProfileEntity({
     required this.id,
     required this.url,
     required this.port,
     required this.user,
     required this.keyPath,
+    required this.quickConnectEnable,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -174,6 +212,7 @@ class ServerProfileEntity extends DataClass
     map['port'] = Variable<String>(port);
     map['user'] = Variable<String>(user);
     map['key_path'] = Variable<String>(keyPath);
+    map['quick_connect_enable'] = Variable<bool>(quickConnectEnable);
     return map;
   }
 
@@ -184,6 +223,7 @@ class ServerProfileEntity extends DataClass
       port: Value(port),
       user: Value(user),
       keyPath: Value(keyPath),
+      quickConnectEnable: Value(quickConnectEnable),
     );
   }
 
@@ -198,6 +238,7 @@ class ServerProfileEntity extends DataClass
       port: serializer.fromJson<String>(json['port']),
       user: serializer.fromJson<String>(json['user']),
       keyPath: serializer.fromJson<String>(json['keyPath']),
+      quickConnectEnable: serializer.fromJson<bool>(json['quickConnectEnable']),
     );
   }
   @override
@@ -209,6 +250,7 @@ class ServerProfileEntity extends DataClass
       'port': serializer.toJson<String>(port),
       'user': serializer.toJson<String>(user),
       'keyPath': serializer.toJson<String>(keyPath),
+      'quickConnectEnable': serializer.toJson<bool>(quickConnectEnable),
     };
   }
 
@@ -218,12 +260,14 @@ class ServerProfileEntity extends DataClass
     String? port,
     String? user,
     String? keyPath,
+    bool? quickConnectEnable,
   }) => ServerProfileEntity(
     id: id ?? this.id,
     url: url ?? this.url,
     port: port ?? this.port,
     user: user ?? this.user,
     keyPath: keyPath ?? this.keyPath,
+    quickConnectEnable: quickConnectEnable ?? this.quickConnectEnable,
   );
   ServerProfileEntity copyWithCompanion(ServerProfilesCompanion data) {
     return ServerProfileEntity(
@@ -232,6 +276,10 @@ class ServerProfileEntity extends DataClass
       port: data.port.present ? data.port.value : this.port,
       user: data.user.present ? data.user.value : this.user,
       keyPath: data.keyPath.present ? data.keyPath.value : this.keyPath,
+      quickConnectEnable:
+          data.quickConnectEnable.present
+              ? data.quickConnectEnable.value
+              : this.quickConnectEnable,
     );
   }
 
@@ -242,13 +290,15 @@ class ServerProfileEntity extends DataClass
           ..write('url: $url, ')
           ..write('port: $port, ')
           ..write('user: $user, ')
-          ..write('keyPath: $keyPath')
+          ..write('keyPath: $keyPath, ')
+          ..write('quickConnectEnable: $quickConnectEnable')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, url, port, user, keyPath);
+  int get hashCode =>
+      Object.hash(id, url, port, user, keyPath, quickConnectEnable);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -257,7 +307,8 @@ class ServerProfileEntity extends DataClass
           other.url == this.url &&
           other.port == this.port &&
           other.user == this.user &&
-          other.keyPath == this.keyPath);
+          other.keyPath == this.keyPath &&
+          other.quickConnectEnable == this.quickConnectEnable);
 }
 
 class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
@@ -266,12 +317,14 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
   final Value<String> port;
   final Value<String> user;
   final Value<String> keyPath;
+  final Value<bool> quickConnectEnable;
   const ServerProfilesCompanion({
     this.id = const Value.absent(),
     this.url = const Value.absent(),
     this.port = const Value.absent(),
     this.user = const Value.absent(),
     this.keyPath = const Value.absent(),
+    this.quickConnectEnable = const Value.absent(),
   });
   ServerProfilesCompanion.insert({
     this.id = const Value.absent(),
@@ -279,16 +332,19 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     required String port,
     required String user,
     required String keyPath,
+    required bool quickConnectEnable,
   }) : url = Value(url),
        port = Value(port),
        user = Value(user),
-       keyPath = Value(keyPath);
+       keyPath = Value(keyPath),
+       quickConnectEnable = Value(quickConnectEnable);
   static Insertable<ServerProfileEntity> custom({
     Expression<int>? id,
     Expression<String>? url,
     Expression<String>? port,
     Expression<String>? user,
     Expression<String>? keyPath,
+    Expression<bool>? quickConnectEnable,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -296,6 +352,8 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
       if (port != null) 'port': port,
       if (user != null) 'user': user,
       if (keyPath != null) 'key_path': keyPath,
+      if (quickConnectEnable != null)
+        'quick_connect_enable': quickConnectEnable,
     });
   }
 
@@ -305,6 +363,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     Value<String>? port,
     Value<String>? user,
     Value<String>? keyPath,
+    Value<bool>? quickConnectEnable,
   }) {
     return ServerProfilesCompanion(
       id: id ?? this.id,
@@ -312,6 +371,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
       port: port ?? this.port,
       user: user ?? this.user,
       keyPath: keyPath ?? this.keyPath,
+      quickConnectEnable: quickConnectEnable ?? this.quickConnectEnable,
     );
   }
 
@@ -333,6 +393,9 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     if (keyPath.present) {
       map['key_path'] = Variable<String>(keyPath.value);
     }
+    if (quickConnectEnable.present) {
+      map['quick_connect_enable'] = Variable<bool>(quickConnectEnable.value);
+    }
     return map;
   }
 
@@ -343,7 +406,8 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
           ..write('url: $url, ')
           ..write('port: $port, ')
           ..write('user: $user, ')
-          ..write('keyPath: $keyPath')
+          ..write('keyPath: $keyPath, ')
+          ..write('quickConnectEnable: $quickConnectEnable')
           ..write(')'))
         .toString();
   }
@@ -733,6 +797,7 @@ typedef $$ServerProfilesTableCreateCompanionBuilder =
       required String port,
       required String user,
       required String keyPath,
+      required bool quickConnectEnable,
     });
 typedef $$ServerProfilesTableUpdateCompanionBuilder =
     ServerProfilesCompanion Function({
@@ -741,6 +806,7 @@ typedef $$ServerProfilesTableUpdateCompanionBuilder =
       Value<String> port,
       Value<String> user,
       Value<String> keyPath,
+      Value<bool> quickConnectEnable,
     });
 
 final class $$ServerProfilesTableReferences
@@ -818,6 +884,11 @@ class $$ServerProfilesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<bool> get quickConnectEnable => $composableBuilder(
+    column: $table.quickConnectEnable,
+    builder: (column) => ColumnFilters(column),
+  );
+
   Expression<bool> favoriteServicesRefs(
     Expression<bool> Function($$FavoriteServicesTableFilterComposer f) f,
   ) {
@@ -877,6 +948,11 @@ class $$ServerProfilesTableOrderingComposer
     column: $table.keyPath,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get quickConnectEnable => $composableBuilder(
+    column: $table.quickConnectEnable,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ServerProfilesTableAnnotationComposer
@@ -902,6 +978,11 @@ class $$ServerProfilesTableAnnotationComposer
 
   GeneratedColumn<String> get keyPath =>
       $composableBuilder(column: $table.keyPath, builder: (column) => column);
+
+  GeneratedColumn<bool> get quickConnectEnable => $composableBuilder(
+    column: $table.quickConnectEnable,
+    builder: (column) => column,
+  );
 
   Expression<T> favoriteServicesRefs<T extends Object>(
     Expression<T> Function($$FavoriteServicesTableAnnotationComposer a) f,
@@ -968,12 +1049,14 @@ class $$ServerProfilesTableTableManager
                 Value<String> port = const Value.absent(),
                 Value<String> user = const Value.absent(),
                 Value<String> keyPath = const Value.absent(),
+                Value<bool> quickConnectEnable = const Value.absent(),
               }) => ServerProfilesCompanion(
                 id: id,
                 url: url,
                 port: port,
                 user: user,
                 keyPath: keyPath,
+                quickConnectEnable: quickConnectEnable,
               ),
           createCompanionCallback:
               ({
@@ -982,12 +1065,14 @@ class $$ServerProfilesTableTableManager
                 required String port,
                 required String user,
                 required String keyPath,
+                required bool quickConnectEnable,
               }) => ServerProfilesCompanion.insert(
                 id: id,
                 url: url,
                 port: port,
                 user: user,
                 keyPath: keyPath,
+                quickConnectEnable: quickConnectEnable,
               ),
           withReferenceMapper:
               (p0) =>

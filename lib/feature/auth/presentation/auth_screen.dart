@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ls_server_app/feature/auth/presentation/auth_event.dart';
 import 'package:ls_server_app/feature/auth/presentation/auth_state.dart';
+import 'package:ls_server_app/feature/auth/presentation/component/enable_quick_connect_checkbox.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/save_profile_checkbox.dart';
 import 'package:ls_server_app/presentation/component/global_error_warning.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/profiles_dropdown.dart';
@@ -225,9 +226,21 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
 
-        SaveProfileCheckbox(
-          checked: widget.state.saveProfile,
-          onChecked: (value) => widget.onEvent(UpdateSaveProfile(saveProfile: value ?? false))
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: 12,
+          children: [
+            SaveProfileCheckbox(
+              checked: widget.state.saveProfile,
+              onChecked: (value) => widget.onEvent(UpdateSaveProfile(saveProfile: value))
+            ),
+            if (widget.state.quickConnectAvailable)
+              EnableQuickConnectCheckbox(
+                checked: widget.state.enableQuickConnect,
+                enable: widget.state.saveProfile,
+                onChecked: (value) => widget.onEvent(UpdateEnableQuickConnect(enableQuickConnect: value))
+              )
+          ],
         ),
 
         const Spacer(),
@@ -248,6 +261,7 @@ class _AuthScreenState extends State<AuthScreen> {
               sshFilePath: sshController.text,
               password: widget.state.passwordRequired ? passwordController.text : null,
               saveProfile: widget.state.saveProfile,
+              enableQuickConnect: widget.state.enableQuickConnect,
               passwordRequestCallback: widget.onPasswordRequest
             );
             widget.onEvent(event);

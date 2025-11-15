@@ -57,7 +57,8 @@ class SshConnectUseCase {
                         url: serverUrl,
                         port: serverPort,
                         user: user,
-                        keyPath: internalTargetPath
+                        keyPath: internalTargetPath,
+                        quickConnectEnable: connectDto.enableQuickConnect
                     );
                     _serverProfileRepository.saveProfile(profile);
                 }
@@ -77,6 +78,7 @@ class SshConnectDto {
     final String filePath;
     final String? password;
     final bool saveProfile;
+    final bool enableQuickConnect;
     final Future<String?> Function() passwordRequestCallback;
 
     SshConnectDto({
@@ -86,6 +88,7 @@ class SshConnectDto {
         required this.filePath,
         required this.password,
         required this.saveProfile,
+        required this.enableQuickConnect,
         required this.passwordRequestCallback
     });
 }

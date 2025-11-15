@@ -16,36 +16,19 @@ class StatusBarConnectButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 16.0),
       child: Center(
-        child: AnimatedCrossFade(
-          duration: const Duration(milliseconds: 300),
-          crossFadeState: connected
-              ? CrossFadeState.showFirst
-              : CrossFadeState.showSecond,
-          layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
-            return Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                  key: bottomChildKey,
-                  top: 0,
-                  child: bottomChild
-                ),
-                Positioned(
-                  key: topChildKey,
-                  child: topChild
-                )
-              ],
-            );
-          },
-          firstChild: ConnectionButton(
-            connected: true,
-            onPressed: onPressed
-          ),
-          secondChild: ConnectionButton(
-            connected: false,
-            onPressed: onPressed
-          ),
+        child: Visibility(
+          visible: connected,
+          maintainAnimation: true,
+          maintainState: true,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 1000),
+            curve: Curves.fastOutSlowIn,
+            opacity: connected ? 1 : 0,
+            child: ConnectionButton(
+              connected: true,
+              onPressed: onPressed
+            )
+          )
         )
       ),
     );

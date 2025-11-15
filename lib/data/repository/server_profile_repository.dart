@@ -15,7 +15,8 @@ class ServerProfileRepository {
             url: Value(profile.url),
             port: Value(profile.port),
             user: Value(profile.user),
-            keyPath: Value(profile.keyPath)
+            keyPath: Value(profile.keyPath),
+            quickConnectEnable: Value(profile.quickConnectEnable)
         );
         return _dao.insertProfile(profileEntity);
     }
@@ -34,7 +35,8 @@ class ServerProfileRepository {
                         url: profile.url,
                         port: profile.port,
                         user: profile.user,
-                        keyPath: profile.keyPath
+                        keyPath: profile.keyPath,
+                        quickConnectEnable: profile.quickConnectEnable
                     ))
             .toList();
     }

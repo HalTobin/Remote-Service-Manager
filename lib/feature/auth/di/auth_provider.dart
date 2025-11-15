@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ls_server_app/feature/auth/presentation/auth_viewmodel.dart';
 import 'package:ls_server_app/feature/auth/use_case/auth_use_cases.dart';
+import 'package:ls_server_app/feature/auth/use_case/check_quick_connect_availability_use_case.dart';
 import 'package:ls_server_app/feature/auth/use_case/fake_connect_usecase.dart';
 import 'package:ls_server_app/feature/auth/use_case/load_auth_preferences_use_case.dart';
 import 'package:ls_server_app/feature/auth/use_case/load_profiles_use_case.dart';
@@ -32,6 +33,7 @@ class AuthProvider extends StatelessWidget {
           )
         ),
         Provider(create: (_) => (LoadSshFileUseCase())),
+        Provider(create: (_) => (CheckQuickConnectAvailabilityUseCase())),
         Provider(
           create: (_) => (
             SshConnectUseCase(
@@ -46,6 +48,7 @@ class AuthProvider extends StatelessWidget {
             AuthUseCases(
               loadProfilesUseCase: context.read(),
               loadAuthPreferencesUseCase: context.read(),
+              checkQuickConnectAvailabilityUseCase: context.read(),
               loadSshFileUseCase: context.read(),
               sshConnectUseCase: context.read(),
               fakeConnectUseCase: context.read()

@@ -26,6 +26,7 @@ class AuthViewModel extends ChangeNotifier {
     Future<void> _init() async {
         await _loadProfiles();
         await _loadPreferences();
+        await _checkQuickConnectAvailability();
     }
 
     Future<void> onEvent(AuthEvent event) async {
@@ -36,6 +37,10 @@ class AuthViewModel extends ChangeNotifier {
                 _loadSshFile(event.sshFilePath);
             case UpdateSaveProfile():
                 _state = _state.copyWith(saveProfile: event.saveProfile);
+                notifyListeners();
+            case UpdateEnableQuickConnect():
+                _state = _state.copyWith(enableQuickConnect: event.enableQuickConnect);
+                notifyListeners();
             case Connect(): {
                 _setLoadingState(true);
                 _resetErrors();
@@ -54,6 +59,7 @@ class AuthViewModel extends ChangeNotifier {
                         filePath: event.sshFilePath,
                         password: event.password,
                         saveProfile: event.saveProfile,
+                        enableQuickConnect: event.saveProfile ? event.enableQuickConnect : false,
                         passwordRequestCallback: event.passwordRequestCallback
                     );
                 }
@@ -91,6 +97,12 @@ class AuthViewModel extends ChangeNotifier {
             if (kDebugMode) { print("preferences found for: ${profile.getIdentifier()}"); }
             _loadProfile(profile);
         }
+    }
+
+    Future<void> _checkQuickConnectAvailability() async {
+        final bool available = await _useCases.checkQuickConnectAvailabilityUseCase.execute();
+        _state = _state.copyWith(quickConnectAvailable: available);
+        notifyListeners();
     }
 
     void _setError(String error) {
@@ -172,6 +184,7 @@ class AuthViewModel extends ChangeNotifier {
         required String filePath,
         required String? password,
         required bool saveProfile,
+        required bool enableQuickConnect,
         required Future<String?> Function() passwordRequestCallback
     }) async {
         final SshConnectDto dto = SshConnectDto(
@@ -181,6 +194,7 @@ class AuthViewModel extends ChangeNotifier {
             filePath: filePath,
             password: password,
             saveProfile: saveProfile,
+            enableQuickConnect: enableQuickConnect,
             passwordRequestCallback: passwordRequestCallback
         );
         ConnectionStatus connectionStatus = await _useCases.sshConnectUseCase.execute(dto);

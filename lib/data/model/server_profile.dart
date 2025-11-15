@@ -4,13 +4,15 @@ class ServerProfile {
     final String port;
     final String user;
     final String keyPath;
+    final bool quickConnectEnable;
 
     const ServerProfile({
         required this.id,
         required this.url,
         required this.port,
         required this.user,
-        required this.keyPath
+        required this.keyPath,
+        required this.quickConnectEnable
     });
 
     String getIdentifier() {
@@ -22,7 +24,8 @@ class ServerProfile {
         url: "",
         port: "",
         user: "",
-        keyPath: ""
+        keyPath: "",
+        quickConnectEnable: false
     );
 
     @override
@@ -34,12 +37,13 @@ class ServerProfile {
             other.url == url &&
             other.port == port &&
             other.user == user &&
-            other.keyPath == keyPath;
+            other.keyPath == keyPath &&
+            other.quickConnectEnable == quickConnectEnable;
     }
 
     @override
     int get hashCode {
-        return Object.hash(id, url, port, user, keyPath);
+        return Object.hash(id, url, port, user, keyPath, quickConnectEnable);
     }
 }
 
@@ -48,11 +52,13 @@ class NewServerProfile {
     final String port;
     final String user;
     final String keyPath;
+    final bool quickConnectEnable;
 
     NewServerProfile({
         required this.url,
         required this.port,
         required this.user,
-        required this.keyPath
+        required this.keyPath,
+        required this.quickConnectEnable
     });
 }
