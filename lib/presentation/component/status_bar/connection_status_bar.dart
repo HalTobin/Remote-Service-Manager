@@ -6,13 +6,11 @@ import 'package:ls_server_app/presentation/main_state.dart';
 
 class ConnectionStatusBar extends StatelessWidget implements PreferredSizeWidget {
   final MainState state;
-  final Function logIn;
   final Function logOut;
 
   const ConnectionStatusBar({
     super.key,
     required this.state,
-    required this.logIn,
     required this.logOut
   });
 
@@ -36,7 +34,7 @@ class ConnectionStatusBar extends StatelessWidget implements PreferredSizeWidget
             StatusBarConnectButton(
               connected: state.isConnected,
               onPressed: () {
-                if (state.isConnected) { logOut(); } else { logIn(); }
+                if (state.isConnected) { logOut(); }
               }
             )
           ],

@@ -60,11 +60,16 @@ class AuthProvider extends StatelessWidget {
       ],
       child: Consumer<AuthViewModel>(
         builder: (context, viewmodel, child) {
-          return AuthScreen(
-            state: viewmodel.state,
-            onEvent: viewmodel.onEvent,
-            uiEvent: viewmodel.uiEvent,
-            onPasswordRequest: onPasswordRequest,
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child:AuthScreen(
+                state: viewmodel.state,
+                onEvent: viewmodel.onEvent,
+                uiEvent: viewmodel.uiEvent,
+                onPasswordRequest: onPasswordRequest,
+              )
+            )
           );
         },
       )

@@ -39,16 +39,6 @@ class _MainScreenState extends State<MainScreen> {
     _listener = AppLifecycleListener(
       onExitRequested: () => _handleExit(),
     );
-
-    if (!widget.state.isConnected && !_dialogShown) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        _showAuthDialog(context);
-
-        /*widget.onEvent(SetOnPasswordRequest(
-          onPasswordRequest: _showPasswordDialog(context)
-        ));*/
-      });
-    }
   }
 
   Future<AppExitResponse> _handleExit() async {
@@ -78,7 +68,6 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: ConnectionStatusBar(
         state: widget.state,
-        logIn: () => _showAuthDialog(context),
         logOut: () => widget.onEvent(SshLogOut())
       ),
       body: Flex(
@@ -86,8 +75,12 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           Expanded(
             child: AnimatedCrossFade(
-              firstChild: const OfflineView(),
-              secondChild: ServiceManagerProvider(),
+              firstChild: SizedBox.expand(
+                child: AuthProvider(onPasswordRequest: () => _showPasswordDialog(context))
+              ),
+              secondChild: SizedBox.expand(
+                child: ServiceManagerProvider()
+              ),
               crossFadeState: widget.state.isConnected
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,
@@ -97,25 +90,6 @@ class _MainScreenState extends State<MainScreen> {
         ]
       ),
     );
-  }
-
-  Future<void> _showAuthDialog(BuildContext context) async {
-    if (kDebugMode) {
-      print("_showAuthDialog()");
-    }
-    if (!_dialogShown) {
-      _dialogShown = true;
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => AppDialogLayout(
-          padding: EdgeInsets.all(24),
-          child: AuthProvider(
-            onPasswordRequest: () => _showPasswordDialog(context),
-          ),
-        ),
-      );
-    }
   }
 
   Future<String?> _showPasswordDialog(BuildContext context) async {
