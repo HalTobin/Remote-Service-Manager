@@ -1,9 +1,9 @@
-class SshEntry {
+class SshSecretEntry {
     final String identifier;
     final String sshKeyPassword;
     final String? userPassword;
 
-    SshEntry({
+    SshSecretEntry({
         required this.identifier,
         required this.sshKeyPassword,
         this.userPassword

@@ -23,6 +23,7 @@ This project works thanks to these libraries:
 - [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage)
 - [drift](https://pub.dev/packages/drift)
 - [json_serializable](https://pub.dev/packages/json_serializable)
+- [collection](https://pub.dev/packages/collection)
 
 ## Getting Started
 
