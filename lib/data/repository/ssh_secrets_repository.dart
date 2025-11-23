@@ -35,15 +35,56 @@ class SshSecretsRepository {
         }
     }
 
+    Future<void> addSecret(SshSecretEntry secret) async {
+        final SshSecretsDto? secrets = await _getStorageFileContent();
+        if (secrets == null) return;
+
+        secrets.secrets.add(
+            SecretEntryDto(
+                identifier: secret.identifier,
+                sshKeyPassword: secret.sshKeyPassword,
+                userPassword: secret.userPassword
+            )
+        );
+
+        await _saveSecrets(secrets.secrets);
+    }
+
+    Future<void> deleteSecretsByIdentifier(String identifier) async {
+        if (!await _canAuthenticate()) return;
+
+        final SshSecretsDto? secrets = await _getStorageFileContent();
+        if (secrets == null) return;
+
+        secrets.secrets.removeWhere((secret) => secret.identifier == identifier);
+        _saveSecrets(secrets.secrets);
+    }
+
+    Future<void> _saveSecrets(List<SecretEntryDto> secrets) async {
+        if (!await _canAuthenticate()) return;
+        final SshSecretsDto sshSecrets = SshSecretsDto(secrets: secrets);
+        final BiometricStorageFile? storageFile = await _getStorageFile();
+        if (storageFile == null) return;
+
+        final String secretsDto = sshSecrets.toString();
+        await storageFile.write(secretsDto);
+    }
+
     Future<bool> _canAuthenticate() async {
         final response = await BiometricStorage().canAuthenticate();
         return (response == CanAuthenticateResponse.success);
     }
 
-    Future<SshSecretsDto?> _getStorageFileContent() async {
+    Future<BiometricStorageFile?> _getStorageFile() async {
         if (!await _canAuthenticate()) return null;
         _storageFile ??= await _store;
-        final String? data = await _storageFile?.read();
+        return _storageFile;
+    }
+
+    Future<SshSecretsDto?> _getStorageFileContent() async {
+        if (!await _canAuthenticate()) return null;
+        final BiometricStorageFile? storageFile = await _getStorageFile();
+        final String? data = await storageFile?.read();
 
         if (data == null) return null;
 
