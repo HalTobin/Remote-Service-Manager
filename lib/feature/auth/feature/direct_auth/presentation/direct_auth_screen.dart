@@ -6,7 +6,7 @@ import '../../../../../presentation/component/title_header.dart';
 import '../../../presentation/component/ssh_auth_fields.dart';
 import '../../../presentation/component/ssh_connect_button.dart';
 import '../../../util/profile_title_util.dart';
-import '../use_case/direct_auth_event.dart';
+import 'direct_auth_event.dart';
 import 'direct_auth_state.dart';
 
 class DirectAuthScreen extends StatefulWidget {
@@ -43,32 +43,16 @@ class _DirectAuthScreenState extends State<DirectAuthScreen> {
             title: "SSH Direct Connection"
         ),
 
-        Flex(
-          direction: Axis.horizontal,
-          children: [
-            Center(
-              child: Text(
-                getProfileTitle(
-                    user: userController.text,
-                    url: urlController.text,
-                    port: portController.text
-                ),
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ],
-        ),
-
         SshAuthFields(
-            enabled: !widget.state.loading,
-            userController: userController,
-            urlController: urlController,
-            portController: portController,
-            sshController: sshController,
-            loadSshFile: (path) => widget.onEvent(LoadSshFile(sshFilePath: path)),
-            passwordController: passwordController,
-            wrongFields: widget.state.wrongFields,
-            passwordRequired: widget.state.passwordRequired
+          enabled: !widget.state.loading,
+          userController: userController,
+          urlController: urlController,
+          portController: portController,
+          sshController: sshController,
+          loadSshFile: (path) => widget.onEvent(LoadSshFile(sshFilePath: path)),
+          passwordController: passwordController,
+          wrongFields: widget.state.wrongFields,
+          passwordRequired: widget.state.passwordRequired
         ),
 
         const Spacer(),

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/feature/auth/feature/direct_auth/presentation/direct_auth_state.dart';
-import 'package:ls_server_app/feature/auth/feature/direct_auth/use_case/direct_auth_event.dart';
+import 'package:ls_server_app/feature/auth/feature/direct_auth/presentation/direct_auth_event.dart';
 import 'package:ls_server_app/feature/auth/use_case/ssh_connect_use_case.dart';
 
 import '../../../data/ssh_connect_fields.dart';

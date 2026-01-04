@@ -3,8 +3,9 @@ import 'package:ls_server_app/feature/auth/presentation/component/password_text_
 import 'package:ls_server_app/feature/auth/presentation/component/ssh_file_picker_field.dart';
 
 import '../../data/ssh_connect_fields.dart';
+import '../../util/profile_title_util.dart';
 
-class SshAuthFields extends StatelessWidget {
+class SshAuthFields extends StatefulWidget {
   final bool enabled;
 
   final TextEditingController userController;
@@ -34,26 +35,61 @@ class SshAuthFields extends StatelessWidget {
   });
 
   @override
+  State<StatefulWidget> createState() => SshAuthFieldsState();
+
+}
+
+class SshAuthFieldsState extends State<SshAuthFields> {
+
+  late String profileTitle = getProfileTitle(
+      user: widget.userController.text,
+      url: widget.urlController.text,
+      port: widget.portController.text
+  );
+
+  void updateProfileTitle() {
+    setState(() {
+      profileTitle = getProfileTitle(
+        user: widget.userController.text,
+        url: widget.urlController.text,
+        port: widget.portController.text
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: 16,
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              profileTitle,
+              style: Theme.of(context).textTheme.titleMedium,
+            )
+          ],
+        ),
+        
         LayoutBuilder(
           builder: (context, constraints) {
             final isNarrow = constraints.maxWidth < 400;
 
             return Column(
               children: [
+
                 isNarrow
                     ? Column(
                   children: [
                     TextFormField(
-                      enabled: enabled,
-                      controller: urlController,
+                      enabled: widget.enabled,
+                      controller: widget.urlController,
+                      onChanged: (_) => updateProfileTitle(),
                       decoration: InputDecoration(
                         labelText: 'Server URL',
-                        errorText: wrongFields.contains(SshConnectFields.url) ? "Required" : null,
+                        errorText: widget.wrongFields.contains(SshConnectFields.url) ? "Required" : null,
                         border: const OutlineInputBorder(),
                       ),
                     ),
@@ -61,14 +97,15 @@ class SshAuthFields extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: TextFormField(
-                        enabled: enabled,
-                        controller: portController,
+                        enabled: widget.enabled,
+                        controller: widget.portController,
+                        onChanged: (_) => updateProfileTitle(),
                         maxLength: 4,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Port',
                           counterText: '',
-                          errorText: wrongFields.contains(SshConnectFields.port) ? "Required" : null,
+                          errorText: widget.wrongFields.contains(SshConnectFields.port) ? "Required" : null,
                           border: const OutlineInputBorder(),
                         ),
                       ),
@@ -79,11 +116,12 @@ class SshAuthFields extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        enabled: enabled,
-                        controller: urlController,
+                        enabled: widget.enabled,
+                        controller: widget.urlController,
+                        onChanged: (_) => updateProfileTitle(),
                         decoration: InputDecoration(
                           labelText: 'Server URL',
-                          errorText: wrongFields.contains(SshConnectFields.url) ? "Required" : null,
+                          errorText: widget.wrongFields.contains(SshConnectFields.url) ? "Required" : null,
                           border: const OutlineInputBorder(),
                         ),
                       ),
@@ -92,42 +130,46 @@ class SshAuthFields extends StatelessWidget {
                     SizedBox(
                       width: 96,
                       child: TextFormField(
-                        enabled: enabled,
-                        controller: portController,
+                        enabled: widget.enabled,
+                        controller: widget.portController,
+                        onChanged: (_) => updateProfileTitle(),
                         maxLength: 4,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Port',
                           counterText: '',
-                          errorText: wrongFields.contains(SshConnectFields.port) ? "Required" : null,
+                          errorText: widget.wrongFields.contains(SshConnectFields.port) ? "Required" : null,
                           border: const OutlineInputBorder(),
                         ),
                       ),
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 16),
+
                 isNarrow
                     ? Column(
                   children: [
                     SizedBox(
                       width: double.infinity,
                       child: TextFormField(
-                        enabled: enabled,
-                        controller: userController,
+                        enabled: widget.enabled,
+                        controller: widget.userController,
+                        onChanged: (_) => updateProfileTitle(),
                         decoration: InputDecoration(
                           labelText: 'User',
-                          errorText: wrongFields.contains(SshConnectFields.user) ? "Required" : null,
+                          errorText: widget.wrongFields.contains(SshConnectFields.user) ? "Required" : null,
                           border: const OutlineInputBorder(),
                         ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     SshFilePickerField(
-                      enable: enabled,
-                      error: wrongFields.contains(SshConnectFields.filePath),
-                      controller: sshController,
-                      onFilePicked: (path) => loadSshFile(path),
+                      enable: widget.enabled,
+                      error: widget.wrongFields.contains(SshConnectFields.filePath),
+                      controller: widget.sshController,
+                      onFilePicked: (path) => widget.loadSshFile(path),
                     ),
                   ],
                 )
@@ -136,11 +178,12 @@ class SshAuthFields extends StatelessWidget {
                     SizedBox(
                       width: 128,
                       child: TextFormField(
-                        enabled: enabled,
-                        controller: userController,
+                        enabled: widget.enabled,
+                        controller: widget.userController,
+                        onChanged: (_) => updateProfileTitle(),
                         decoration: InputDecoration(
                           labelText: 'User',
-                          errorText: wrongFields.contains(SshConnectFields.user) ? "Required" : null,
+                          errorText: widget.wrongFields.contains(SshConnectFields.user) ? "Required" : null,
                           border: const OutlineInputBorder(),
                         ),
                       ),
@@ -148,10 +191,10 @@ class SshAuthFields extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: SshFilePickerField(
-                        enable: enabled,
-                        error: wrongFields.contains(SshConnectFields.filePath),
-                        controller: sshController,
-                        onFilePicked: (path) => loadSshFile(path),
+                        enable: widget.enabled,
+                        error: widget.wrongFields.contains(SshConnectFields.filePath),
+                        controller: widget.sshController,
+                        onFilePicked: (path) => widget.loadSshFile(path),
                       ),
                     ),
                   ],
@@ -162,44 +205,10 @@ class SshAuthFields extends StatelessWidget {
         ),
 
         PasswordTextFormField(
-            controller: passwordController,
-            enabled: passwordRequired && enabled
+            controller: widget.passwordController,
+            enabled: widget.passwordRequired && widget.enabled
         )
 
-        /*TextFormField(
-          controller: passwordController,
-          enabled: passwordRequired && enabled,
-          obscureText: widget.state.obscurePassword,
-          decoration: InputDecoration(
-              labelText: "Password",
-              border: const OutlineInputBorder(),
-              suffixIcon: IconButton(
-                  icon: Icon(
-                      widget.state.obscurePassword
-                          ? LucideIcons.eye
-                          : LucideIcons.eyeOff
-                  ),
-                  onPressed: () => widget.onEvent(ObscurePassword(obscure: !widget.state.obscurePassword))
-              )
-          ),
-        ),*/
-
-        /*Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 12,
-          children: [
-            SaveProfileCheckbox(
-                checked: widget.state.saveProfile,
-                onChecked: (value) => widget.onEvent(UpdateSaveProfile(saveProfile: value))
-            ),
-            if (widget.state.quickConnectAvailable)
-              EnableQuickConnectCheckbox(
-                  checked: widget.state.enableQuickConnect,
-                  enable: widget.state.saveProfile,
-                  onChecked: (value) => widget.onEvent(UpdateEnableQuickConnect(enableQuickConnect: value))
-              )
-          ],
-        ),*/
       ],
     );
   }

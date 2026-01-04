@@ -12,7 +12,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../data/model/server_profile.dart';
 import '../../../presentation/component/title_header.dart';
 import 'auth_viewmodel.dart';
-import 'component/ssh_file_picker_field.dart';
 
 class AuthScreen extends StatefulWidget {
   final AuthState state;
