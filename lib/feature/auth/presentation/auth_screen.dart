@@ -7,12 +7,8 @@ import '../feature/direct_auth/presentation/direct_auth_screen.dart';
 import '../feature/direct_auth/presentation/direct_auth_viewmodel.dart';
 
 class AuthScreen extends StatelessWidget {
-  final Future<String?> Function() onPasswordRequest;
 
-  const AuthScreen({
-    super.key,
-    required this.onPasswordRequest
-  });
+  const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +39,7 @@ class AuthScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(24),
                         child:DirectAuthScreen(
                           state: viewmodel.state,
-                          onEvent: viewmodel.onEvent,
-                          onPasswordRequest: onPasswordRequest,
+                          onEvent: viewmodel.onEvent
                         )
                       )
                     );

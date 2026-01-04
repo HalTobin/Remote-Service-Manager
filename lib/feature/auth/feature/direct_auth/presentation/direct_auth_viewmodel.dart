@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/feature/auth/feature/direct_auth/presentation/direct_auth_state.dart';
 import 'package:ls_server_app/feature/auth/feature/direct_auth/presentation/direct_auth_event.dart';
@@ -34,8 +36,7 @@ class DirectAuthViewModel extends ChangeNotifier {
                         url: event.serverUrl,
                         port: event.serverPort,
                         filePath: event.sshFilePath,
-                        password: event.password,
-                        passwordRequestCallback: event.passwordRequestCallback
+                        password: event.password
                     );
                 }
                 _setLoadingState(false);
@@ -75,22 +76,32 @@ class DirectAuthViewModel extends ChangeNotifier {
         required String port,
         required String filePath,
         required String? password,
-        required Future<String?> Function() passwordRequestCallback
     }) async {
         _setLoadingState(true);
-        final connectDto = SshConnectDto(
+        await Isolate.run(() {
+            final connectDto = SshConnectRequest(
+                user: user,
+                url: url,
+                port: port,
+                filePath: filePath,
+                password: password ?? ""
+            );
+            _useCases.sshConnectUseCase.execute(connectDto);
+        });
+        _setLoadingState(false);
+    }
+        /*_setLoadingState(true);
+        final connectDto = SshConnectRequest(
             user: user,
             url: url,
             port: port,
             filePath: filePath,
             password: password,
-            saveProfile: false,
-            enableQuickConnect: false,
             passwordRequestCallback: passwordRequestCallback
         );
         _useCases.sshConnectUseCase.execute(connectDto);
-        _setLoadingState(false);
-    }
+        _setLoadingState(false);*/
+    //}
 
     void _clearError() {
         _state = _state.copyWith(globalError: "");

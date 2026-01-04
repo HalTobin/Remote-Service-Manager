@@ -13,12 +13,8 @@ import 'package:ls_server_app/feature/auth/use_case/ssh_connect_use_case.dart';
 import 'package:provider/provider.dart';
 
 class AuthProvider extends StatelessWidget {
-  final Future<String?> Function() onPasswordRequest;
 
-  const AuthProvider({
-    super.key,
-    required this.onPasswordRequest
-  });
+  const AuthProvider({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +34,7 @@ class AuthProvider extends StatelessWidget {
         Provider(
           create: (_) => (
             SshConnectUseCase(
-              sshService: context.read(),
-              serverProfileRepository: context.read()
+              sshService: context.read()
             )
           )
         ),
@@ -79,7 +74,7 @@ class AuthProvider extends StatelessWidget {
         )
       ],
 
-      child: AuthScreen(onPasswordRequest: onPasswordRequest)
+      child: AuthScreen()
 
       /*child: Consumer<AuthViewModel>(
         builder: (context, viewmodel, child) {

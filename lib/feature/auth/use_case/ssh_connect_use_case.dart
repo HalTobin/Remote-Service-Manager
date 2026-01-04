@@ -1,12 +1,48 @@
-import 'dart:io';
-
-import 'package:ls_server_app/data/model/server_profile.dart';
-import 'package:ls_server_app/data/repository/server_profile_repository.dart';
 import 'package:ls_server_app/data/ssh/model/connection_status.dart';
 import 'package:ls_server_app/data/ssh/ssh_service.dart';
 
-import 'package:path_provider/path_provider.dart';
+class SshConnectUseCase {
+    SshConnectUseCase({
+      required SshService sshService
+    })
+        : _sshService = sshService;
 
+    final SshService _sshService;
+
+    Future<ConnectionStatus> execute(SshConnectRequest request) async {
+        final String serverUrl = request.url;
+        final String serverPort = request.port;
+        final String user = request.user;
+        final String sshFilePath = request.filePath;
+        final String password = request.password;
+
+        return await _sshService.connect(
+            user: user,
+            serverUrl: serverUrl,
+            serverPort: serverPort,
+            sshFilePath: sshFilePath,
+            password: password
+        );
+    }
+}
+
+class SshConnectRequest {
+    final String user;
+    final String url;
+    final String port;
+    final String filePath;
+    final String password;
+
+    SshConnectRequest({
+        required this.user,
+        required this.url,
+        required this.port,
+        required this.filePath,
+        required this.password
+    });
+}
+
+/*
 class SshConnectUseCase {
     SshConnectUseCase({
         required ServerProfileRepository serverProfileRepository,
@@ -50,7 +86,6 @@ class SshConnectUseCase {
                     await sshFile.copy(internalTargetFile.path);
                 }
 
-
                 final bool profileExist = await _serverProfileRepository.doesProfileExist(url: serverUrl, port: serverPort, user: user);
                 if (!profileExist) {
                     final profile = NewServerProfile(
@@ -92,3 +127,4 @@ class SshConnectDto {
         required this.passwordRequestCallback
     });
 }
+*/

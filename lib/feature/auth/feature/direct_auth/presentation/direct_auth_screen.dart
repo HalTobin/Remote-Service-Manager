@@ -11,12 +11,11 @@ import 'direct_auth_state.dart';
 class DirectAuthScreen extends StatefulWidget {
   final DirectAuthState state;
   final Function(DirectAuthEvent) onEvent;
-  final Future<String?> Function() onPasswordRequest;
 
   const DirectAuthScreen({
     super.key,
     required this.state,
-    required this.onEvent, required this.onPasswordRequest
+    required this.onEvent
   });
 
   @override
@@ -69,8 +68,7 @@ class _DirectAuthScreenState extends State<DirectAuthScreen> {
                 serverUrl: urlController.text,
                 serverPort: portController.text,
                 sshFilePath: sshController.text,
-                password: widget.state.passwordRequired ? passwordController.text : null,
-                passwordRequestCallback: widget.onPasswordRequest
+                password: widget.state.passwordRequired ? passwordController.text : null
             );
             widget.onEvent(event);
           },

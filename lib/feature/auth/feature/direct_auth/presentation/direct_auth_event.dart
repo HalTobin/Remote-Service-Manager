@@ -11,14 +11,12 @@ class Connect extends DirectAuthEvent {
     final String serverPort;
     final String sshFilePath;
     final String? password;
-    final Future<String?> Function() passwordRequestCallback;
     Connect({
         required this.user,
         required this.serverUrl,
         required this.serverPort,
         required this.sshFilePath,
         required this.password,
-        required this.passwordRequestCallback
     });
 }
 

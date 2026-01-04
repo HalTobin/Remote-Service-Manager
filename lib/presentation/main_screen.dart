@@ -38,6 +38,12 @@ class _MainScreenState extends State<MainScreen> {
     _listener = AppLifecycleListener(
       onExitRequested: () => _handleExit(),
     );
+
+    widget.onEvent(
+      SetOnPasswordRequest(
+        onPasswordRequest: () => _showPasswordDialog(context)
+      )
+    );
   }
 
   Future<AppExitResponse> _handleExit() async {
@@ -75,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
           Expanded(
             child: AnimatedCrossFade(
               firstChild: SizedBox.expand(
-                child: AuthProvider(onPasswordRequest: () => _showPasswordDialog(context))
+                child: AuthProvider()
               ),
               secondChild: SizedBox.expand(
                 child: ServiceManagerProvider()

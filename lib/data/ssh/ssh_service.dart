@@ -24,13 +24,16 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
 
     Future<String?> Function()? onPasswordRequest;
 
+    void setOnPasswordRequestCallback(Future<String?> Function() callback) {
+        onPasswordRequest = callback;
+    }
+
     Future<ConnectionStatus> connect({
         required String user,
         required String serverUrl,
         required String serverPort,
         required String sshFilePath,
-        required String? password,
-        required Future<String?> Function() passwordRequestCallback
+        required String? password
     }) async {
         try {
             if (kDebugMode) {
@@ -44,7 +47,6 @@ class SshService extends ChangeNotifier implements ValueListenable<bool> {
 
             // Step 3: Create socket and client
             final socket = await SSHSocket.connect(serverUrl, port);
-            onPasswordRequest = passwordRequestCallback;
             _client = SSHClient(
                 socket,
                 username: user,
