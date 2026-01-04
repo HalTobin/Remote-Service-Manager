@@ -6,7 +6,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:ls_server_app/feature/auth/di/auth_provider.dart';
 import 'package:ls_server_app/feature/services_manager/di/service_manager_provider.dart';
 import 'package:ls_server_app/presentation/component/app_dialog_layout.dart';
-import 'package:ls_server_app/presentation/component/offline_view.dart';
 import 'package:ls_server_app/presentation/component/password_required_dialog.dart';
 import 'package:ls_server_app/presentation/component/status_bar/connection_status_bar.dart';
 import 'package:ls_server_app/presentation/main_event.dart';
