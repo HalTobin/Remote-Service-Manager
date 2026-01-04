@@ -5,7 +5,6 @@ import '../../../../../presentation/component/global_error_warning.dart';
 import '../../../../../presentation/component/title_header.dart';
 import '../../../presentation/component/ssh_auth_fields.dart';
 import '../../../presentation/component/ssh_connect_button.dart';
-import '../../../util/profile_title_util.dart';
 import 'direct_auth_event.dart';
 import 'direct_auth_state.dart';
 

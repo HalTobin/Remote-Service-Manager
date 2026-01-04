@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ls_server_app/feature/auth/feature/direct_auth/presentation/direct_auth_screen.dart';
 import 'package:ls_server_app/feature/auth/feature/direct_auth/presentation/direct_auth_viewmodel.dart';
 import 'package:ls_server_app/feature/auth/feature/direct_auth/use_case/direct_auth_use_cases.dart';
-import 'package:ls_server_app/feature/auth/presentation/auth_viewmodel.dart';
+import 'package:ls_server_app/feature/auth/presentation/auth_screen.dart';
 import 'package:ls_server_app/feature/auth/use_case/auth_use_cases.dart';
 import 'package:ls_server_app/feature/auth/use_case/check_quick_connect_availability_use_case.dart';
 import 'package:ls_server_app/feature/auth/use_case/check_wrong_fields_use_case.dart';
@@ -12,8 +11,6 @@ import 'package:ls_server_app/feature/auth/use_case/load_profiles_use_case.dart'
 import 'package:ls_server_app/feature/auth/use_case/load_ssh_file_use_case.dart';
 import 'package:ls_server_app/feature/auth/use_case/ssh_connect_use_case.dart';
 import 'package:provider/provider.dart';
-
-import '../presentation/auth_screen.dart';
 
 class AuthProvider extends StatelessWidget {
   final Future<String?> Function() onPasswordRequest;
@@ -70,31 +67,19 @@ class AuthProvider extends StatelessWidget {
             )
           )
         ),
-        ChangeNotifierProvider(
+        /*ChangeNotifierProvider(
           create: (context) => AuthViewModel(
             authUseCases: context.read()
           ),
-        ),
+        ),*/
         ChangeNotifierProvider(
           create: (context) => DirectAuthViewModel(
             directAuthUseCases: context.read()
           )
         )
       ],
-      child: Consumer<DirectAuthViewModel>(
-        builder: (context, viewmodel, child) {
-          return Center(
-              child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child:DirectAuthScreen(
-                    state: viewmodel.state,
-                    onEvent: viewmodel.onEvent,
-                    onPasswordRequest: onPasswordRequest,
-                  )
-              )
-          );
-        },
-      )
+
+      child: AuthScreen(onPasswordRequest: onPasswordRequest)
 
       /*child: Consumer<AuthViewModel>(
         builder: (context, viewmodel, child) {

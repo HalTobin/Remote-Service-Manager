@@ -1,4 +1,4 @@
-import 'package:ls_server_app/data/model/server_profile.dart';
+/*import 'package:ls_server_app/data/model/server_profile.dart';
 
 sealed class AuthEvent {}
 
@@ -45,4 +45,4 @@ class Connect extends AuthEvent {
 
 class ClearError extends AuthEvent {}
 
-class FakeConnect extends AuthEvent {}
+class FakeConnect extends AuthEvent {}*/

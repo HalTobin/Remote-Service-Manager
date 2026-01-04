@@ -1,10 +1,10 @@
-import 'dart:async';
+/*import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/data/model/server_profile.dart';
 import 'package:ls_server_app/data/ssh/model/connection_status.dart';
-import 'package:ls_server_app/feature/auth/presentation/auth_event.dart';
-import 'package:ls_server_app/feature/auth/presentation/auth_state.dart';
+import 'package:ls_server_app/feature/auth/presentation/old_auth_event.dart';
+import 'package:ls_server_app/feature/auth/presentation/old_auth_state.dart';
 import 'package:ls_server_app/feature/auth/use_case/auth_use_cases.dart';
 import 'package:ls_server_app/feature/auth/use_case/ssh_connect_use_case.dart';
 
@@ -192,4 +192,4 @@ sealed class AuthUiEvent {}
 class SelectProfile extends AuthUiEvent {
     final ServerProfile profile;
     SelectProfile({required this.profile});
-}
+}*/

@@ -1,4 +1,4 @@
-import 'package:ls_server_app/data/model/server_profile.dart';
+/*import 'package:ls_server_app/data/model/server_profile.dart';
 
 import '../data/ssh_connect_fields.dart';
 
@@ -74,4 +74,4 @@ class AuthState {
             loading: loading ?? this.loading
         );
     }
-}
+}*/
