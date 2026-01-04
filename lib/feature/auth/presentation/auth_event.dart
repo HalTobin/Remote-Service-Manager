@@ -43,11 +43,6 @@ class Connect extends AuthEvent {
     });
 }
 
-class ObscurePassword extends AuthEvent {
-    final bool obscure;
-    ObscurePassword({required this.obscure});
-}
-
 class ClearError extends AuthEvent {}
 
 class FakeConnect extends AuthEvent {}

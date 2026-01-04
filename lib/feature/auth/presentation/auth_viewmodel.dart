@@ -8,6 +8,8 @@ import 'package:ls_server_app/feature/auth/presentation/auth_state.dart';
 import 'package:ls_server_app/feature/auth/use_case/auth_use_cases.dart';
 import 'package:ls_server_app/feature/auth/use_case/ssh_connect_use_case.dart';
 
+import '../data/ssh_connect_fields.dart';
+
 class AuthViewModel extends ChangeNotifier {
 
     AuthViewModel({required AuthUseCases authUseCases})
@@ -65,8 +67,6 @@ class AuthViewModel extends ChangeNotifier {
                 }
                 _setLoadingState(false);
             }
-            case ObscurePassword():
-                _obscurePassword(event.obscure);
             case ClearError():
                 _setError("");
             case FakeConnect():
@@ -110,11 +110,6 @@ class AuthViewModel extends ChangeNotifier {
         notifyListeners();
     }
 
-    void _obscurePassword(bool obscure) {
-        _state = _state.copyWith(obscurePassword: obscure);
-        notifyListeners();
-    }
-
     void _loadSshFile(String filePath) {
         try {
             final bool isPasswordRequired = _useCases.loadSshFileUseCase.execute(filePath);
@@ -134,13 +129,7 @@ class AuthViewModel extends ChangeNotifier {
     }
 
     void _resetErrors() {
-        _state = _state.copyWith(
-            userError: false,
-            urlError: false,
-            portError: false,
-            fileError: false,
-            passwordError: false
-        );
+        _state = _state.copyWith(wrongFields: []);
         notifyListeners();
     }
 
@@ -151,30 +140,21 @@ class AuthViewModel extends ChangeNotifier {
         required String filePath,
         required String? password
     }) {
-        bool isValid = true;
+        final List<SshConnectFields> wrongFields = _useCases.checkWrongFieldsUseCase.execute(
+            user: user,
+            url: url,
+            port: port,
+            filePath: filePath,
+            password: password,
+            passwordRequired: _state.passwordRequired
+        );
 
-        if (user.isEmpty) {
-            _state = _state.copyWith(userError: true);
-            isValid = false;
-        }
-        if (url.isEmpty) {
-            _state = _state.copyWith(urlError: true);
-            isValid = false;
-        }
-        if (port.isEmpty) {
-            _state = _state.copyWith(portError: true);
-            isValid = false;
-        }
-        if (filePath.isEmpty) {
-            _state = _state.copyWith(fileError: true);
-            isValid = false;
-        }
-        if (_state.passwordRequired && (password?.isEmpty ?? true)) {
-            _state = _state.copyWith(passwordError: true);
-            isValid = false;
-        }
+        _state = _state.copyWith(
+            wrongFields: wrongFields
+        );
         notifyListeners();
-        return isValid;
+
+        return wrongFields.isEmpty;
     }
 
     Future<void> _connect({

@@ -1,5 +1,7 @@
 import 'package:ls_server_app/data/model/server_profile.dart';
 
+import '../data/ssh_connect_fields.dart';
+
 class AuthState {
     final ServerProfile profile;
     final List<ServerProfile> profiles;
@@ -14,16 +16,11 @@ class AuthState {
     final bool enableQuickConnect;
 
     final bool passwordRequired;
-    final bool obscurePassword;
     final String password;
 
     final String globalError;
 
-    final bool userError;
-    final bool urlError;
-    final bool portError;
-    final bool fileError;
-    final bool passwordError;
+    final List<SshConnectFields> wrongFields;
 
     final bool loading;
 
@@ -38,14 +35,9 @@ class AuthState {
         this.saveProfile = true,
         this.enableQuickConnect = false,
         this.passwordRequired = false,
-        this.obscurePassword = true,
         this.password = "",
         this.globalError = "",
-        this.userError = false,
-        this.urlError = false,
-        this.portError = false,
-        this.fileError = false,
-        this.passwordError = false,
+        this.wrongFields = const [],
         this.loading = false
     });
 
@@ -60,14 +52,9 @@ class AuthState {
         bool? saveProfile,
         bool? enableQuickConnect,
         bool? passwordRequired,
-        bool? obscurePassword,
         String? globalError,
         String? password,
-        bool? userError,
-        bool? urlError,
-        bool? portError,
-        bool? fileError,
-        bool? passwordError,
+        List<SshConnectFields>? wrongFields,
         bool? loading
     }) {
         return AuthState(
@@ -81,14 +68,9 @@ class AuthState {
             saveProfile: saveProfile ?? this.saveProfile,
             enableQuickConnect: enableQuickConnect ?? this.enableQuickConnect,
             passwordRequired: passwordRequired ?? this.passwordRequired,
-            obscurePassword: obscurePassword ?? this.obscurePassword,
             password: password ?? this.password,
             globalError: globalError ?? this.globalError,
-            userError: userError ?? this.userError,
-            urlError: urlError ?? this.urlError,
-            portError: portError ?? this.portError,
-            fileError: fileError ?? this.fileError,
-            passwordError: passwordError ?? this.passwordError,
+            wrongFields: wrongFields ?? this.wrongFields,
             loading: loading ?? this.loading
         );
     }

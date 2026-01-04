@@ -3,6 +3,7 @@ import 'package:ls_server_app/feature/auth/presentation/auth_event.dart';
 import 'package:ls_server_app/feature/auth/presentation/auth_state.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/enable_quick_connect_checkbox.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/save_profile_checkbox.dart';
+import 'package:ls_server_app/feature/auth/presentation/component/ssh_auth_fields.dart';
 import 'package:ls_server_app/presentation/component/global_error_warning.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/profiles_dropdown.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/ssh_connect_button.dart';
@@ -76,17 +77,29 @@ class _AuthScreenState extends State<AuthScreen> {
           direction: Axis.horizontal,
           children: [
             Expanded(
-              child: ProfilesDropdown(
-                title: getProfileTitle(),
-                currentProfile: widget.state.profile,
-                profiles: widget.state.profiles,
-                onProfileSelect: (ServerProfile newProfile) { widget.onEvent(LoadProfile(profile: newProfile)); }
-              )
+                child: ProfilesDropdown(
+                    title: getProfileTitle(),
+                    currentProfile: widget.state.profile,
+                    profiles: widget.state.profiles,
+                    onProfileSelect: (ServerProfile newProfile) { widget.onEvent(LoadProfile(profile: newProfile)); }
+                )
             )
           ],
         ),
 
-        LayoutBuilder(
+        SshAuthFields(
+          enabled: !widget.state.loading,
+          userController: userController,
+          urlController: urlController,
+          portController: portController,
+          sshController: sshController,
+          loadSshFile: (path) => widget.onEvent(LoadSshFile(sshFilePath: path)),
+          passwordController: passwordController,
+          wrongFields: widget.state.wrongFields,
+          passwordRequired: widget.state.passwordRequired
+        ),
+
+        /*LayoutBuilder(
           builder: (context, constraints) {
             final isNarrow = constraints.maxWidth < 400;
 
@@ -224,7 +237,7 @@ class _AuthScreenState extends State<AuthScreen> {
               onPressed: () => widget.onEvent(ObscurePassword(obscure: !widget.state.obscurePassword))
             )
           ),
-        ),
+        ),*/
 
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
