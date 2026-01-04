@@ -40,6 +40,8 @@ class DirectAuthViewModel extends ChangeNotifier {
                 }
                 _setLoadingState(false);
             }
+            case ClearError():
+              _clearError();
         }
     }
 
@@ -88,6 +90,11 @@ class DirectAuthViewModel extends ChangeNotifier {
         );
         _useCases.sshConnectUseCase.execute(connectDto);
         _setLoadingState(false);
+    }
+
+    void _clearError() {
+        _state = _state.copyWith(globalError: "");
+        notifyListeners();
     }
 
     void _loadSshFile(String filePath) {

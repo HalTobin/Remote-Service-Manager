@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ls_server_app/presentation/component/app_button.dart';
-import 'package:ls_server_app/presentation/component/dialog_header.dart';
+import 'package:ls_server_app/presentation/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PasswordRequiredDialog extends StatefulWidget {
@@ -30,7 +30,7 @@ class _PasswordRequiredDialogState extends State<PasswordRequiredDialog> {
         mainAxisSize: MainAxisSize.min,
         spacing: 12,
         children: [
-          DialogHeader(
+          TitleHeader(
             icon: LucideIcons.lockKeyhole,
             title: "Password required",
             dismissible: true,

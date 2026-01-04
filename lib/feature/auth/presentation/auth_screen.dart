@@ -10,7 +10,7 @@ import 'package:ls_server_app/feature/auth/presentation/component/ssh_connect_bu
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../data/model/server_profile.dart';
-import '../../../presentation/component/dialog_header.dart';
+import '../../../presentation/component/title_header.dart';
 import 'auth_viewmodel.dart';
 import 'component/ssh_file_picker_field.dart';
 
@@ -68,7 +68,7 @@ class _AuthScreenState extends State<AuthScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: 16,
       children: [
-        const DialogHeader(
+        const TitleHeader(
           icon: LucideIcons.lock,
           title: "SSH Connection"
         ),
@@ -98,146 +98,6 @@ class _AuthScreenState extends State<AuthScreen> {
           wrongFields: widget.state.wrongFields,
           passwordRequired: widget.state.passwordRequired
         ),
-
-        /*LayoutBuilder(
-          builder: (context, constraints) {
-            final isNarrow = constraints.maxWidth < 400;
-
-            return Column(
-              children: [
-                isNarrow
-                    ? Column(
-                  children: [
-                    TextFormField(
-                      enabled: !widget.state.loading,
-                      controller: urlController,
-                      decoration: InputDecoration(
-                        labelText: 'Server URL',
-                        errorText: widget.state.urlError ? "Required" : null,
-                        border: const OutlineInputBorder(),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextFormField(
-                        enabled: !widget.state.loading,
-                        controller: portController,
-                        maxLength: 4,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Port',
-                          counterText: '',
-                          errorText: widget.state.portError ? "Required" : null,
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-                    : Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        enabled: !widget.state.loading,
-                        controller: urlController,
-                        decoration: InputDecoration(
-                          labelText: 'Server URL',
-                          errorText: widget.state.urlError ? "Required" : null,
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    SizedBox(
-                      width: 96,
-                      child: TextFormField(
-                        enabled: !widget.state.loading,
-                        controller: portController,
-                        maxLength: 4,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Port',
-                          counterText: '',
-                          errorText: widget.state.portError ? "Required" : null,
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                isNarrow
-                    ? Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextFormField(
-                        enabled: !widget.state.loading,
-                        controller: userController,
-                        decoration: InputDecoration(
-                          labelText: 'User',
-                          errorText: widget.state.userError ? "Required" : null,
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SshFilePickerField(
-                      enable: !widget.state.loading,
-                      error: widget.state.fileError,
-                      controller: sshController,
-                      onFilePicked: (path) => widget.onEvent(LoadSshFile(sshFilePath: path)),
-                    ),
-                  ],
-                )
-                    : Row(
-                  children: [
-                    SizedBox(
-                      width: 128,
-                      child: TextFormField(
-                        enabled: !widget.state.loading,
-                        controller: userController,
-                        decoration: InputDecoration(
-                          labelText: 'User',
-                          errorText: widget.state.userError ? "Required" : null,
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: SshFilePickerField(
-                        enable: !widget.state.loading,
-                        error: widget.state.fileError,
-                        controller: sshController,
-                        onFilePicked: (path) => widget.onEvent(LoadSshFile(sshFilePath: path)),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          },
-        ),
-
-        TextFormField(
-          controller: passwordController,
-          enabled: widget.state.passwordRequired && !widget.state.loading,
-          obscureText: widget.state.obscurePassword,
-          decoration: InputDecoration(
-            labelText: "Password",
-            border: const OutlineInputBorder(),
-            suffixIcon: IconButton(
-              icon: Icon(
-                widget.state.obscurePassword
-                  ? LucideIcons.eye
-                  : LucideIcons.eyeOff
-              ),
-              onPressed: () => widget.onEvent(ObscurePassword(obscure: !widget.state.obscurePassword))
-            )
-          ),
-        ),*/
 
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class DialogHeader extends StatelessWidget {
+class TitleHeader extends StatelessWidget {
   final IconData icon;
   final String title;
   final bool dismissible;
   final Function() onDismiss;
 
-  const DialogHeader({
+  const TitleHeader({
     super.key,
     required this.icon,
     required this.title,

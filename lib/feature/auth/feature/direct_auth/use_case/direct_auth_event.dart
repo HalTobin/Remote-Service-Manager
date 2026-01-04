@@ -21,3 +21,5 @@ class Connect extends DirectAuthEvent {
         required this.passwordRequestCallback
     });
 }
+
+class ClearError extends DirectAuthEvent {}

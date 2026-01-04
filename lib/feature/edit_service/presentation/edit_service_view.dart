@@ -7,7 +7,7 @@ import 'package:ls_server_app/feature/edit_service/presentation/component/shakin
 import 'package:ls_server_app/feature/edit_service/presentation/edit_service_event.dart';
 import 'package:ls_server_app/feature/edit_service/presentation/edit_service_state.dart';
 import 'package:ls_server_app/feature/services_manager/data/icon_set.dart';
-import 'package:ls_server_app/presentation/component/dialog_header.dart';
+import 'package:ls_server_app/presentation/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class EditServiceView extends StatefulWidget {
@@ -62,7 +62,7 @@ class _EditServiceState extends State<EditServiceView> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 8),
                     child: (widget.state.serviceId == -1)
-                      ? const DialogHeader(
+                      ? const TitleHeader(
                         icon: Icons.save,
                         title: "Save Service"
                       )
@@ -71,11 +71,11 @@ class _EditServiceState extends State<EditServiceView> {
                             ? CrossFadeState.showSecond
                             : CrossFadeState.showFirst,
                           duration: const Duration(milliseconds: 300),
-                          firstChild: const DialogHeader(
+                          firstChild: const TitleHeader(
                               icon: LucideIcons.pencil,
                               title: "Edit Service"
                           ),
-                          secondChild: const DialogHeader(
+                          secondChild: const TitleHeader(
                               icon: LucideIcons.trash,
                               title: "Delete Service"
                           ),
