@@ -1,5 +1,8 @@
 class ServerProfile {
     final int id;
+
+    final String? name;
+
     final String url;
     final String port;
     final String user;
@@ -8,6 +11,7 @@ class ServerProfile {
 
     const ServerProfile({
         required this.id,
+        required this.name,
         required this.url,
         required this.port,
         required this.user,
@@ -21,6 +25,7 @@ class ServerProfile {
 
     static const ServerProfile empty = ServerProfile(
         id: -1,
+        name: null,
         url: "",
         port: "",
         user: "",
@@ -34,6 +39,7 @@ class ServerProfile {
 
         return other is ServerProfile &&
             other.id == id &&
+            other.name == name &&
             other.url == url &&
             other.port == port &&
             other.user == user &&
@@ -43,11 +49,12 @@ class ServerProfile {
 
     @override
     int get hashCode {
-        return Object.hash(id, url, port, user, keyPath, quickConnectEnable);
+        return Object.hash(id, name, url, port, user, keyPath, quickConnectEnable);
     }
 }
 
 class NewServerProfile {
+    final String? name;
     final String url;
     final String port;
     final String user;
@@ -55,6 +62,27 @@ class NewServerProfile {
     final bool quickConnectEnable;
 
     NewServerProfile({
+        required this.name,
+        required this.url,
+        required this.port,
+        required this.user,
+        required this.keyPath,
+        required this.quickConnectEnable
+    });
+}
+
+class EditServerProfile {
+    final int id;
+    final String? name;
+    final String url;
+    final String port;
+    final String user;
+    final String keyPath;
+    final bool quickConnectEnable;
+
+    EditServerProfile({
+        required this.id,
+        required this.name,
         required this.url,
         required this.port,
         required this.user,

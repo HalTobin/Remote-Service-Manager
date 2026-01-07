@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:ls_server_app/feature/auth/feature/direct_auth/presentation/direct_auth_viewmodel.dart';
 import 'package:ls_server_app/feature/auth/feature/direct_auth/use_case/direct_auth_use_cases.dart';
+import 'package:ls_server_app/feature/auth/feature/my_servers/use_case/my_servers_use_cases.dart';
 import 'package:ls_server_app/feature/auth/presentation/auth_screen.dart';
 import 'package:ls_server_app/feature/auth/use_case/auth_use_cases.dart';
 import 'package:ls_server_app/feature/auth/use_case/check_quick_connect_availability_use_case.dart';
 import 'package:ls_server_app/feature/auth/use_case/check_wrong_fields_use_case.dart';
 import 'package:ls_server_app/feature/auth/use_case/fake_connect_usecase.dart';
 import 'package:ls_server_app/feature/auth/use_case/load_auth_preferences_use_case.dart';
-import 'package:ls_server_app/feature/auth/use_case/load_profiles_use_case.dart';
+import 'package:ls_server_app/feature/auth/feature/my_servers/use_case/load_profiles_use_case.dart';
 import 'package:ls_server_app/feature/auth/use_case/load_ssh_file_use_case.dart';
 import 'package:ls_server_app/feature/auth/use_case/ssh_connect_use_case.dart';
 import 'package:provider/provider.dart';
+
+import '../feature/my_servers/presentation/my_servers_viewmodel.dart';
 
 class AuthProvider extends StatelessWidget {
 
@@ -62,14 +65,23 @@ class AuthProvider extends StatelessWidget {
             )
           )
         ),
-        /*ChangeNotifierProvider(
-          create: (context) => AuthViewModel(
-            authUseCases: context.read()
-          ),
-        ),*/
+        Provider(
+          create: (context) => (
+            MyServersUseCases(
+              loadProfilesUseCase: context.read(),
+              loadSshFileUseCase: context.read(),
+              sshConnectUseCase: context.read()
+            )
+          )
+        ),
         ChangeNotifierProvider(
           create: (context) => DirectAuthViewModel(
             directAuthUseCases: context.read()
+          )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MyServersViewModel(
+            myServersUseCases: context.read()
           )
         )
       ],
