@@ -22,6 +22,15 @@ class $ServerProfilesTable extends ServerProfiles
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
   late final GeneratedColumn<String> url = GeneratedColumn<String>(
@@ -76,6 +85,7 @@ class $ServerProfilesTable extends ServerProfiles
   @override
   List<GeneratedColumn> get $columns => [
     id,
+    name,
     url,
     port,
     user,
@@ -96,6 +106,12 @@ class $ServerProfilesTable extends ServerProfiles
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     }
     if (data.containsKey('url')) {
       context.handle(
@@ -149,36 +165,34 @@ class $ServerProfilesTable extends ServerProfiles
   ServerProfileEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return ServerProfileEntity(
-      id:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}id'],
-          )!,
-      url:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}url'],
-          )!,
-      port:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}port'],
-          )!,
-      user:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}user'],
-          )!,
-      keyPath:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}key_path'],
-          )!,
-      quickConnectEnable:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.bool,
-            data['${effectivePrefix}quick_connect_enable'],
-          )!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      ),
+      url: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}url'],
+      )!,
+      port: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}port'],
+      )!,
+      user: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user'],
+      )!,
+      keyPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key_path'],
+      )!,
+      quickConnectEnable: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}quick_connect_enable'],
+      )!,
     );
   }
 
@@ -191,6 +205,7 @@ class $ServerProfilesTable extends ServerProfiles
 class ServerProfileEntity extends DataClass
     implements Insertable<ServerProfileEntity> {
   final int id;
+  final String? name;
   final String url;
   final String port;
   final String user;
@@ -198,6 +213,7 @@ class ServerProfileEntity extends DataClass
   final bool quickConnectEnable;
   const ServerProfileEntity({
     required this.id,
+    this.name,
     required this.url,
     required this.port,
     required this.user,
@@ -208,6 +224,9 @@ class ServerProfileEntity extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
     map['url'] = Variable<String>(url);
     map['port'] = Variable<String>(port);
     map['user'] = Variable<String>(user);
@@ -219,6 +238,7 @@ class ServerProfileEntity extends DataClass
   ServerProfilesCompanion toCompanion(bool nullToAbsent) {
     return ServerProfilesCompanion(
       id: Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       url: Value(url),
       port: Value(port),
       user: Value(user),
@@ -234,6 +254,7 @@ class ServerProfileEntity extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ServerProfileEntity(
       id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String?>(json['name']),
       url: serializer.fromJson<String>(json['url']),
       port: serializer.fromJson<String>(json['port']),
       user: serializer.fromJson<String>(json['user']),
@@ -246,6 +267,7 @@ class ServerProfileEntity extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String?>(name),
       'url': serializer.toJson<String>(url),
       'port': serializer.toJson<String>(port),
       'user': serializer.toJson<String>(user),
@@ -256,6 +278,7 @@ class ServerProfileEntity extends DataClass
 
   ServerProfileEntity copyWith({
     int? id,
+    Value<String?> name = const Value.absent(),
     String? url,
     String? port,
     String? user,
@@ -263,6 +286,7 @@ class ServerProfileEntity extends DataClass
     bool? quickConnectEnable,
   }) => ServerProfileEntity(
     id: id ?? this.id,
+    name: name.present ? name.value : this.name,
     url: url ?? this.url,
     port: port ?? this.port,
     user: user ?? this.user,
@@ -272,14 +296,14 @@ class ServerProfileEntity extends DataClass
   ServerProfileEntity copyWithCompanion(ServerProfilesCompanion data) {
     return ServerProfileEntity(
       id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
       url: data.url.present ? data.url.value : this.url,
       port: data.port.present ? data.port.value : this.port,
       user: data.user.present ? data.user.value : this.user,
       keyPath: data.keyPath.present ? data.keyPath.value : this.keyPath,
-      quickConnectEnable:
-          data.quickConnectEnable.present
-              ? data.quickConnectEnable.value
-              : this.quickConnectEnable,
+      quickConnectEnable: data.quickConnectEnable.present
+          ? data.quickConnectEnable.value
+          : this.quickConnectEnable,
     );
   }
 
@@ -287,6 +311,7 @@ class ServerProfileEntity extends DataClass
   String toString() {
     return (StringBuffer('ServerProfileEntity(')
           ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('url: $url, ')
           ..write('port: $port, ')
           ..write('user: $user, ')
@@ -298,12 +323,13 @@ class ServerProfileEntity extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, url, port, user, keyPath, quickConnectEnable);
+      Object.hash(id, name, url, port, user, keyPath, quickConnectEnable);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ServerProfileEntity &&
           other.id == this.id &&
+          other.name == this.name &&
           other.url == this.url &&
           other.port == this.port &&
           other.user == this.user &&
@@ -313,6 +339,7 @@ class ServerProfileEntity extends DataClass
 
 class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
   final Value<int> id;
+  final Value<String?> name;
   final Value<String> url;
   final Value<String> port;
   final Value<String> user;
@@ -320,6 +347,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
   final Value<bool> quickConnectEnable;
   const ServerProfilesCompanion({
     this.id = const Value.absent(),
+    this.name = const Value.absent(),
     this.url = const Value.absent(),
     this.port = const Value.absent(),
     this.user = const Value.absent(),
@@ -328,6 +356,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
   });
   ServerProfilesCompanion.insert({
     this.id = const Value.absent(),
+    this.name = const Value.absent(),
     required String url,
     required String port,
     required String user,
@@ -340,6 +369,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
        quickConnectEnable = Value(quickConnectEnable);
   static Insertable<ServerProfileEntity> custom({
     Expression<int>? id,
+    Expression<String>? name,
     Expression<String>? url,
     Expression<String>? port,
     Expression<String>? user,
@@ -348,6 +378,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (name != null) 'name': name,
       if (url != null) 'url': url,
       if (port != null) 'port': port,
       if (user != null) 'user': user,
@@ -359,6 +390,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
 
   ServerProfilesCompanion copyWith({
     Value<int>? id,
+    Value<String?>? name,
     Value<String>? url,
     Value<String>? port,
     Value<String>? user,
@@ -367,6 +399,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
   }) {
     return ServerProfilesCompanion(
       id: id ?? this.id,
+      name: name ?? this.name,
       url: url ?? this.url,
       port: port ?? this.port,
       user: user ?? this.user,
@@ -380,6 +413,9 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
     if (url.present) {
       map['url'] = Variable<String>(url.value);
@@ -403,6 +439,7 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
   String toString() {
     return (StringBuffer('ServerProfilesCompanion(')
           ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('url: $url, ')
           ..write('port: $port, ')
           ..write('user: $user, ')
@@ -538,21 +575,18 @@ class $FavoriteServicesTable extends FavoriteServices
   FavoriteServiceEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return FavoriteServiceEntity(
-      id:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}id'],
-          )!,
-      profileId:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}profile_id'],
-          )!,
-      serviceName:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}service_name'],
-          )!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      profileId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_id'],
+      )!,
+      serviceName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}service_name'],
+      )!,
       alias: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}alias'],
@@ -604,10 +638,12 @@ class FavoriteServiceEntity extends DataClass
       id: Value(id),
       profileId: Value(profileId),
       serviceName: Value(serviceName),
-      alias:
-          alias == null && nullToAbsent ? const Value.absent() : Value(alias),
-      iconId:
-          iconId == null && nullToAbsent ? const Value.absent() : Value(iconId),
+      alias: alias == null && nullToAbsent
+          ? const Value.absent()
+          : Value(alias),
+      iconId: iconId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(iconId),
     );
   }
 
@@ -653,8 +689,9 @@ class FavoriteServiceEntity extends DataClass
     return FavoriteServiceEntity(
       id: data.id.present ? data.id.value : this.id,
       profileId: data.profileId.present ? data.profileId.value : this.profileId,
-      serviceName:
-          data.serviceName.present ? data.serviceName.value : this.serviceName,
+      serviceName: data.serviceName.present
+          ? data.serviceName.value
+          : this.serviceName,
       alias: data.alias.present ? data.alias.value : this.alias,
       iconId: data.iconId.present ? data.iconId.value : this.iconId,
     );
@@ -793,6 +830,7 @@ abstract class _$ServerProfileDatabase extends GeneratedDatabase {
 typedef $$ServerProfilesTableCreateCompanionBuilder =
     ServerProfilesCompanion Function({
       Value<int> id,
+      Value<String?> name,
       required String url,
       required String port,
       required String user,
@@ -802,6 +840,7 @@ typedef $$ServerProfilesTableCreateCompanionBuilder =
 typedef $$ServerProfilesTableUpdateCompanionBuilder =
     ServerProfilesCompanion Function({
       Value<int> id,
+      Value<String?> name,
       Value<String> url,
       Value<String> port,
       Value<String> user,
@@ -861,6 +900,11 @@ class $$ServerProfilesTableFilterComposer
   });
   ColumnFilters<int> get id => $composableBuilder(
     column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -929,6 +973,11 @@ class $$ServerProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get url => $composableBuilder(
     column: $table.url,
     builder: (column) => ColumnOrderings(column),
@@ -966,6 +1015,9 @@ class $$ServerProfilesTableAnnotationComposer
   });
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<String> get url =>
       $composableBuilder(column: $table.url, builder: (column) => column);
@@ -1032,19 +1084,16 @@ class $$ServerProfilesTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer:
-              () => $$ServerProfilesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer:
-              () =>
-                  $$ServerProfilesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer:
-              () => $$ServerProfilesTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
+          createFilteringComposer: () =>
+              $$ServerProfilesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServerProfilesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServerProfilesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<String?> name = const Value.absent(),
                 Value<String> url = const Value.absent(),
                 Value<String> port = const Value.absent(),
                 Value<String> user = const Value.absent(),
@@ -1052,6 +1101,7 @@ class $$ServerProfilesTableTableManager
                 Value<bool> quickConnectEnable = const Value.absent(),
               }) => ServerProfilesCompanion(
                 id: id,
+                name: name,
                 url: url,
                 port: port,
                 user: user,
@@ -1061,6 +1111,7 @@ class $$ServerProfilesTableTableManager
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<String?> name = const Value.absent(),
                 required String url,
                 required String port,
                 required String user,
@@ -1068,22 +1119,21 @@ class $$ServerProfilesTableTableManager
                 required bool quickConnectEnable,
               }) => ServerProfilesCompanion.insert(
                 id: id,
+                name: name,
                 url: url,
                 port: port,
                 user: user,
                 keyPath: keyPath,
                 quickConnectEnable: quickConnectEnable,
               ),
-          withReferenceMapper:
-              (p0) =>
-                  p0
-                      .map(
-                        (e) => (
-                          e.readTable(table),
-                          $$ServerProfilesTableReferences(db, table, e),
-                        ),
-                      )
-                      .toList(),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ServerProfilesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: ({favoriteServicesRefs = false}) {
             return PrefetchHooks(
               db: db,
@@ -1102,17 +1152,14 @@ class $$ServerProfilesTableTableManager
                       currentTable: table,
                       referencedTable: $$ServerProfilesTableReferences
                           ._favoriteServicesRefsTable(db),
-                      managerFromTypedResult:
-                          (p0) =>
-                              $$ServerProfilesTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).favoriteServicesRefs,
-                      referencedItemsForCurrentItem:
-                          (item, referencedItems) => referencedItems.where(
-                            (e) => e.profileId == item.id,
-                          ),
+                      managerFromTypedResult: (p0) =>
+                          $$ServerProfilesTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).favoriteServicesRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.profileId == item.id),
                       typedResults: items,
                     ),
                 ];
@@ -1365,19 +1412,12 @@ class $$FavoriteServicesTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer:
-              () =>
-                  $$FavoriteServicesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer:
-              () => $$FavoriteServicesTableOrderingComposer(
-                $db: db,
-                $table: table,
-              ),
-          createComputedFieldComposer:
-              () => $$FavoriteServicesTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
+          createFilteringComposer: () =>
+              $$FavoriteServicesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FavoriteServicesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FavoriteServicesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -1406,52 +1446,52 @@ class $$FavoriteServicesTableTableManager
                 alias: alias,
                 iconId: iconId,
               ),
-          withReferenceMapper:
-              (p0) =>
-                  p0
-                      .map(
-                        (e) => (
-                          e.readTable(table),
-                          $$FavoriteServicesTableReferences(db, table, e),
-                        ),
-                      )
-                      .toList(),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$FavoriteServicesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: ({profileId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
-              addJoins: <
-                T extends TableManagerState<
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic
-                >
-              >(state) {
-                if (profileId) {
-                  state =
-                      state.withJoin(
-                            currentTable: table,
-                            currentColumn: table.profileId,
-                            referencedTable: $$FavoriteServicesTableReferences
-                                ._profileIdTable(db),
-                            referencedColumn:
-                                $$FavoriteServicesTableReferences
-                                    ._profileIdTable(db)
-                                    .id,
-                          )
-                          as T;
-                }
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (profileId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.profileId,
+                                referencedTable:
+                                    $$FavoriteServicesTableReferences
+                                        ._profileIdTable(db),
+                                referencedColumn:
+                                    $$FavoriteServicesTableReferences
+                                        ._profileIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
 
-                return state;
-              },
+                    return state;
+                  },
               getPrefetchedDataCallback: (items) async {
                 return [];
               },

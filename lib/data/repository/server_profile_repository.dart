@@ -12,6 +12,7 @@ class ServerProfileRepository {
     Future<int> saveProfile(NewServerProfile profile) async {
         final ServerProfilesCompanion profileEntity = ServerProfilesCompanion(
             id: Value.absent(),
+            name: Value(profile.name),
             url: Value(profile.url),
             port: Value(profile.port),
             user: Value(profile.user),
@@ -32,6 +33,7 @@ class ServerProfileRepository {
                 (profile) =>
                     ServerProfile(
                         id: profile.id,
+                        name: profile.name,
                         url: profile.url,
                         port: profile.port,
                         user: profile.user,

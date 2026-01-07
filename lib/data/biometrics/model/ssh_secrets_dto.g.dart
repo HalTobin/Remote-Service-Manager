@@ -8,10 +8,9 @@ part of 'ssh_secrets_dto.dart';
 
 SshSecretsDto _$SshSecretsDtoFromJson(Map<String, dynamic> json) =>
     SshSecretsDto(
-      secrets:
-          (json['secrets'] as List<dynamic>)
-              .map((e) => SecretEntryDto.fromJson(e as Map<String, dynamic>))
-              .toList(),
+      secrets: (json['secrets'] as List<dynamic>)
+          .map((e) => SecretEntryDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$SshSecretsDtoToJson(SshSecretsDto instance) =>
