@@ -22,8 +22,16 @@ class MyServersViewModel extends ChangeNotifier {
     }
 
     Future<void> _selectServer(int serverProfileId) async {
-        final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
-        _state = _state.copyWith(sshPasswordRequired: passwordRequired);
+        if (_state.selectedServerId == serverProfileId) {
+           _state = _state.copyWith(selectedServerId: null);
+        }
+        else {
+            final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
+            _state = _state.copyWith(
+                sshPasswordRequired: passwordRequired,
+                selectedServerId: serverProfileId
+            );
+        }
         notifyListeners();
     }
 

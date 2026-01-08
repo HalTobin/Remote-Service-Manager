@@ -27,41 +27,82 @@ class _MyServersScreenState extends State<MyServersScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 16,
-        children: [
-          const TitleHeader(
-              icon: LucideIcons.server,
-              title: "My Servers"
-          ),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: 16,
+      children: [
+        const Text("Test"),
 
-          ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: widget.state.servers.length,
-              itemBuilder: (BuildContext context, int index) {
-                final profile = widget.state.servers[index];
+        const TitleHeader(
+            icon: LucideIcons.aArrowDown,
+            title: "My Servers"
+        ),
 
-                final MyServersEvent connectEvent = Connect(
-                  user: profile.user,
-                  serverUrl: profile.url,
-                  serverPort: profile.port,
-                  sshFilePath: profile.keyPath,
-                  password: _sshPasswordController.text
-                );
+        const TitleHeader(
+            icon: LucideIcons.server,
+            title: "My Servers"
+        ),
 
-                return ServerProfileItem(
-                  profile: profile,
-                  onClick: widget.onEvent(connectEvent),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) => const Divider()
-          ),
+        Row(
+          children: [
+            const TitleHeader(
+                icon: LucideIcons.server,
+                title: "My Servers"
+            ),
+            IconButton(
+              onPressed: () => showAddEditBottomSheet(null),
+              icon: Icon(LucideIcons.plus)
+            )
+          ],
+        ),
 
-          TextField(
-            controller: _sshPasswordController,
-            enabled: widget.state.sshPasswordRequired,
+        /*Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: widget.state.servers.length,
+            itemBuilder: (BuildContext context, int index) {
+              final profile = widget.state.servers[index];
+
+              final MyServersEvent connectEvent = Connect(
+                user: profile.user,
+                serverUrl: profile.url,
+                serverPort: profile.port,
+                sshFilePath: profile.keyPath,
+                password: _sshPasswordController.text
+              );
+
+              return ServerProfileItem(
+                profile: profile,
+                onClick: () => widget.onEvent(connectEvent),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) => const Divider()
           )
-        ]
+        ),*/
+
+        Spacer(),
+
+        TextField(
+          controller: _sshPasswordController,
+          enabled: widget.state.sshPasswordRequired,
+        )
+      ]
+    );
+  }
+
+  void showAddEditBottomSheet(int? serverProfileId) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 400,
+          child: Center(
+            child: ElevatedButton(
+              child: const Text("Test"),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+        );
+      }
     );
   }
 
