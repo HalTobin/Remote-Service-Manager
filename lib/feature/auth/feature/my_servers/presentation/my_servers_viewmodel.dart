@@ -21,6 +21,12 @@ class MyServersViewModel extends ChangeNotifier {
         _loadServers();
     }
 
+    Future<void> _selectServer(int serverProfileId) async {
+        final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
+        _state = _state.copyWith(sshPasswordRequired: passwordRequired);
+        notifyListeners();
+    }
+
     Future<void> _loadServers() async {
         final List<ServerProfile> profiles = await _useCases.loadProfilesUseCase.execute();
         _state = _state.copyWith(servers: profiles);
@@ -29,6 +35,8 @@ class MyServersViewModel extends ChangeNotifier {
 
     Future<void> onEvent(MyServersEvent event) async {
         switch (event) {
+            case SelectServer():
+              _selectServer(event.serverProfileId);
             case Connect():
                 // TODO: Handle this case.
                 throw UnimplementedError();

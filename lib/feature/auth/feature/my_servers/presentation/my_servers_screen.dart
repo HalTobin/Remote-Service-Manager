@@ -59,6 +59,7 @@ class _MyServersScreenState extends State<MyServersScreen> {
 
           TextField(
             controller: _sshPasswordController,
+            enabled: widget.state.sshPasswordRequired,
           )
         ]
     );

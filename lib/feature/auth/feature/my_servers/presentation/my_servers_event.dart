@@ -1,5 +1,10 @@
 sealed class MyServersEvent {}
 
+class SelectServer extends MyServersEvent {
+    final int serverProfileId;
+    SelectServer({required this.serverProfileId});
+}
+
 class Connect extends MyServersEvent {
     final String user;
     final String serverUrl;
