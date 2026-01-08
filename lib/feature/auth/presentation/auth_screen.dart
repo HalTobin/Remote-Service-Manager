@@ -33,7 +33,6 @@ class AuthScreen extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                const Icon(LucideIcons.server),
 
                 Consumer<MyServersViewModel>(
                   builder: (context, viewmodel, child) {
