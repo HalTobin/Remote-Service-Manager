@@ -29,17 +29,7 @@ class ServerProfileRepository {
     Future<List<ServerProfile>> getAllProfiles() async {
         final profiles = await _dao.getAllProfiles();
         return profiles
-            .map(
-                (profile) =>
-                    ServerProfile(
-                        id: profile.id,
-                        name: profile.name,
-                        url: profile.url,
-                        port: profile.port,
-                        user: profile.user,
-                        keyPath: profile.keyPath,
-                        quickConnectEnable: profile.quickConnectEnable
-                    ))
+            .map((profile) => profile.toDomain())
             .toList();
     }
 
@@ -59,4 +49,22 @@ class ServerProfileRepository {
         return _dao.getProfileByFields(url: url, port: port, user: user);
     }
 
+    Future<ServerProfile?> getProfileById(int id) async {
+       final ServerProfileEntity? entity = await _dao.getProfileById(id);
+       return entity?.toDomain();
+    }
+
+}
+
+extension on ServerProfileEntity {
+    ServerProfile toDomain() =>
+        ServerProfile(
+            id: this.id,
+            name: this.name,
+            url: this.url,
+            port: this.port,
+            user: this.user,
+            keyPath: this.keyPath,
+            quickConnectEnable: this.quickConnectEnable
+        );
 }

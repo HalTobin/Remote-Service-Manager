@@ -1,21 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+sealed class TitleHeaderTrailingContent {
+  const TitleHeaderTrailingContent();
+
+  static TitleHeaderTrailingContent none() => const None();
+
+  static TitleHeaderTrailingContent dismissable({required VoidCallback onDismiss}) =>
+      Dismissable(onDismiss: onDismiss);
+
+  static TitleHeaderTrailingContent action({
+    String? title,
+    IconData? icon,
+    required VoidCallback onPressed,
+  }) => Action(title: title, icon: icon, onPressed: onPressed);
+}
+
+class None extends TitleHeaderTrailingContent {
+  const None();
+}
+
+class Dismissable extends TitleHeaderTrailingContent {
+  final VoidCallback onDismiss;
+  const Dismissable({required this.onDismiss});
+}
+
+class Action extends TitleHeaderTrailingContent {
+  final String? title;
+  final IconData? icon;
+  final VoidCallback onPressed;
+
+  const Action({
+    this.title,
+    this.icon,
+    required this.onPressed,
+  });
+}
+
 class TitleHeader extends StatelessWidget {
   final IconData icon;
   final String title;
-  final bool dismissible;
-  final Function() onDismiss;
+  final TitleHeaderTrailingContent trailingContent;
 
   const TitleHeader({
     super.key,
     required this.icon,
     required this.title,
-    this.dismissible = false,
-    this.onDismiss = _defaultOnDismiss,
+    this.trailingContent = const None()
   });
-
-  static void _defaultOnDismiss() {}
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +55,7 @@ class TitleHeader extends StatelessWidget {
       spacing: 12,
       children: [
         Icon(
-          icon, // Represents secure connection
+          icon,
           size: 28,
           color: Colors.blueAccent,
         ),
@@ -37,12 +69,47 @@ class TitleHeader extends StatelessWidget {
         Expanded(
           child: SizedBox.shrink()
         ),
-        if (dismissible)
-          IconButton(
-            onPressed: onDismiss,
+        switch (trailingContent) {
+          None() => const SizedBox.shrink(),
+          Dismissable(onDismiss: var callback) => IconButton(
+            onPressed: callback,
             icon: const Icon(LucideIcons.x),
-          )
+          ),
+          Action(title: final text, icon: final icon, onPressed: final onPressed) => _TitleHeaderAction(
+            text: text,
+            icon: icon,
+            onPressed: onPressed,
+          ),
+        }
       ],
+    );
+  }
+}
+
+class _TitleHeaderAction extends StatelessWidget {
+  final String? text;
+  final IconData? icon;
+  final Function() onPressed;
+
+  const _TitleHeaderAction({
+    this.text,
+    this.icon,
+    required this.onPressed
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Row(
+        spacing: 16,
+        children: [
+          if (text != null)
+            Text(text ?? ''),
+          if (icon != null)
+            Icon(icon),
+        ],
+      )
     );
   }
 }

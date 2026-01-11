@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:ls_server_app/feature/auth/use_case/load_ssh_file_use_case.dart';
 
 import '../../../../../data/model/server_profile.dart';
@@ -16,8 +15,7 @@ class CheckPasswordRequirementByServerProfileIdUseCase {
     final LoadSshFileUseCase _loadSshFileUseCase;
 
     Future<bool> execute(int serverProfileId) async {
-        final List<ServerProfile> profiles = await _serverProfileRepository.getAllProfiles();
-        final ServerProfile? profile = profiles.firstWhereOrNull((profile) => profile.id == serverProfileId);
+        final ServerProfile? profile = await _serverProfileRepository.getProfileById(serverProfileId);
 
         if (profile != null) {
             return _loadSshFileUseCase.execute(profile.keyPath);

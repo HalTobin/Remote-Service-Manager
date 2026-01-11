@@ -33,8 +33,7 @@ class _PasswordRequiredDialogState extends State<PasswordRequiredDialog> {
           TitleHeader(
             icon: LucideIcons.lockKeyhole,
             title: "Password required",
-            dismissible: true,
-            onDismiss: widget.onDismiss
+            trailingContent: TitleHeaderTrailingContent.dismissable(onDismiss: widget.onDismiss)
           ),
           TextFormField(
             controller: passwordController,
