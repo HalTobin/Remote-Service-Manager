@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ls_server_app/feature/auth/presentation/component/password_text_form_field.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/ssh_file_picker_field.dart';
 
 import '../../data/ssh_connect_fields.dart';
@@ -13,11 +12,8 @@ class SshAuthFields extends StatefulWidget {
   final TextEditingController portController;
   final TextEditingController sshController;
   final Function(String) loadSshFile;
-  final TextEditingController passwordController;
 
   final List<SshConnectFields> wrongFields;
-
-  final bool passwordRequired;
 
   const SshAuthFields({
     super.key,
@@ -28,10 +24,8 @@ class SshAuthFields extends StatefulWidget {
     required this.portController,
     required this.sshController,
     required this.loadSshFile,
-    required this.passwordController,
 
-    required this.wrongFields,
-    required this.passwordRequired
+    required this.wrongFields
   });
 
   @override
@@ -202,11 +196,6 @@ class SshAuthFieldsState extends State<SshAuthFields> {
               ],
             );
           },
-        ),
-
-        PasswordTextFormField(
-            controller: widget.passwordController,
-            enabled: widget.passwordRequired && widget.enabled
         )
 
       ],

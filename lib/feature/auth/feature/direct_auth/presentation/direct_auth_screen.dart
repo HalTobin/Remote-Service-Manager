@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../../presentation/component/global_error_warning.dart';
 import '../../../../../presentation/component/title_header.dart';
+import '../../../presentation/component/password_text_form_field.dart';
 import '../../../presentation/component/ssh_auth_fields.dart';
 import '../../../presentation/component/ssh_connect_button.dart';
 import 'direct_auth_event.dart';
@@ -48,9 +49,12 @@ class _DirectAuthScreenState extends State<DirectAuthScreen> {
           portController: portController,
           sshController: sshController,
           loadSshFile: (path) => widget.onEvent(LoadSshFile(sshFilePath: path)),
-          passwordController: passwordController,
           wrongFields: widget.state.wrongFields,
-          passwordRequired: widget.state.passwordRequired
+        ),
+
+        PasswordTextFormField(
+            controller: passwordController,
+            enabled: widget.state.passwordRequired && !widget.state.loading
         ),
 
         const Spacer(),

@@ -109,16 +109,16 @@ class DirectAuthViewModel extends ChangeNotifier {
     }
 
     void _loadSshFile(String filePath) {
-      try {
-        final bool isPasswordRequired = _useCases.loadSshFileUseCase.execute(filePath);
-        _state = _state.copyWith(
-            passwordRequired: isPasswordRequired,
-            sshFilePath: filePath
-        );
-        notifyListeners();
-      } catch (e) {
-        if (kDebugMode) { print("Couldn't load ssh file: $e"); }
-      }
+        try {
+            final bool isPasswordRequired = _useCases.loadSshFileUseCase.execute(filePath);
+            _state = _state.copyWith(
+                passwordRequired: isPasswordRequired,
+                sshFilePath: filePath
+            );
+            notifyListeners();
+        } catch (e) {
+            if (kDebugMode) { print("Couldn't load ssh file: $e"); }
+        }
     }
 
     void _setLoadingState(bool loading) {

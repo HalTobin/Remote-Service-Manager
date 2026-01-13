@@ -22,6 +22,19 @@ class ServerProfileRepository {
         return _dao.insertProfile(profileEntity);
     }
 
+    Future<bool> updateProfile(EditServerProfile profile) async {
+        final entity = ServerProfileEntity(
+            id: profile.id,
+            name: profile.name,
+            url: profile.url,
+            port: profile.port,
+            user: profile.user,
+            keyPath: profile.keyPath,
+            quickConnectEnable: profile.quickConnectEnable
+        );
+        return _dao.updateProfile(entity);
+    }
+
     Future<void> deleteProfile(int profileId) async {
         _dao.deleteProfile(profileId);
     }

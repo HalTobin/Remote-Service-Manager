@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:ls_server_app/feature/auth/feature/add_edit_server/presentation/add_edit_server_event.dart';
 import 'package:ls_server_app/feature/auth/presentation/component/ssh_auth_fields.dart';
 import 'package:ls_server_app/presentation/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import 'add_edit_server_state.dart';
+
 class AddEditServerView extends StatefulWidget {
   final int? serverProfileId;
+  final AddEditServerState state;
+  final Function(AddEditServerEvent) onEvent;
   final Function() onDismiss;
 
   const AddEditServerView({
     super.key,
     this.serverProfileId,
+    required this.state,
+    required this.onEvent,
     required this.onDismiss
   });
 
@@ -23,7 +30,6 @@ class AddEditServerViewState extends State<AddEditServerView> {
   final TextEditingController urlController = TextEditingController();
   final TextEditingController portController = TextEditingController();
   final TextEditingController sshController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
   late bool isNewServer = widget.serverProfileId == null;
 
@@ -48,9 +54,7 @@ class AddEditServerViewState extends State<AddEditServerView> {
           portController: portController,
           sshController: sshController,
           loadSshFile: (path) => {},
-          passwordController: passwordController,
           wrongFields: [],
-          passwordRequired: false
         ),
 
         FilledButton.icon(

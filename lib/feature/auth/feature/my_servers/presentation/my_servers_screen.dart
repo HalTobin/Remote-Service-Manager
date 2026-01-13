@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ls_server_app/feature/auth/feature/my_servers/presentation/component/add_edit_server_view.dart';
+import 'package:ls_server_app/feature/auth/feature/add_edit_server/di/add_edit_server_provider.dart';
 import 'package:ls_server_app/feature/auth/feature/my_servers/presentation/component/server_profile_item.dart';
 import 'package:ls_server_app/presentation/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -84,7 +84,7 @@ class _MyServersScreenState extends State<MyServersScreen> {
       builder: (BuildContext context) {
         return Padding(
           padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
-          child: AddEditServerView(
+          child: AddEditServerProvider(
             serverProfileId: serverProfileId,
             onDismiss: () => Navigator.pop(context),
           )
