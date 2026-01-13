@@ -4,6 +4,8 @@ import 'package:ls_server_app/feature/auth/presentation/tabs/direct_auth_tab.dar
 import 'package:ls_server_app/feature/auth/presentation/tabs/my_servers_tab.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../feature/add_edit_server/di/add_edit_server_provider.dart';
+
 class AuthScreen extends StatelessWidget {
 
   const AuthScreen({super.key});
@@ -27,11 +29,31 @@ class AuthScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            MyServersTab(),
+            MyServersTab(
+              onAddEditServer: (serverProfileId) => showAddEditBottomSheet(context, serverProfileId),
+            ),
             DirectAuthTab()
           ]
         )
       )
+    );
+  }
+
+  void showAddEditBottomSheet(
+    BuildContext context,
+    int? serverProfileId
+  ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
+          child: AddEditServerProvider(
+            serverProfileId: serverProfileId,
+            onDismiss: () => Navigator.pop(context),
+          )
+        );
+      }
     );
   }
 

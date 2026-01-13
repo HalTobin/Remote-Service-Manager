@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ls_server_app/di/entry_point_provider.dart';
-import 'package:ls_server_app/ls_server_app.dart';
+import 'package:ls_server_app/di/main_provider.dart';
+import 'package:ls_server_app/presentation/main_screen.dart';
+import 'package:ls_server_app/presentation/main_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
@@ -14,16 +17,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Moino Service Manager',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-        brightness: Brightness.dark,
-          seedColor: Color(0xFF181933)
+    return MainProvider(
+      child: MaterialApp(
+        title: 'Moino Service Manager',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.dark,
+            seedColor: Color(0xFF181933)
+          ),
         ),
-      ),
-      home: const LsServerApp(),
+        home: Scaffold(
+          body: Consumer<MainViewModel>(
+            builder: (context, viewmodel, child) {
+              return MainScreen(
+                state: viewmodel.state,
+                onEvent: viewmodel.onEvent,
+              );
+            }
+          ),
+        ),
+      )
     );
-
   }
 }

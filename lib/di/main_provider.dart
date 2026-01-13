@@ -9,7 +9,12 @@ import 'package:ls_server_app/use_case/ssh_log_out_usecase.dart';
 import 'package:provider/provider.dart';
 
 class MainProvider extends StatelessWidget {
-  const MainProvider({super.key});
+  final Widget child;
+
+  const MainProvider({
+    super.key,
+    required this.child
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +35,7 @@ class MainProvider extends StatelessWidget {
 
         ChangeNotifierProvider(create: (context) => (MainViewModel(mainUseCases: context.read())))
       ],
-      child: Consumer<MainViewModel>(
-        builder: (context, viewmodel, child) {
-          return MainScreen(
-            state: viewmodel.state,
-            onEvent: viewmodel.onEvent,
-          );
-        }
-      )
+      child: child
     );
   }
 }

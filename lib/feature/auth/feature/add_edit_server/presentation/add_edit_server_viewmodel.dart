@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/feature/auth/feature/add_edit_server/presentation/add_edit_server_event.dart';
-import 'package:ls_server_app/feature/auth/feature/add_edit_server/use_case/AddEditServerUseCases.dart';
+import 'package:ls_server_app/feature/auth/feature/add_edit_server/use_case/add_edit_server_usecases.dart';
 
 import 'add_edit_server_state.dart';
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ls_server_app/feature/auth/feature/add_edit_server/di/add_edit_server_provider.dart';
 import 'package:ls_server_app/feature/auth/feature/my_servers/presentation/component/server_profile_item.dart';
 import 'package:ls_server_app/presentation/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -10,11 +9,13 @@ import 'my_servers_state.dart';
 class MyServersScreen extends StatefulWidget {
   final MyServersState state;
   final Function(MyServersEvent) onEvent;
+  final Function(int?) onAddEditServer;
 
   const MyServersScreen({
     super.key,
     required this.state,
-    required this.onEvent
+    required this.onEvent,
+    required this.onAddEditServer
   });
 
   @override
@@ -37,7 +38,7 @@ class _MyServersScreenState extends State<MyServersScreen> {
             trailingContent: TitleHeaderTrailingContent.action(
               title: "Add",
               icon: LucideIcons.plus,
-              onPressed: () => showAddEditBottomSheet(null)
+              onPressed: () => widget.onAddEditServer(null)
             )
         ),
 
@@ -75,21 +76,6 @@ class _MyServersScreenState extends State<MyServersScreen> {
           ),
         )
       ],
-    );
-  }
-
-  void showAddEditBottomSheet(int? serverProfileId) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
-          child: AddEditServerProvider(
-            serverProfileId: serverProfileId,
-            onDismiss: () => Navigator.pop(context),
-          )
-        );
-      }
     );
   }
 
