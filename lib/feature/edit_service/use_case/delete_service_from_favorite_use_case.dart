@@ -1,4 +1,4 @@
-import 'package:ls_server_app/data/repository/favorite_service_repository.dart';
+import 'package:domain/repository/favorite_service_repository.dart';
 
 class DeleteServiceFromFavoriteUseCase {
     DeleteServiceFromFavoriteUseCase({

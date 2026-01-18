@@ -1,14 +1,25 @@
 import 'package:domain/model/favorite_service.dart';
+import 'package:domain/repository/favorite_service_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:ls_server_app/data/db/dao/favorite_service_dao.dart';
 import 'package:ls_server_app/data/db/server_profile_database.dart';
 
-class FavoriteServiceRepository {
-    FavoriteServiceRepository({required FavoriteServiceDao dao})
-      : _dao = dao;
+class FavoriteServiceRepositoryImpl implements FavoriteServiceRepository {
 
     final FavoriteServiceDao _dao;
 
+    static FavoriteServiceRepositoryImpl? _instance;
+
+    factory FavoriteServiceRepositoryImpl({
+      required FavoriteServiceDao dao,
+    }) {
+      _instance ??= FavoriteServiceRepositoryImpl._internal(dao);
+      return _instance!;
+    }
+
+    FavoriteServiceRepositoryImpl._internal(this._dao);
+
+    @override
     Future<int> saveService(NewFavoriteService service) async {
         final FavoriteServicesCompanion serviceEntity = FavoriteServicesCompanion(
             id: Value.absent(),
@@ -20,6 +31,7 @@ class FavoriteServiceRepository {
         return await _dao.insertService(serviceEntity);
     }
 
+    @override
     Future<bool> updateService(UpdateFavoriteService service) async {
         final FavoriteServiceEntity serviceEntity = FavoriteServiceEntity(
             id: service.id,
@@ -31,10 +43,12 @@ class FavoriteServiceRepository {
         return await _dao.updateService(serviceEntity);
     }
 
+    @override
     Future<int> unmarkService(int id) async {
         return await _dao.deleteService(id);
     }
 
+    @override
     Future<List<FavoriteService>> getFavoriteServicesByProfileId(int profileId) async {
         final List<FavoriteServiceEntity> services = await _dao.getServicesForProfile(profileId);
         return services.map((service) {
@@ -42,11 +56,13 @@ class FavoriteServiceRepository {
         }).toList();
     }
 
+    @override
     Future<FavoriteService?> getFavoriteServiceById(int serviceId) async {
         final service = await _dao.getServiceById(serviceId);
         return service?.toFavoriteService();
     }
 
+    @override
     Future<FavoriteService?> getFavoriteServiceByTitleAndProfileId({
         required int profileId,
         required String serviceName
@@ -55,13 +71,22 @@ class FavoriteServiceRepository {
         return service?.toFavoriteService();
     }
 
+    @override
     Future<FavoriteService?> getFavoriteServiceByName(String name) async {
         final service = await _dao.getServiceByTitle(name);
         return service?.toFavoriteService();
     }
 
-    Stream<List<FavoriteServiceEntity>> watchServicesByProfileId(int profileId) {
-        return _dao.getServicesByProfileIdAsStream(profileId);
+    @override
+    Stream<List<FavoriteService>> watchServicesByProfileId(int profileId) {
+        return _dao.getServicesByProfileIdAsStream(profileId)
+            .map((entities) =>
+                entities
+                    .map((entity) =>
+                        entity.toFavoriteService()
+                    ).toList()
+            )
+        ;
     }
 }
 

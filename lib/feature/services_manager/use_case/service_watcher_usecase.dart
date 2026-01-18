@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:domain/model/favorite_service.dart';
 import 'package:domain/model/response_result.dart';
+import 'package:domain/repository/favorite_service_repository.dart';
+import 'package:domain/repository/server_profile_repository.dart';
 import 'package:flutter/foundation.dart';
-import 'package:ls_server_app/data/repository/favorite_service_repository.dart';
-import 'package:ls_server_app/data/repository/server_profile_repository.dart';
 import 'package:ls_server_app/feature/services_manager/data/icon_set.dart';
 import 'package:ls_server_app/feature/services_manager/data/service_presentation.dart';
 
-import '../../../data/db/server_profile_database.dart';
 import '../../../data/ssh/ssh_service.dart';
 import 'notifier/service_status_notifier.dart';
 
@@ -45,7 +44,7 @@ class ServiceWatcherUseCase {
     final List<String> _services = [];
     Timer? _timer;
 
-    StreamSubscription<List<FavoriteServiceEntity>>? _favoritesSubscription;
+    StreamSubscription<List<FavoriteService>>? _favoritesSubscription;
 
     Future<ValueListenable<List<ServicePresentation>>> execute() async {
         ResponseResult<List<String>> response = await _sshService.getServiceList();
@@ -77,8 +76,8 @@ class ServiceWatcherUseCase {
                     _favoritesSubscription = _favoriteServiceRepository
                         .watchServicesByProfileId(profileId)
                         .listen((favoriteEntities) {
-                        _updateFavorites(favoriteEntities);
-                    });
+                            _updateFavorites(favoriteEntities);
+                        });
                 }
             });
         }
@@ -139,9 +138,9 @@ class ServiceWatcherUseCase {
         }
     }
 
-    void _updateFavorites(List<FavoriteServiceEntity> favorites) {
+    void _updateFavorites(List<FavoriteService> favorites) {
         final updatedList = _servicesStatus.value.map((service) {
-            final matched = favorites.where((f) => f.serviceName == service.title).firstOrNull;
+            final matched = favorites.where((f) => f.name == service.title).firstOrNull;
             return service.copyWith(
                 favorite: matched != null,
                 alias: matched?.alias,

@@ -1,3 +1,4 @@
+import 'package:domain/repository/ssh_secrets_repository.dart';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
@@ -7,12 +8,17 @@ import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/data/biometrics/model/secret_entry_dto.dart';
 import 'package:ls_server_app/data/biometrics/model/ssh_secrets_dto.dart';
 
-class SshSecretsRepository {
-    SshSecretsRepository();
+class SshSecretsRepositoryImpl implements SshSecretsRepository {
 
     final Future<BiometricStorageFile> _store = BiometricStorage().getStorage('ssh_secrets');
     BiometricStorageFile? _storageFile;
 
+    static final SshSecretsRepositoryImpl _instance = SshSecretsRepositoryImpl._internal();
+    factory SshSecretsRepositoryImpl() => _instance;
+
+    SshSecretsRepositoryImpl._internal();
+
+    @override
     Future<SshSecretEntry?> getSecretsByIdentifier(String identifier) async {
         final SshSecretsDto? secrets = await _getStorageFileContent();
 
@@ -35,6 +41,7 @@ class SshSecretsRepository {
         }
     }
 
+    @override
     Future<void> addSecret(SshSecretEntry secret) async {
         final SshSecretsDto? secrets = await _getStorageFileContent();
         if (secrets == null) return;
@@ -50,6 +57,7 @@ class SshSecretsRepository {
         await _saveSecrets(secrets.secrets);
     }
 
+    @override
     Future<void> deleteSecretsByIdentifier(String identifier) async {
         if (!await _canAuthenticate()) return;
 

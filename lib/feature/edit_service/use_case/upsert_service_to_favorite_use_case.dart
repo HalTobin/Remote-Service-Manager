@@ -1,10 +1,10 @@
 import 'package:domain/model/favorite_service.dart';
 import 'package:domain/model/response_result.dart';
+import 'package:domain/repository/favorite_service_repository.dart';
+import 'package:domain/repository/server_profile_repository.dart';
 import 'package:flutter/foundation.dart';
-import 'package:ls_server_app/data/repository/favorite_service_repository.dart';
 import 'package:ls_server_app/data/ssh/model/ssh_profile.dart';
 
-import '../../../data/repository/server_profile_repository.dart';
 import '../../../data/ssh/ssh_service.dart';
 
 class UpsertServiceToFavoriteUseCase {

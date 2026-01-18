@@ -1,14 +1,25 @@
 import 'package:domain/model/server_profile.dart';
+import 'package:domain/repository/server_profile_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:ls_server_app/data/db/dao/server_profile_dao.dart';
 import 'package:ls_server_app/data/db/server_profile_database.dart';
 
-class ServerProfileRepository {
-    ServerProfileRepository({required ServerProfileDao dao})
-      : _dao = dao;
+class ServerProfileRepositoryImpl implements ServerProfileRepository {
 
     final ServerProfileDao _dao;
 
+    static ServerProfileRepositoryImpl? _instance;
+
+    factory ServerProfileRepositoryImpl({
+        required ServerProfileDao dao,
+    }) {
+        _instance ??= ServerProfileRepositoryImpl._internal(dao);
+        return _instance!;
+    }
+
+    ServerProfileRepositoryImpl._internal(this._dao);
+
+    @override
     Future<int> saveProfile(NewServerProfile profile) async {
         final ServerProfilesCompanion profileEntity = ServerProfilesCompanion(
             id: Value.absent(),
@@ -22,6 +33,7 @@ class ServerProfileRepository {
         return _dao.insertProfile(profileEntity);
     }
 
+    @override
     Future<bool> updateProfile(EditServerProfile profile) async {
         final entity = ServerProfileEntity(
             id: profile.id,
@@ -35,10 +47,12 @@ class ServerProfileRepository {
         return _dao.updateProfile(entity);
     }
 
+    @override
     Future<void> deleteProfile(int profileId) async {
         _dao.deleteProfile(profileId);
     }
 
+    @override
     Future<List<ServerProfile>> getAllProfiles() async {
         final profiles = await _dao.getAllProfiles();
         return profiles
@@ -46,6 +60,7 @@ class ServerProfileRepository {
             .toList();
     }
 
+    @override
     Future<bool> doesProfileExist({
         required String url,
         required String port,
@@ -54,6 +69,7 @@ class ServerProfileRepository {
         return _dao.doesProfileExist(url: url, port: port, user: user);
     }
 
+    @override
     Future<int?> getProfileIdByFields({
         required String url,
         required String port,
@@ -62,6 +78,7 @@ class ServerProfileRepository {
         return _dao.getProfileByFields(url: url, port: port, user: user);
     }
 
+    @override
     Future<ServerProfile?> getProfileById(int id) async {
        final ServerProfileEntity? entity = await _dao.getProfileById(id);
        return entity?.toDomain();
