@@ -1,6 +1,5 @@
+import 'package:domain/model/server_profile.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../domain/model/server_profile.dart';
 
 class ProfilesDropdown extends StatelessWidget {
   final String title;

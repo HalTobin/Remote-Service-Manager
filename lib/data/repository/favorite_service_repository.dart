@@ -1,8 +1,7 @@
+import 'package:domain/model/favorite_service.dart';
 import 'package:drift/drift.dart';
 import 'package:ls_server_app/data/db/dao/favorite_service_dao.dart';
 import 'package:ls_server_app/data/db/server_profile_database.dart';
-
-import '../../domain/model/favorite_service.dart';
 
 class FavoriteServiceRepository {
     FavoriteServiceRepository({required FavoriteServiceDao dao})

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:domain/model/favorite_service.dart';
+import 'package:domain/model/response_result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/data/repository/favorite_service_repository.dart';
 import 'package:ls_server_app/data/repository/server_profile_repository.dart';
@@ -8,8 +10,6 @@ import 'package:ls_server_app/feature/services_manager/data/service_presentation
 
 import '../../../data/db/server_profile_database.dart';
 import '../../../data/ssh/ssh_service.dart';
-import '../../../domain/model/favorite_service.dart';
-import '../../../domain/model/response_result.dart';
 import 'notifier/service_status_notifier.dart';
 
 /***

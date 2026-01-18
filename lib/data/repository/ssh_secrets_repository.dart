@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:biometric_storage/biometric_storage.dart';
+import 'package:domain/model/ssh_secret_entry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/data/biometrics/model/secret_entry_dto.dart';
 import 'package:ls_server_app/data/biometrics/model/ssh_secrets_dto.dart';
-
-import '../../domain/model/ssh_secret_entry.dart';
 
 class SshSecretsRepository {
     SshSecretsRepository();

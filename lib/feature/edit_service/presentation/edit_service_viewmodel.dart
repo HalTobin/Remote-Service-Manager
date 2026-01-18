@@ -1,9 +1,8 @@
+import 'package:domain/model/favorite_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/feature/edit_service/presentation/edit_service_event.dart';
 import 'package:ls_server_app/feature/edit_service/presentation/edit_service_state.dart';
 import 'package:ls_server_app/feature/edit_service/use_case/edit_service_use_cases.dart';
-
-import '../../../domain/model/favorite_service.dart';
 
 class EditServiceViewModel extends ChangeNotifier {
 

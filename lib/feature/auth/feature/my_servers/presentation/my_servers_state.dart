@@ -1,6 +1,5 @@
+import 'package:domain/model/server_profile.dart';
 import 'package:ls_server_app/util/omit.dart';
-
-import '../../../../../domain/model/server_profile.dart';
 
 class MyServersState {
     final List<ServerProfile> servers;

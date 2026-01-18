@@ -1,8 +1,7 @@
+import 'package:domain/model/server_profile.dart';
 import 'package:drift/drift.dart';
 import 'package:ls_server_app/data/db/dao/server_profile_dao.dart';
 import 'package:ls_server_app/data/db/server_profile_database.dart';
-
-import '../../domain/model/server_profile.dart';
 
 class ServerProfileRepository {
     ServerProfileRepository({required ServerProfileDao dao})

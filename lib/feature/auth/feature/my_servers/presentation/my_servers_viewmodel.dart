@@ -1,7 +1,7 @@
+import 'package:domain/model/server_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ls_server_app/feature/auth/feature/my_servers/use_case/my_servers_use_cases.dart';
 
-import '../../../../../domain/model/server_profile.dart';
 import 'my_servers_event.dart';
 import 'my_servers_state.dart';
 

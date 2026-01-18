@@ -1,7 +1,7 @@
+import 'package:domain/model/server_profile.dart';
 import 'package:ls_server_app/feature/auth/use_case/load_ssh_file_use_case.dart';
 
 import '../../../../../data/repository/server_profile_repository.dart';
-import '../../../../../domain/model/server_profile.dart';
 
 class CheckPasswordRequirementByServerProfileIdUseCase {
     CheckPasswordRequirementByServerProfileIdUseCase({

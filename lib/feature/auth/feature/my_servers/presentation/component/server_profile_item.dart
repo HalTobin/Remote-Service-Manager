@@ -1,7 +1,6 @@
+import 'package:domain/model/server_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-
-import '../../../../../../domain/model/server_profile.dart';
 
 class ServerProfileItem extends StatelessWidget {
   final ServerProfile profile;

@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:dartssh2/dartssh2.dart';
+import 'package:domain/model/response_result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/data/ssh/model/ssh_profile.dart';
 import 'package:ls_server_app/data/ssh/model/connection_status.dart';
 import 'package:ls_server_app/data/ssh/model/systemctl_command.dart';
 import 'package:ls_server_app/data/ssh/utils/byte_decoder.dart';
-
-import '../../domain/model/response_result.dart';
 
 class SshService extends ChangeNotifier implements ValueListenable<bool> {
     SSHClient? _client;
