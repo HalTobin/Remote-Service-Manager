@@ -1,10 +1,10 @@
 import 'dart:ui';
 
+import 'package:feature_auth/auth/di/auth_provider.dart';
+import 'package:feature_systemd_services/feature/services_manager/di/service_manager_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:ls_server_app/feature/auth/di/auth_provider.dart';
-import 'package:ls_server_app/feature/services_manager/di/service_manager_provider.dart';
 import 'package:ls_server_app/presentation/component/app_dialog_layout.dart';
 import 'package:ls_server_app/presentation/component/password_required_dialog.dart';
 import 'package:ls_server_app/presentation/component/status_bar/connection_status_bar.dart';

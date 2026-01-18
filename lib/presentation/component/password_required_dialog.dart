@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ls_server_app/presentation/component/app_button.dart';
-import 'package:ls_server_app/presentation/component/title_header.dart';
+import 'package:ui/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PasswordRequiredDialog extends StatefulWidget {

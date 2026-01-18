@@ -1,4 +1,4 @@
-name: data
+name: ui
 
 environment:
   sdk: ^3.9.2
@@ -8,17 +8,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  path_provider:
-  flutter_secure_storage:
-  dartssh2:
-  drift:
-  drift_flutter:
-  biometric_storage:
-  json_serializable:
-  collection:
-
-  domain:
-    path: ../domain
+  lucide_icons_flutter:
 
 dev_dependencies:
   flutter_test:

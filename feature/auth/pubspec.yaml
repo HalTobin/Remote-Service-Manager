@@ -1,4 +1,4 @@
-name: data
+name: feature_auth
 
 environment:
   sdk: ^3.9.2
@@ -8,17 +8,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  path_provider:
-  flutter_secure_storage:
-  dartssh2:
-  drift:
-  drift_flutter:
-  biometric_storage:
-  json_serializable:
-  collection:
-
   domain:
-    path: ../domain
+    path: ../../domain
+  ui:
+    path: ../../ui
+  util:
+    path: ../../util
 
 dev_dependencies:
   flutter_test:

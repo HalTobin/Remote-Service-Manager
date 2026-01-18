@@ -201,13 +201,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
-  data:
-    dependency: transitive
-    description:
-      path: data
-      relative: true
-    source: path
-    version: "0.0.0"
   dbus:
     dependency: transitive
     description:
@@ -787,13 +780,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  util:
-    dependency: "direct main"
-    description:
-      path: util
-      relative: true
-    source: path
-    version: "0.0.0"
   vector_math:
     dependency: transitive
     description:
