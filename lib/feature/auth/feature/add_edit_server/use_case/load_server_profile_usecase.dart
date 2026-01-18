@@ -1,5 +1,6 @@
-import 'package:ls_server_app/data/model/server_profile.dart';
 import 'package:ls_server_app/data/repository/server_profile_repository.dart';
+
+import '../../../../../domain/model/server_profile.dart';
 
 class LoadServerProfileUseCase {
   LoadServerProfileUseCase({
@@ -10,7 +11,7 @@ class LoadServerProfileUseCase {
   final ServerProfileRepository _serverProfileRepository;
 
   Future<ServerProfile?> execute(int serverProfileId) async {
-    return await _serverProfileRepository.getProfileById(serverProfileId);
+      return await _serverProfileRepository.getProfileById(serverProfileId);
   }
 
 }

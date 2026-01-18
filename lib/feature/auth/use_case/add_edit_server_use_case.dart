@@ -1,6 +1,6 @@
 import 'package:ls_server_app/data/repository/server_profile_repository.dart';
 
-import '../../../data/model/server_profile.dart';
+import '../../../domain/model/server_profile.dart';
 
 class AddEditServerUseCase {
     AddEditServerUseCase({

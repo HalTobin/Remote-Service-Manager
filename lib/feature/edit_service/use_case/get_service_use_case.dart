@@ -1,8 +1,9 @@
-import 'package:ls_server_app/data/model/favorite_service.dart';
 import 'package:ls_server_app/data/repository/favorite_service_repository.dart';
 import 'package:ls_server_app/data/repository/server_profile_repository.dart';
 import 'package:ls_server_app/data/ssh/model/ssh_profile.dart';
 import 'package:ls_server_app/data/ssh/ssh_service.dart';
+
+import '../../../domain/model/favorite_service.dart';
 
 class GetServiceUseCase {
     GetServiceUseCase({
