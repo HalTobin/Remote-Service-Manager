@@ -1,5 +1,5 @@
-import 'package:ls_server_app/data/ssh/model/connection_status.dart';
-import 'package:ls_server_app/data/ssh/ssh_service.dart';
+import 'package:domain/model/ssh/connection_status.dart';
+import 'package:domain/service/ssh_service.dart';
 
 class SshConnectUseCase {
     SshConnectUseCase({

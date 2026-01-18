@@ -1,10 +1,8 @@
 name: domain
-description: "Domain layer of the app"
-#version: 0.0.1
 
 environment:
   sdk: ^3.9.2
-  flutter: ">=1.17.0"
+  flutter:
 
 resolution:
   workspace

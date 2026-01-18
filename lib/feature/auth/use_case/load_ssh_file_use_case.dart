@@ -1,4 +1,4 @@
-import 'package:ls_server_app/data/io/load_ssh_file.dart';
+import 'package:util/ssh/load_ssh_file.dart';
 
 class LoadSshFileUseCase {
 

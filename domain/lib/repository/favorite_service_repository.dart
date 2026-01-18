@@ -1,4 +1,4 @@
-import 'package:domain/model/favorite_service.dart';
+import 'package:domain/model/ssh/favorite_service.dart';
 
 abstract interface class FavoriteServiceRepository {
 

@@ -1,9 +1,10 @@
+import 'package:di/entry_point_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ls_server_app/di/entry_point_provider.dart';
-import 'package:ls_server_app/di/main_provider.dart';
 import 'package:ls_server_app/presentation/main_screen.dart';
 import 'package:ls_server_app/presentation/main_viewmodel.dart';
 import 'package:provider/provider.dart';
+
+import 'di/main_provider.dart';
 
 void main() {
   runApp(

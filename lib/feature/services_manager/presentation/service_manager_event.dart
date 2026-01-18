@@ -1,4 +1,4 @@
-import 'package:ls_server_app/data/ssh/model/systemctl_command.dart';
+import 'package:domain/model/ssh/systemctl_command.dart';
 
 sealed class ServiceManagerEvent {}
 

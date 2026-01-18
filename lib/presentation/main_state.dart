@@ -1,4 +1,4 @@
-import 'package:ls_server_app/data/ssh/model/ssh_profile.dart';
+import 'package:domain/model/ssh/ssh_profile.dart';
 
 class MainState {
     final bool isConnected;

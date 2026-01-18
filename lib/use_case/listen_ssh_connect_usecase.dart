@@ -1,5 +1,5 @@
+import 'package:domain/service/ssh_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:ls_server_app/data/ssh/ssh_service.dart';
 
 class ListenSshConnectUseCase {
     ListenSshConnectUseCase({required SshService sshService})

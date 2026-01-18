@@ -1,4 +1,5 @@
-import 'package:ls_server_app/data/ssh/ssh_service.dart';
+import 'package:domain/service/ssh_service.dart';
+
 
 class FakeConnectUseCase {
     FakeConnectUseCase({required SshService sshService})

@@ -1,4 +1,4 @@
-import 'package:ls_server_app/data/ssh/ssh_service.dart';
+import 'package:domain/service/ssh_service.dart';
 
 class SetOnPasswordRequestUseCase {
     final SshService sshService;

@@ -1,4 +1,4 @@
-import 'package:domain/model/favorite_service.dart';
+import 'package:domain/model/ssh/favorite_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/feature/edit_service/presentation/edit_service_event.dart';
 import 'package:ls_server_app/feature/edit_service/presentation/edit_service_state.dart';

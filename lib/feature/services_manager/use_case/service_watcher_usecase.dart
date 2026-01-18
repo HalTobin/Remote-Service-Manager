@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:domain/model/favorite_service.dart';
+import 'package:domain/model/ssh/favorite_service.dart';
 import 'package:domain/model/response_result.dart';
 import 'package:domain/repository/favorite_service_repository.dart';
 import 'package:domain/repository/server_profile_repository.dart';
+import 'package:domain/service/ssh_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ls_server_app/feature/services_manager/data/icon_set.dart';
 import 'package:ls_server_app/feature/services_manager/data/service_presentation.dart';
 
-import '../../../data/ssh/ssh_service.dart';
 import 'notifier/service_status_notifier.dart';
 
 /***

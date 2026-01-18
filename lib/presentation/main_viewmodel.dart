@@ -1,5 +1,5 @@
+import 'package:domain/model/ssh/ssh_profile.dart';
 import 'package:flutter/foundation.dart';
-import 'package:ls_server_app/data/ssh/model/ssh_profile.dart';
 import 'package:ls_server_app/presentation/main_event.dart';
 import 'package:ls_server_app/presentation/main_state.dart';
 import 'package:ls_server_app/use_case/main_usecases.dart';

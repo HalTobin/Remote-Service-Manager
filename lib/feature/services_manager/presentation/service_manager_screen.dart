@@ -1,6 +1,6 @@
+import 'package:domain/model/ssh/systemctl_command.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ls_server_app/data/ssh/model/systemctl_command.dart';
 import 'package:ls_server_app/feature/edit_service/di/edit_service_provider.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/component/service_manager_loading.dart';
 import 'package:ls_server_app/feature/services_manager/presentation/service_manager_event.dart';

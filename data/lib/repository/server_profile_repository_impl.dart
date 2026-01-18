@@ -1,0 +1,101 @@
+import 'package:domain/model/server_profile.dart';
+import 'package:domain/repository/server_profile_repository.dart';
+import 'package:drift/drift.dart';
+
+import '../db/dao/server_profile_dao.dart';
+import '../db/server_profile_database.dart';
+
+class ServerProfileRepositoryImpl implements ServerProfileRepository {
+
+    final ServerProfileDao _dao;
+
+    static ServerProfileRepositoryImpl? _instance;
+
+    factory ServerProfileRepositoryImpl({
+        required ServerProfileDao dao,
+    }) {
+        _instance ??= ServerProfileRepositoryImpl._internal(dao);
+        return _instance!;
+    }
+
+    ServerProfileRepositoryImpl._internal(this._dao);
+
+    @override
+    Future<int> saveProfile(NewServerProfile profile) async {
+        final ServerProfilesCompanion profileEntity = ServerProfilesCompanion(
+            id: Value.absent(),
+            name: Value(profile.name),
+            url: Value(profile.url),
+            port: Value(profile.port),
+            user: Value(profile.user),
+            keyPath: Value(profile.keyPath),
+            quickConnectEnable: Value(profile.quickConnectEnable)
+        );
+        return _dao.insertProfile(profileEntity);
+    }
+
+    @override
+    Future<bool> updateProfile(EditServerProfile profile) async {
+        final entity = ServerProfileEntity(
+            id: profile.id,
+            name: profile.name,
+            url: profile.url,
+            port: profile.port,
+            user: profile.user,
+            keyPath: profile.keyPath,
+            quickConnectEnable: profile.quickConnectEnable
+        );
+        return _dao.updateProfile(entity);
+    }
+
+    @override
+    Future<void> deleteProfile(int profileId) async {
+        _dao.deleteProfile(profileId);
+    }
+
+    @override
+    Future<List<ServerProfile>> getAllProfiles() async {
+        final profiles = await _dao.getAllProfiles();
+        return profiles
+            .map((profile) => profile.toDomain())
+            .toList();
+    }
+
+    @override
+    Future<bool> doesProfileExist({
+        required String url,
+        required String port,
+        required String user
+    }) async {
+        return _dao.doesProfileExist(url: url, port: port, user: user);
+    }
+
+    @override
+    Future<int?> getProfileIdByFields({
+        required String url,
+        required String port,
+        required String user
+    }) async {
+        return _dao.getProfileByFields(url: url, port: port, user: user);
+    }
+
+    @override
+    Future<ServerProfile?> getProfileById(int id) async {
+       final ServerProfileEntity? entity = await _dao.getProfileById(id);
+       return entity?.toDomain();
+    }
+
+}
+
+extension on ServerProfileEntity {
+    ServerProfile toDomain() =>
+        ServerProfile(
+            id: this.id,
+            name: this.name,
+            url: this.url,
+            port: this.port,
+            user: this.user,
+            keyPath: this.keyPath,
+            quickConnectEnable: this.quickConnectEnable
+        );
+}

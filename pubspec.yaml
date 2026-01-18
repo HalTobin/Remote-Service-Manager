@@ -37,21 +37,21 @@ dependencies:
   lucide_icons_flutter: ^3.1.5
   provider: ^6.1.5
   path_provider: ^2.1.5
-  file_picker: 10.1.2
+  file_picker: ^10.3.8
   dartssh2: ^2.13.0
-  flutter_secure_storage: ^9.2.4
+  flutter_secure_storage: ^10.0.0
   drift: ^2.29.0
   drift_flutter: ^0.2.7
   biometric_storage: ^5.0.1
   json_serializable: ^6.11.2
   collection: ^1.19.1
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
-
   domain:
     path: domain
+  di:
+    path: di
+  util:
+    path: util
 
 dev_dependencies:
   flutter_test:
