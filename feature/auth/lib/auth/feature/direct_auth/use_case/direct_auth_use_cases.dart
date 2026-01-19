@@ -1,6 +1,6 @@
-import '../../../use_case/check_wrong_fields_use_case.dart';
-import '../../../use_case/load_ssh_file_use_case.dart';
-import '../../../use_case/ssh_connect_use_case.dart';
+import 'package:domain/use_case/check_wrong_fields_use_case.dart';
+import 'package:domain/use_case/load_ssh_file_use_case.dart';
+import 'package:domain/use_case/ssh_connect_use_case.dart';
 
 class DirectAuthUseCases {
     final LoadSshFileUseCase loadSshFileUseCase;

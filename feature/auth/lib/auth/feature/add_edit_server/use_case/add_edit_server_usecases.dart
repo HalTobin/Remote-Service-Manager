@@ -1,5 +1,6 @@
-import '../../../use_case/add_edit_server_use_case.dart';
-import '../../../use_case/load_ssh_file_use_case.dart';
+import 'package:domain/use_case/add_edit_server_use_case.dart';
+import 'package:domain/use_case/load_ssh_file_use_case.dart';
+
 import 'load_server_profile_usecase.dart';
 
 class AddEditServerUseCases {

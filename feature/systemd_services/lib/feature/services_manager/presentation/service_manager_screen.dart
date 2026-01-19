@@ -3,7 +3,7 @@ import 'package:feature_systemd_services/feature/services_manager/presentation/s
 import 'package:feature_systemd_services/feature/services_manager/presentation/service_manager_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ls_server_app/presentation/component/app_dialog_layout.dart';
+import 'package:ui/component/app_dialog_layout.dart';
 import 'package:ui/component/global_error_warning.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 

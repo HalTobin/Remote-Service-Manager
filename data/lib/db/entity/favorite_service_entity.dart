@@ -2,7 +2,6 @@ import 'package:data/db/entity/server_profile_entity.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 
-@internal
 @DataClassName('FavoriteServiceEntity')
 class FavoriteServices extends Table {
     IntColumn get id => integer().autoIncrement()();

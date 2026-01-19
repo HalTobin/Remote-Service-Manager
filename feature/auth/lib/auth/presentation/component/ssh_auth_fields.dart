@@ -1,7 +1,8 @@
+import 'package:domain/model/ssh_connect_fields.dart';
 import 'package:feature_auth/auth/presentation/component/ssh_file_picker_field.dart';
 import 'package:flutter/material.dart';
+import 'package:ui/screen_format/screen_format_helper.dart';
 
-import '../../data/ssh_connect_fields.dart';
 import '../../util/profile_title_util.dart';
 
 class SshAuthFields extends StatefulWidget {
@@ -69,11 +70,10 @@ class SshAuthFieldsState extends State<SshAuthFields> {
         
         LayoutBuilder(
           builder: (context, constraints) {
-            final isNarrow = constraints.maxWidth < 400;
+            final isNarrow = ScreenFormatHelper.isNarrow(constraints);
 
             return Column(
               children: [
-
                 isNarrow
                     ? Column(
                   children: [

@@ -1,8 +1,8 @@
 import 'dart:isolate';
+import 'package:domain/model/ssh_connect_fields.dart';
+import 'package:domain/use_case/ssh_connect_use_case.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../../data/ssh_connect_fields.dart';
-import '../../../use_case/ssh_connect_use_case.dart';
 import '../use_case/direct_auth_use_cases.dart';
 import 'direct_auth_event.dart';
 import 'direct_auth_state.dart';

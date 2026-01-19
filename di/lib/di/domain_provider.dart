@@ -1,0 +1,41 @@
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:domain/use_case/add_edit_server_use_case.dart';
+import 'package:domain/use_case/check_wrong_fields_use_case.dart';
+import 'package:domain/use_case/load_ssh_file_use_case.dart';
+import 'package:domain/use_case/ssh_connect_use_case.dart';
+
+class DomainProvider extends StatelessWidget {
+  final Widget child;
+
+  const DomainProvider({
+    super.key,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        Provider(create: (_) => (LoadSshFileUseCase())),
+        Provider(
+          create: (context) => (
+            AddEditServerUseCase(
+              serverProfileRepository: context.read()
+            )
+          )
+        ),
+        Provider(
+          create: (_) => (
+            SshConnectUseCase(
+              sshService: context.read()
+            )
+          )
+        ),
+        Provider(create: (_) => (CheckWrongFieldsUseCase())),
+      ],
+      child: child,
+    );
+  }
+
+}

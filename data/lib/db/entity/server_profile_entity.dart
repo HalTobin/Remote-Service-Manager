@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 
-@internal
 @DataClassName('ServerProfileEntity')
 class ServerProfiles extends Table {
     IntColumn get id => integer().autoIncrement()();

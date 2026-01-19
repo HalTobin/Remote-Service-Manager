@@ -1,4 +1,5 @@
 import 'package:di/di/db_provider.dart';
+import 'package:di/di/domain_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'di/db_provider.dart';
 import 'di/data_provider.dart';
@@ -14,7 +15,9 @@ class EntryPointProvider extends StatelessWidget {
     return DbProvider(
       child: DataProvider(
         child: ServiceProvider(
-          child: child
+          child: DomainProvider(
+            child: child
+          )
         )
       )
     );

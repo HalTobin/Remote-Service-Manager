@@ -3,7 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'secret_entry_dto.g.dart';
 
-@internal
 @JsonSerializable()
 class SecretEntryDto {
   final String identifier;

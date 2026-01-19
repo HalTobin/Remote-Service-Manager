@@ -1,4 +1,4 @@
-import '../../../data/ssh_connect_fields.dart';
+import 'package:domain/model/ssh_connect_fields.dart';
 
 class DirectAuthState {
     final bool loading;

@@ -1,8 +1,7 @@
-import 'package:feature_auth/auth/use_case/ssh_connect_use_case.dart';
-
-import 'check_wrong_fields_use_case.dart';
-import 'fake_connect_usecase.dart';
-import 'load_ssh_file_use_case.dart';
+import 'package:domain/use_case/check_wrong_fields_use_case.dart';
+import 'package:domain/use_case/load_ssh_file_use_case.dart';
+import 'package:domain/use_case/ssh_connect_use_case.dart';
+import 'fake_connect_use_case.dart';
 
 class AuthUseCases {
     final LoadSshFileUseCase loadSshFileUseCase;

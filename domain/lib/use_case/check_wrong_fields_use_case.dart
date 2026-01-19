@@ -1,4 +1,5 @@
-import '../data/ssh_connect_fields.dart';
+
+import '../model/ssh_connect_fields.dart';
 
 class CheckWrongFieldsUseCase {
     List<SshConnectFields> execute({
