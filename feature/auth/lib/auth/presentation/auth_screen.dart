@@ -34,17 +34,11 @@ class AuthScreen extends StatelessWidget {
               children: [
                 MyServersTab(
                   onAddEditServer: (serverProfileId) =>
-                    autoModal(
+                    _showAddEditModal(
                       context: context,
                       constraints: constraints,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
-                        child: AddEditServerProvider(
-                          serverProfileId: serverProfileId,
-                          onDismiss: () => Navigator.pop(context),
-                        )
-                      )
-                    ),
+                      serverProfileId: serverProfileId
+                    )
                 ),
                 DirectAuthTab()
               ]

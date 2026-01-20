@@ -70,7 +70,7 @@ class SshAuthFieldsState extends State<SshAuthFields> {
         
         LayoutBuilder(
           builder: (context, constraints) {
-            final isNarrow = ScreenFormatHelper.isNarrow(constraints);
+            final isNarrow = ScreenFormatHelper.isNarrowWithThreshold(constraints, 400);
 
             return Column(
               children: [

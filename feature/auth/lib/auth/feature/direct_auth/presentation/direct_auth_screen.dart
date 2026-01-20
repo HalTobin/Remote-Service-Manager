@@ -38,8 +38,8 @@ class _DirectAuthScreenState extends State<DirectAuthScreen> {
       spacing: 16,
       children: [
         const TitleHeader(
-            icon: LucideIcons.monitorUp,
-            title: "SSH Direct Connection"
+          icon: LucideIcons.monitorUp,
+          title: "SSH Direct Connection"
         ),
 
         SshAuthFields(
@@ -53,8 +53,8 @@ class _DirectAuthScreenState extends State<DirectAuthScreen> {
         ),
 
         PasswordTextFormField(
-            controller: passwordController,
-            enabled: widget.state.passwordRequired && !widget.state.loading
+          controller: passwordController,
+          enabled: widget.state.passwordRequired && !widget.state.loading
         ),
 
         const Spacer(),

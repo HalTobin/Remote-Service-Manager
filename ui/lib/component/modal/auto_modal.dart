@@ -11,7 +11,10 @@ Future<void> autoModal({
   ScreenFormatHelper.isNarrow(constraints) ?
     showModalBottomSheet(
       context: context,
-      builder: (_) => (child)
+      isScrollControlled: true,
+      builder: (_) => Wrap(
+        children: [child]
+      ),
     )
     : showDialog<void>(
       context: context,
