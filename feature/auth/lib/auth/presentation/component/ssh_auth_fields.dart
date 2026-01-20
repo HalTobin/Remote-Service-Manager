@@ -7,7 +7,9 @@ import '../../util/profile_title_util.dart';
 
 class SshAuthFields extends StatefulWidget {
   final bool enabled;
+  final bool nameField;
 
+  final TextEditingController? nameController;
   final TextEditingController userController;
   final TextEditingController urlController;
   final TextEditingController portController;
@@ -20,6 +22,10 @@ class SshAuthFields extends StatefulWidget {
     super.key,
 
     required this.enabled,
+
+    this.nameField = false,
+    this.nameController,
+
     required this.userController,
     required this.urlController,
     required this.portController,
@@ -67,6 +73,16 @@ class SshAuthFieldsState extends State<SshAuthFields> {
             )
           ],
         ),
+
+        if (widget.nameField && (widget.nameController != null))
+          TextFormField(
+            enabled: widget.enabled,
+            controller: widget.nameController,
+            decoration: InputDecoration(
+              labelText: 'Server Name (optional)',
+              border: const OutlineInputBorder(),
+            ),
+          ),
         
         LayoutBuilder(
           builder: (context, constraints) {

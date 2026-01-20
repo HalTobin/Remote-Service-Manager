@@ -35,9 +35,10 @@ class MyServersViewModel extends ChangeNotifier {
     }
 
     Future<void> _loadServers() async {
-        final List<ServerProfile> profiles = await _useCases.loadProfilesUseCase.execute();
-        _state = _state.copyWith(servers: profiles);
-        notifyListeners();
+        _useCases.watchServerProfilesUseCase.execute().forEach((servers) {
+           _state = _state.copyWith(servers: servers);
+           notifyListeners();
+        });
     }
 
     Future<void> onEvent(MyServersEvent event) async {

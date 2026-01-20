@@ -26,6 +26,7 @@ class AddEditServerView extends StatefulWidget {
 }
 
 class AddEditServerViewState extends State<AddEditServerView> {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController userController = TextEditingController();
   final TextEditingController urlController = TextEditingController();
   final TextEditingController portController = TextEditingController();
@@ -50,6 +51,8 @@ class AddEditServerViewState extends State<AddEditServerView> {
 
         SshAuthFields(
           enabled: true,
+          nameField: true,
+          nameController: nameController,
           userController: userController,
           urlController: urlController,
           portController: portController,
@@ -59,7 +62,17 @@ class AddEditServerViewState extends State<AddEditServerView> {
         ),
 
         FilledButton.icon(
-          onPressed: () => { /*TODO()*/ },
+          onPressed: () {
+            final AddEditServerEvent event = SaveEditServer(
+              serverProfileId: widget.serverProfileId,
+              name: nameController.text,
+              user: userController.text,
+              url: urlController.text,
+              port: portController.text,
+              sshFilePath: sshController.text,
+            );
+            widget.onEvent(event);
+          },
           icon: const Icon(LucideIcons.save),
           label: const Text('SAVE')
         )

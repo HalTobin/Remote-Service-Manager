@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../presentation/add_edit_server_view.dart';
@@ -38,7 +38,12 @@ class AddEditServerProvider extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => AddEditServerViewModel(
-            addEditServerUseCases: context.read()
+            addEditServerUseCases: context.read(),
+            uiEvent: (event) => {
+              switch (event) {
+                ExitDialog() => Navigator.of(context, rootNavigator: true).pop(),
+              }
+            }
           )
         )
       ],

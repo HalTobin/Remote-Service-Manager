@@ -1,3 +1,4 @@
+import 'package:feature_auth/auth/feature/my_servers/use_case/watch_server_profiles_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,12 +27,20 @@ class MyServersProvider extends StatelessWidget {
         ),
         Provider(
           create: (context) => (
+            WatchServerProfilesUseCase(
+              serverProfileRepository: context.read()
+            )
+          ),
+        ),
+        Provider(
+          create: (context) => (
             MyServersUseCases(
               loadProfilesUseCase: context.read(),
               loadSshFileUseCase: context.read(),
               sshConnectUseCase: context.read(),
               checkPasswordRequirementByServerProfileIdUseCase: context.read(),
-              checkQuickConnectAvailabilityUseCase: context.read()
+              checkQuickConnectAvailabilityUseCase: context.read(),
+              watchServerProfilesUseCase: context.read()
             )
           )
         ),

@@ -24,7 +24,7 @@ class ServerProfileRepositoryImpl implements ServerProfileRepository {
     Future<int> saveProfile(NewServerProfile profile) async {
         final ServerProfilesCompanion profileEntity = ServerProfilesCompanion(
             id: Value.absent(),
-            name: Value(profile.name),
+            serverName: Value(profile.name),
             url: Value(profile.url),
             port: Value(profile.port),
             user: Value(profile.user),
@@ -38,7 +38,7 @@ class ServerProfileRepositoryImpl implements ServerProfileRepository {
     Future<bool> updateProfile(EditServerProfile profile) async {
         final entity = ServerProfileEntity(
             id: profile.id,
-            name: profile.name,
+            serverName: profile.name,
             url: profile.url,
             port: profile.port,
             user: profile.user,
@@ -59,6 +59,13 @@ class ServerProfileRepositoryImpl implements ServerProfileRepository {
         return profiles
             .map((profile) => profile.toDomain())
             .toList();
+    }
+
+    @override
+    Stream<List<ServerProfile>> watchAllProfiles() {
+        return _dao.watchAllProfiles().map((profiles) =>
+            profiles.map((profile) => profile.toDomain()).toList()
+        );
     }
 
     @override
@@ -91,7 +98,7 @@ extension on ServerProfileEntity {
     ServerProfile toDomain() =>
         ServerProfile(
             id: this.id,
-            name: this.name,
+            name: this.serverName,
             url: this.url,
             port: this.port,
             user: this.user,

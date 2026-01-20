@@ -10,6 +10,8 @@ abstract interface class ServerProfileRepository {
 
     Future<List<ServerProfile>> getAllProfiles();
 
+    Stream<List<ServerProfile>> watchAllProfiles();
+
     Future<bool> doesProfileExist({
         required String url,
         required String port,
