@@ -1,5 +1,6 @@
 import 'package:domain/model/server_profile.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import '../use_case/my_servers_use_cases.dart';
 import 'my_servers_event.dart';
 import 'my_servers_state.dart';
@@ -25,9 +26,9 @@ class MyServersViewModel extends ChangeNotifier {
            _state = _state.copyWith(selectedServerId: null);
         }
         else {
-            final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
+            //final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
             _state = _state.copyWith(
-                sshPasswordRequired: passwordRequired,
+                //sshPasswordRequired: passwordRequired,
                 selectedServerId: serverProfileId
             );
         }
@@ -37,6 +38,9 @@ class MyServersViewModel extends ChangeNotifier {
     Future<void> _loadServers() async {
         _useCases.watchServerProfilesUseCase.execute().forEach((servers) {
            _state = _state.copyWith(servers: servers);
+           if (kDebugMode) {
+              print("[MyServersViewModel] Profile found: ${_state.servers.length}");
+           }
            notifyListeners();
         });
     }

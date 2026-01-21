@@ -44,37 +44,25 @@ class _MyServersScreenState extends State<MyServersScreen> {
 
         Expanded(
           child: ListView.separated(
-            padding: const EdgeInsets.all(16),
+            //padding: const EdgeInsets.all(16),
             itemCount: widget.state.servers.length,
             itemBuilder: (BuildContext context, int index) {
               final profile = widget.state.servers[index];
 
-              final MyServersEvent connectEvent = Connect(
-                user: profile.user,
-                serverUrl: profile.url,
-                serverPort: profile.port,
-                sshFilePath: profile.keyPath,
-                password: _sshPasswordController.text
-              );
+              final MyServersEvent selectEvent = SelectServer(serverProfileId: profile.id);
 
               return ServerProfileItem(
                 profile: profile,
-                onClick: () => widget.onEvent(connectEvent),
+                selected: (widget.state.selectedServerId == profile.id),
+                onClick: () => widget.onEvent(selectEvent),
+                onEdit: () => widget.onAddEditServer(profile.id)
               );
             },
             separatorBuilder: (BuildContext context, int index) => const Divider()
           )
         ),
 
-        TextField(
-          controller: _sshPasswordController,
-          enabled: widget.state.sshPasswordRequired,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            errorText: widget.state.passwordError ? "Wrong password" : null,
-            border: const OutlineInputBorder(),
-          ),
-        )
+
       ],
     );
   }

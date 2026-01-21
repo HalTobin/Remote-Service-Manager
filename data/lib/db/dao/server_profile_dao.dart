@@ -35,7 +35,7 @@ class ServerProfileDao extends DatabaseAccessor<ServerProfileDatabase> with _$Se
             ..where((tbl) =>
             tbl.url.equals(url) &
             tbl.port.equals(port) &
-            tbl.user.equals(user));
+            tbl.sessionUser.equals(user));
 
         final result = await query.getSingleOrNull();
         return result != null;
@@ -50,7 +50,7 @@ class ServerProfileDao extends DatabaseAccessor<ServerProfileDatabase> with _$Se
             ..where((tbl) =>
             tbl.url.equals(url) &
             tbl.port.equals(port) &
-            tbl.user.equals(user));
+            tbl.sessionUser.equals(user));
 
         final result = await query.getSingleOrNull();
         return result?.id;

@@ -31,3 +31,4 @@ This project works thanks to these libraries:
 
 Run this command when opening the project for the first time or when updating database or JsonSerializable annotated class:
 ```dart run build_runner build```
+Then open the *data* folder and rerun: ```dart run build_runner build```

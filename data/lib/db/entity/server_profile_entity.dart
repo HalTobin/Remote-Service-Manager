@@ -7,7 +7,7 @@ class ServerProfiles extends Table {
     TextColumn get serverName => text().nullable()();
     TextColumn get url => text()();
     TextColumn get port => text()();
-    TextColumn get user => text()();
+    TextColumn get sessionUser => text()();
     TextColumn get keyPath => text()();
     BoolColumn get quickConnectEnable => boolean()();
 }

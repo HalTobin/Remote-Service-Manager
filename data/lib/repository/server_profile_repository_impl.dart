@@ -27,7 +27,7 @@ class ServerProfileRepositoryImpl implements ServerProfileRepository {
             serverName: Value(profile.name),
             url: Value(profile.url),
             port: Value(profile.port),
-            user: Value(profile.user),
+            sessionUser: Value(profile.user),
             keyPath: Value(profile.keyPath),
             quickConnectEnable: Value(profile.quickConnectEnable)
         );
@@ -41,7 +41,7 @@ class ServerProfileRepositoryImpl implements ServerProfileRepository {
             serverName: profile.name,
             url: profile.url,
             port: profile.port,
-            user: profile.user,
+            sessionUser: profile.user,
             keyPath: profile.keyPath,
             quickConnectEnable: profile.quickConnectEnable
         );
@@ -101,7 +101,7 @@ extension on ServerProfileEntity {
             name: this.serverName,
             url: this.url,
             port: this.port,
-            user: this.user,
+            user: this.sessionUser,
             keyPath: this.keyPath,
             quickConnectEnable: this.quickConnectEnable
         );
