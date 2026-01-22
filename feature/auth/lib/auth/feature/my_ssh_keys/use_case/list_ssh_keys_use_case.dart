@@ -1,0 +1,29 @@
+import 'package:domain/repository/file_repository.dart';
+import 'package:feature_auth/auth/feature/my_ssh_keys/domain/ssh_key_file.dart';
+import 'package:feature_auth/auth/feature/my_ssh_keys/domain/ssh_key_folder.dart';
+import 'package:util/ssh/load_ssh_file.dart';
+
+class ListSshKeysUseCase {
+    ListSshKeysUseCase({
+        required FileRepository fileRepository
+    })
+      : _fileRepository = fileRepository;
+
+    final FileRepository _fileRepository;
+
+    Future<List<SshKeyFile>> execute() async {
+        final files = await _fileRepository.listInternalFolderContent(SshKeyFolder.path);
+
+        return files
+            .where((file) => !file.isDirectory)
+            .map((file) =>
+                SshKeyFile(
+                    name: file.name,
+                    path: file.path,
+                    secured: LoadSshFile.isKeyProtected(file.path)
+                )
+            )
+            .toList();
+    }
+
+}
