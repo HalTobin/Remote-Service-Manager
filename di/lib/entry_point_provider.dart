@@ -1,7 +1,6 @@
 import 'package:di/di/db_provider.dart';
 import 'package:di/di/domain_provider.dart';
-import 'package:flutter/cupertino.dart';
-import 'di/db_provider.dart';
+import 'package:flutter/material.dart';
 import 'di/data_provider.dart';
 import 'di/service_provider.dart';
 

@@ -1,7 +1,7 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:feature_auth/auth/feature/my_ssh_keys/presentation/my_ssh_keys_event.dart';
 import 'package:feature_auth/auth/feature/my_ssh_keys/presentation/my_ssh_keys_state.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:ui/component/title_header.dart';
 
 class MySshKeysView extends StatelessWidget {

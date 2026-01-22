@@ -1,5 +1,4 @@
-import 'package:domain/model/server_profile.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import '../use_case/my_servers_use_cases.dart';
 import 'my_servers_event.dart';
