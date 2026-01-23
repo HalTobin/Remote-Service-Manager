@@ -3,6 +3,7 @@ import 'package:feature_auth/presentation/tabs/my_servers_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui/component/modal/auto_modal.dart';
+import 'package:ui/navigation/push_animation.dart';
 
 import '../feature/add_edit_server/di/add_edit_server_provider.dart';
 import 'component/auth_screen_tab.dart';
@@ -34,9 +35,8 @@ class AuthScreen extends StatelessWidget {
               children: [
                 MyServersTab(
                   onAddEditServer: (serverProfileId) =>
-                    _showAddEditModal(
+                    _navigateToAddEditServer(
                       context: context,
-                      constraints: constraints,
                       serverProfileId: serverProfileId
                     )
                 ),
@@ -49,19 +49,17 @@ class AuthScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _showAddEditModal({
+  Future<void> _navigateToAddEditServer({
     required BuildContext context,
-    required BoxConstraints constraints,
     int? serverProfileId
   }) async {
-    autoModal(
-      context: context,
-      constraints: constraints,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
-        child: AddEditServerProvider(
-          serverProfileId: serverProfileId,
-          onDismiss: () => Navigator.pop(context),
+    Navigator.of(context).push(
+      routeFromBottom(
+        Material(
+          child: AddEditServerProvider(
+            serverProfileId: serverProfileId,
+            onDismiss: () => Navigator.pop(context)
+          )
         )
       )
     );

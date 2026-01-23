@@ -68,11 +68,11 @@ class _DirectAuthScreenState extends State<DirectAuthScreen> {
           loading: widget.state.loading,
           onPressed: () {
             final event = Connect(
-                user: userController.text,
-                serverUrl: urlController.text,
-                serverPort: portController.text,
-                sshFilePath: sshController.text,
-                password: widget.state.passwordRequired ? passwordController.text : null
+              user: userController.text,
+              serverUrl: urlController.text,
+              serverPort: portController.text,
+              sshFilePath: sshController.text,
+              password: widget.state.passwordRequired ? passwordController.text : null
             );
             widget.onEvent(event);
           },

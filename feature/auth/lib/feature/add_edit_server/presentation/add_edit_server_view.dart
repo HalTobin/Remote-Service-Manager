@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/component/app_button.dart';
 import 'package:ui/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -42,7 +43,7 @@ class AddEditServerViewState extends State<AddEditServerView> {
       children: [
 
         TitleHeader(
-          icon: isNewServer ? LucideIcons.plus : LucideIcons.pen,
+          icon: isNewServer ? LucideIcons.grid2x2Plus : LucideIcons.pen,
           title: isNewServer ? "New server" : "Edit a server",
           trailingContent: TitleHeaderTrailingContent.dismissable(
             onDismiss: widget.onDismiss
@@ -61,8 +62,10 @@ class AddEditServerViewState extends State<AddEditServerView> {
           wrongFields: [],
         ),
 
-        FilledButton.icon(
-          onPressed: () {
+        const Spacer(),
+
+        AppButton(
+          onClick: () {
             final AddEditServerEvent event = SaveEditServer(
               serverProfileId: widget.serverProfileId,
               name: nameController.text,
@@ -73,8 +76,8 @@ class AddEditServerViewState extends State<AddEditServerView> {
             );
             widget.onEvent(event);
           },
-          icon: const Icon(LucideIcons.save),
-          label: const Text('SAVE')
+          icon: LucideIcons.save,
+          text: "SAVE"
         )
       ],
     );
