@@ -5,7 +5,7 @@ import 'package:feature_auth/feature/my_ssh_keys/presentation/my_ssh_keys_view_m
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:ui/component/modal/auto_modal.dart';
+import 'package:ui/navigation/auto_modal.dart';
 
 class SshFilePickerField extends StatelessWidget {
   final bool enable;

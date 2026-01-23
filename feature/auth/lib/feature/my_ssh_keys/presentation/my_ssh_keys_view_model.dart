@@ -38,7 +38,7 @@ class MySshKeysViewModel extends ChangeNotifier {
     }
 
     Future<void> _loadSshKeys() async {
-        final keys = _useCases.listSshKeysUseCase.execute();
+        final keys = await _useCases.listSshKeysUseCase.execute();
         _state = _state.copyWith(
             keys: keys,
             loading: false

@@ -2,7 +2,7 @@ import 'package:feature_auth/presentation/tabs/direct_auth_tab.dart';
 import 'package:feature_auth/presentation/tabs/my_servers_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:ui/component/modal/auto_modal.dart';
+import 'package:ui/navigation/auto_modal.dart';
 import 'package:ui/navigation/push_animation.dart';
 
 import '../feature/add_edit_server/di/add_edit_server_provider.dart';
