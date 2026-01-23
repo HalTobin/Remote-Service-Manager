@@ -7,7 +7,9 @@ class ServerProfile {
     final String port;
     final String user;
     final String keyPath;
-    final bool quickConnectEnable;
+
+    final String? securedSshKeyPassword;
+    final String? securedSessionPassword;
 
     const ServerProfile({
         required this.id,
@@ -16,7 +18,8 @@ class ServerProfile {
         required this.port,
         required this.user,
         required this.keyPath,
-        required this.quickConnectEnable
+        required this.securedSshKeyPassword,
+        required this.securedSessionPassword
     });
 
     String getIdentifier() {
@@ -30,7 +33,8 @@ class ServerProfile {
         port: "",
         user: "",
         keyPath: "",
-        quickConnectEnable: false
+        securedSshKeyPassword: null,
+        securedSessionPassword: null
     );
 
     @override
@@ -44,12 +48,13 @@ class ServerProfile {
             other.port == port &&
             other.user == user &&
             other.keyPath == keyPath &&
-            other.quickConnectEnable == quickConnectEnable;
+            other.securedSshKeyPassword == securedSshKeyPassword &&
+            other.securedSessionPassword == securedSessionPassword;
     }
 
     @override
     int get hashCode {
-        return Object.hash(id, name, url, port, user, keyPath, quickConnectEnable);
+        return Object.hash(id, name, url, port, user, keyPath, securedSshKeyPassword, securedSessionPassword);
     }
 }
 
@@ -59,15 +64,13 @@ class NewServerProfile {
     final String port;
     final String user;
     final String keyPath;
-    final bool quickConnectEnable;
 
     NewServerProfile({
         required this.name,
         required this.url,
         required this.port,
         required this.user,
-        required this.keyPath,
-        required this.quickConnectEnable
+        required this.keyPath
     });
 }
 
@@ -78,7 +81,8 @@ class EditServerProfile {
     final String port;
     final String user;
     final String keyPath;
-    final bool quickConnectEnable;
+    final String? securedSshKeyPassword;
+    final String? securedSessionPassword;
 
     EditServerProfile({
         required this.id,
@@ -87,6 +91,7 @@ class EditServerProfile {
         required this.port,
         required this.user,
         required this.keyPath,
-        required this.quickConnectEnable
+        required this.securedSshKeyPassword,
+        required this.securedSessionPassword
     });
 }

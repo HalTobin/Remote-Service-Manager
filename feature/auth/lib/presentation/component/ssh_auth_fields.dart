@@ -1,5 +1,5 @@
 import 'package:domain/model/ssh_connect_fields.dart';
-import 'package:feature_auth/auth/presentation/component/ssh_file_picker_field.dart';
+import 'package:feature_auth/presentation/component/ssh_file_picker_field.dart';
 import 'package:flutter/material.dart';
 import 'package:ui/screen_format/screen_format_helper.dart';
 

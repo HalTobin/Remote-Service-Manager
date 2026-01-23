@@ -52,7 +52,9 @@ class AddEditServerViewModel extends ChangeNotifier {
             url: url,
             port: port,
             user: user,
-            sshFilePath: sshFilePath
+            sshFilePath: sshFilePath,
+            securedSshKeyPassword: _state.serverProfile?.securedSshKeyPassword,
+            securedSessionPassword: _state.serverProfile?.securedSessionPassword
         );
         _useCases.addEditServerUseCase.execute(server);
         _uiEvent(ExitDialog());

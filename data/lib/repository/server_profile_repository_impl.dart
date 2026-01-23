@@ -29,7 +29,8 @@ class ServerProfileRepositoryImpl implements ServerProfileRepository {
             port: Value(profile.port),
             sessionUser: Value(profile.user),
             keyPath: Value(profile.keyPath),
-            quickConnectEnable: Value(profile.quickConnectEnable)
+            securedSshKeyPassword: Value(null),
+            securedSessionPassword: Value(null)
         );
         return _dao.insertProfile(profileEntity);
     }
@@ -43,7 +44,8 @@ class ServerProfileRepositoryImpl implements ServerProfileRepository {
             port: profile.port,
             sessionUser: profile.user,
             keyPath: profile.keyPath,
-            quickConnectEnable: profile.quickConnectEnable
+            securedSshKeyPassword: profile.securedSshKeyPassword,
+            securedSessionPassword: profile.securedSessionPassword
         );
         return _dao.updateProfile(entity);
     }
@@ -103,6 +105,7 @@ extension on ServerProfileEntity {
             port: this.port,
             user: this.sessionUser,
             keyPath: this.keyPath,
-            quickConnectEnable: this.quickConnectEnable
+            securedSshKeyPassword: this.securedSshKeyPassword,
+            securedSessionPassword: this.securedSessionPassword
         );
 }

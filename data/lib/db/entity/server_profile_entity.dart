@@ -9,5 +9,6 @@ class ServerProfiles extends Table {
     TextColumn get port => text()();
     TextColumn get sessionUser => text()();
     TextColumn get keyPath => text()();
-    BoolColumn get quickConnectEnable => boolean()();
+    TextColumn get securedSshKeyPassword => text().nullable()();
+    TextColumn get securedSessionPassword => text().nullable()();
 }

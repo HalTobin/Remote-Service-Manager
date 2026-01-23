@@ -1,4 +1,3 @@
-import 'package:feature_auth/auth/feature/my_servers/use_case/watch_server_profiles_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +5,7 @@ import '../presentation/my_servers_viewmodel.dart';
 import '../use_case/check_quick_connect_availability_use_case.dart';
 import '../use_case/load_profiles_use_case.dart';
 import '../use_case/my_servers_use_cases.dart';
+import '../use_case/watch_server_profiles_use_case.dart';
 
 class MyServersProvider extends StatelessWidget {
   final Widget child;

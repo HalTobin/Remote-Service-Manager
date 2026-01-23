@@ -18,7 +18,8 @@ class AddEditServerUseCase {
                 port: server.port,
                 user: server.user,
                 keyPath: server.sshFilePath,
-                quickConnectEnable: false
+                securedSshKeyPassword: server.securedSshKeyPassword,
+                securedSessionPassword: server.securedSessionPassword
             );
             final bool updated = await _serverProfileRepository.updateProfile(editServer);
             if (updated) {
@@ -33,8 +34,7 @@ class AddEditServerUseCase {
               url: server.url,
               port: server.port,
               user: server.user,
-              keyPath: server.sshFilePath,
-              quickConnectEnable: false
+              keyPath: server.sshFilePath
           );
           return _serverProfileRepository.saveProfile(newServer);
         }
@@ -49,6 +49,8 @@ class AddEditServer {
     final String port;
     final String user;
     final String sshFilePath;
+    final String? securedSshKeyPassword;
+    final String? securedSessionPassword;
 
     AddEditServer({
         this.id,
@@ -56,6 +58,8 @@ class AddEditServer {
         required this.url,
         required this.port,
         required this.user,
-        required this.sshFilePath
+        required this.sshFilePath,
+        required this.securedSshKeyPassword,
+        required this.securedSessionPassword
     });
 }

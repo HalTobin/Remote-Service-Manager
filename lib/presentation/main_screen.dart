@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:feature_auth/auth/di/auth_provider.dart';
+import 'package:feature_auth/di/auth_provider.dart';
 import 'package:feature_systemd_services/feature/services_manager/di/service_manager_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

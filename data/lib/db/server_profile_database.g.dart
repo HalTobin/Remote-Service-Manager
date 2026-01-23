@@ -73,19 +73,28 @@ class $ServerProfilesTable extends ServerProfiles
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _quickConnectEnableMeta =
-      const VerificationMeta('quickConnectEnable');
+  static const VerificationMeta _securedSshKeyPasswordMeta =
+      const VerificationMeta('securedSshKeyPassword');
   @override
-  late final GeneratedColumn<bool> quickConnectEnable = GeneratedColumn<bool>(
-    'quick_connect_enable',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("quick_connect_enable" IN (0, 1))',
-    ),
-  );
+  late final GeneratedColumn<String> securedSshKeyPassword =
+      GeneratedColumn<String>(
+        'secured_ssh_key_password',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _securedSessionPasswordMeta =
+      const VerificationMeta('securedSessionPassword');
+  @override
+  late final GeneratedColumn<String> securedSessionPassword =
+      GeneratedColumn<String>(
+        'secured_session_password',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -94,7 +103,8 @@ class $ServerProfilesTable extends ServerProfiles
     port,
     sessionUser,
     keyPath,
-    quickConnectEnable,
+    securedSshKeyPassword,
+    securedSessionPassword,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -152,16 +162,23 @@ class $ServerProfilesTable extends ServerProfiles
     } else if (isInserting) {
       context.missing(_keyPathMeta);
     }
-    if (data.containsKey('quick_connect_enable')) {
+    if (data.containsKey('secured_ssh_key_password')) {
       context.handle(
-        _quickConnectEnableMeta,
-        quickConnectEnable.isAcceptableOrUnknown(
-          data['quick_connect_enable']!,
-          _quickConnectEnableMeta,
+        _securedSshKeyPasswordMeta,
+        securedSshKeyPassword.isAcceptableOrUnknown(
+          data['secured_ssh_key_password']!,
+          _securedSshKeyPasswordMeta,
         ),
       );
-    } else if (isInserting) {
-      context.missing(_quickConnectEnableMeta);
+    }
+    if (data.containsKey('secured_session_password')) {
+      context.handle(
+        _securedSessionPasswordMeta,
+        securedSessionPassword.isAcceptableOrUnknown(
+          data['secured_session_password']!,
+          _securedSessionPasswordMeta,
+        ),
+      );
     }
     return context;
   }
@@ -196,10 +213,14 @@ class $ServerProfilesTable extends ServerProfiles
         DriftSqlType.string,
         data['${effectivePrefix}key_path'],
       )!,
-      quickConnectEnable: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}quick_connect_enable'],
-      )!,
+      securedSshKeyPassword: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}secured_ssh_key_password'],
+      ),
+      securedSessionPassword: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}secured_session_password'],
+      ),
     );
   }
 
@@ -217,7 +238,8 @@ class ServerProfileEntity extends DataClass
   final String port;
   final String sessionUser;
   final String keyPath;
-  final bool quickConnectEnable;
+  final String? securedSshKeyPassword;
+  final String? securedSessionPassword;
   const ServerProfileEntity({
     required this.id,
     this.serverName,
@@ -225,7 +247,8 @@ class ServerProfileEntity extends DataClass
     required this.port,
     required this.sessionUser,
     required this.keyPath,
-    required this.quickConnectEnable,
+    this.securedSshKeyPassword,
+    this.securedSessionPassword,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -238,7 +261,14 @@ class ServerProfileEntity extends DataClass
     map['port'] = Variable<String>(port);
     map['session_user'] = Variable<String>(sessionUser);
     map['key_path'] = Variable<String>(keyPath);
-    map['quick_connect_enable'] = Variable<bool>(quickConnectEnable);
+    if (!nullToAbsent || securedSshKeyPassword != null) {
+      map['secured_ssh_key_password'] = Variable<String>(securedSshKeyPassword);
+    }
+    if (!nullToAbsent || securedSessionPassword != null) {
+      map['secured_session_password'] = Variable<String>(
+        securedSessionPassword,
+      );
+    }
     return map;
   }
 
@@ -252,7 +282,12 @@ class ServerProfileEntity extends DataClass
       port: Value(port),
       sessionUser: Value(sessionUser),
       keyPath: Value(keyPath),
-      quickConnectEnable: Value(quickConnectEnable),
+      securedSshKeyPassword: securedSshKeyPassword == null && nullToAbsent
+          ? const Value.absent()
+          : Value(securedSshKeyPassword),
+      securedSessionPassword: securedSessionPassword == null && nullToAbsent
+          ? const Value.absent()
+          : Value(securedSessionPassword),
     );
   }
 
@@ -268,7 +303,12 @@ class ServerProfileEntity extends DataClass
       port: serializer.fromJson<String>(json['port']),
       sessionUser: serializer.fromJson<String>(json['sessionUser']),
       keyPath: serializer.fromJson<String>(json['keyPath']),
-      quickConnectEnable: serializer.fromJson<bool>(json['quickConnectEnable']),
+      securedSshKeyPassword: serializer.fromJson<String?>(
+        json['securedSshKeyPassword'],
+      ),
+      securedSessionPassword: serializer.fromJson<String?>(
+        json['securedSessionPassword'],
+      ),
     );
   }
   @override
@@ -281,7 +321,12 @@ class ServerProfileEntity extends DataClass
       'port': serializer.toJson<String>(port),
       'sessionUser': serializer.toJson<String>(sessionUser),
       'keyPath': serializer.toJson<String>(keyPath),
-      'quickConnectEnable': serializer.toJson<bool>(quickConnectEnable),
+      'securedSshKeyPassword': serializer.toJson<String?>(
+        securedSshKeyPassword,
+      ),
+      'securedSessionPassword': serializer.toJson<String?>(
+        securedSessionPassword,
+      ),
     };
   }
 
@@ -292,7 +337,8 @@ class ServerProfileEntity extends DataClass
     String? port,
     String? sessionUser,
     String? keyPath,
-    bool? quickConnectEnable,
+    Value<String?> securedSshKeyPassword = const Value.absent(),
+    Value<String?> securedSessionPassword = const Value.absent(),
   }) => ServerProfileEntity(
     id: id ?? this.id,
     serverName: serverName.present ? serverName.value : this.serverName,
@@ -300,7 +346,12 @@ class ServerProfileEntity extends DataClass
     port: port ?? this.port,
     sessionUser: sessionUser ?? this.sessionUser,
     keyPath: keyPath ?? this.keyPath,
-    quickConnectEnable: quickConnectEnable ?? this.quickConnectEnable,
+    securedSshKeyPassword: securedSshKeyPassword.present
+        ? securedSshKeyPassword.value
+        : this.securedSshKeyPassword,
+    securedSessionPassword: securedSessionPassword.present
+        ? securedSessionPassword.value
+        : this.securedSessionPassword,
   );
   ServerProfileEntity copyWithCompanion(ServerProfilesCompanion data) {
     return ServerProfileEntity(
@@ -314,9 +365,12 @@ class ServerProfileEntity extends DataClass
           ? data.sessionUser.value
           : this.sessionUser,
       keyPath: data.keyPath.present ? data.keyPath.value : this.keyPath,
-      quickConnectEnable: data.quickConnectEnable.present
-          ? data.quickConnectEnable.value
-          : this.quickConnectEnable,
+      securedSshKeyPassword: data.securedSshKeyPassword.present
+          ? data.securedSshKeyPassword.value
+          : this.securedSshKeyPassword,
+      securedSessionPassword: data.securedSessionPassword.present
+          ? data.securedSessionPassword.value
+          : this.securedSessionPassword,
     );
   }
 
@@ -329,7 +383,8 @@ class ServerProfileEntity extends DataClass
           ..write('port: $port, ')
           ..write('sessionUser: $sessionUser, ')
           ..write('keyPath: $keyPath, ')
-          ..write('quickConnectEnable: $quickConnectEnable')
+          ..write('securedSshKeyPassword: $securedSshKeyPassword, ')
+          ..write('securedSessionPassword: $securedSessionPassword')
           ..write(')'))
         .toString();
   }
@@ -342,7 +397,8 @@ class ServerProfileEntity extends DataClass
     port,
     sessionUser,
     keyPath,
-    quickConnectEnable,
+    securedSshKeyPassword,
+    securedSessionPassword,
   );
   @override
   bool operator ==(Object other) =>
@@ -354,7 +410,8 @@ class ServerProfileEntity extends DataClass
           other.port == this.port &&
           other.sessionUser == this.sessionUser &&
           other.keyPath == this.keyPath &&
-          other.quickConnectEnable == this.quickConnectEnable);
+          other.securedSshKeyPassword == this.securedSshKeyPassword &&
+          other.securedSessionPassword == this.securedSessionPassword);
 }
 
 class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
@@ -364,7 +421,8 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
   final Value<String> port;
   final Value<String> sessionUser;
   final Value<String> keyPath;
-  final Value<bool> quickConnectEnable;
+  final Value<String?> securedSshKeyPassword;
+  final Value<String?> securedSessionPassword;
   const ServerProfilesCompanion({
     this.id = const Value.absent(),
     this.serverName = const Value.absent(),
@@ -372,7 +430,8 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     this.port = const Value.absent(),
     this.sessionUser = const Value.absent(),
     this.keyPath = const Value.absent(),
-    this.quickConnectEnable = const Value.absent(),
+    this.securedSshKeyPassword = const Value.absent(),
+    this.securedSessionPassword = const Value.absent(),
   });
   ServerProfilesCompanion.insert({
     this.id = const Value.absent(),
@@ -381,12 +440,12 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     required String port,
     required String sessionUser,
     required String keyPath,
-    required bool quickConnectEnable,
+    this.securedSshKeyPassword = const Value.absent(),
+    this.securedSessionPassword = const Value.absent(),
   }) : url = Value(url),
        port = Value(port),
        sessionUser = Value(sessionUser),
-       keyPath = Value(keyPath),
-       quickConnectEnable = Value(quickConnectEnable);
+       keyPath = Value(keyPath);
   static Insertable<ServerProfileEntity> custom({
     Expression<int>? id,
     Expression<String>? serverName,
@@ -394,7 +453,8 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     Expression<String>? port,
     Expression<String>? sessionUser,
     Expression<String>? keyPath,
-    Expression<bool>? quickConnectEnable,
+    Expression<String>? securedSshKeyPassword,
+    Expression<String>? securedSessionPassword,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -403,8 +463,10 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
       if (port != null) 'port': port,
       if (sessionUser != null) 'session_user': sessionUser,
       if (keyPath != null) 'key_path': keyPath,
-      if (quickConnectEnable != null)
-        'quick_connect_enable': quickConnectEnable,
+      if (securedSshKeyPassword != null)
+        'secured_ssh_key_password': securedSshKeyPassword,
+      if (securedSessionPassword != null)
+        'secured_session_password': securedSessionPassword,
     });
   }
 
@@ -415,7 +477,8 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     Value<String>? port,
     Value<String>? sessionUser,
     Value<String>? keyPath,
-    Value<bool>? quickConnectEnable,
+    Value<String?>? securedSshKeyPassword,
+    Value<String?>? securedSessionPassword,
   }) {
     return ServerProfilesCompanion(
       id: id ?? this.id,
@@ -424,7 +487,10 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
       port: port ?? this.port,
       sessionUser: sessionUser ?? this.sessionUser,
       keyPath: keyPath ?? this.keyPath,
-      quickConnectEnable: quickConnectEnable ?? this.quickConnectEnable,
+      securedSshKeyPassword:
+          securedSshKeyPassword ?? this.securedSshKeyPassword,
+      securedSessionPassword:
+          securedSessionPassword ?? this.securedSessionPassword,
     );
   }
 
@@ -449,8 +515,15 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
     if (keyPath.present) {
       map['key_path'] = Variable<String>(keyPath.value);
     }
-    if (quickConnectEnable.present) {
-      map['quick_connect_enable'] = Variable<bool>(quickConnectEnable.value);
+    if (securedSshKeyPassword.present) {
+      map['secured_ssh_key_password'] = Variable<String>(
+        securedSshKeyPassword.value,
+      );
+    }
+    if (securedSessionPassword.present) {
+      map['secured_session_password'] = Variable<String>(
+        securedSessionPassword.value,
+      );
     }
     return map;
   }
@@ -464,7 +537,8 @@ class ServerProfilesCompanion extends UpdateCompanion<ServerProfileEntity> {
           ..write('port: $port, ')
           ..write('sessionUser: $sessionUser, ')
           ..write('keyPath: $keyPath, ')
-          ..write('quickConnectEnable: $quickConnectEnable')
+          ..write('securedSshKeyPassword: $securedSshKeyPassword, ')
+          ..write('securedSessionPassword: $securedSessionPassword')
           ..write(')'))
         .toString();
   }
@@ -855,7 +929,8 @@ typedef $$ServerProfilesTableCreateCompanionBuilder =
       required String port,
       required String sessionUser,
       required String keyPath,
-      required bool quickConnectEnable,
+      Value<String?> securedSshKeyPassword,
+      Value<String?> securedSessionPassword,
     });
 typedef $$ServerProfilesTableUpdateCompanionBuilder =
     ServerProfilesCompanion Function({
@@ -865,7 +940,8 @@ typedef $$ServerProfilesTableUpdateCompanionBuilder =
       Value<String> port,
       Value<String> sessionUser,
       Value<String> keyPath,
-      Value<bool> quickConnectEnable,
+      Value<String?> securedSshKeyPassword,
+      Value<String?> securedSessionPassword,
     });
 
 final class $$ServerProfilesTableReferences
@@ -948,8 +1024,13 @@ class $$ServerProfilesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<bool> get quickConnectEnable => $composableBuilder(
-    column: $table.quickConnectEnable,
+  ColumnFilters<String> get securedSshKeyPassword => $composableBuilder(
+    column: $table.securedSshKeyPassword,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get securedSessionPassword => $composableBuilder(
+    column: $table.securedSessionPassword,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1018,8 +1099,13 @@ class $$ServerProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<bool> get quickConnectEnable => $composableBuilder(
-    column: $table.quickConnectEnable,
+  ColumnOrderings<String> get securedSshKeyPassword => $composableBuilder(
+    column: $table.securedSshKeyPassword,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get securedSessionPassword => $composableBuilder(
+    column: $table.securedSessionPassword,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -1055,8 +1141,13 @@ class $$ServerProfilesTableAnnotationComposer
   GeneratedColumn<String> get keyPath =>
       $composableBuilder(column: $table.keyPath, builder: (column) => column);
 
-  GeneratedColumn<bool> get quickConnectEnable => $composableBuilder(
-    column: $table.quickConnectEnable,
+  GeneratedColumn<String> get securedSshKeyPassword => $composableBuilder(
+    column: $table.securedSshKeyPassword,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get securedSessionPassword => $composableBuilder(
+    column: $table.securedSessionPassword,
     builder: (column) => column,
   );
 
@@ -1122,7 +1213,8 @@ class $$ServerProfilesTableTableManager
                 Value<String> port = const Value.absent(),
                 Value<String> sessionUser = const Value.absent(),
                 Value<String> keyPath = const Value.absent(),
-                Value<bool> quickConnectEnable = const Value.absent(),
+                Value<String?> securedSshKeyPassword = const Value.absent(),
+                Value<String?> securedSessionPassword = const Value.absent(),
               }) => ServerProfilesCompanion(
                 id: id,
                 serverName: serverName,
@@ -1130,7 +1222,8 @@ class $$ServerProfilesTableTableManager
                 port: port,
                 sessionUser: sessionUser,
                 keyPath: keyPath,
-                quickConnectEnable: quickConnectEnable,
+                securedSshKeyPassword: securedSshKeyPassword,
+                securedSessionPassword: securedSessionPassword,
               ),
           createCompanionCallback:
               ({
@@ -1140,7 +1233,8 @@ class $$ServerProfilesTableTableManager
                 required String port,
                 required String sessionUser,
                 required String keyPath,
-                required bool quickConnectEnable,
+                Value<String?> securedSshKeyPassword = const Value.absent(),
+                Value<String?> securedSessionPassword = const Value.absent(),
               }) => ServerProfilesCompanion.insert(
                 id: id,
                 serverName: serverName,
@@ -1148,7 +1242,8 @@ class $$ServerProfilesTableTableManager
                 port: port,
                 sessionUser: sessionUser,
                 keyPath: keyPath,
-                quickConnectEnable: quickConnectEnable,
+                securedSshKeyPassword: securedSshKeyPassword,
+                securedSessionPassword: securedSessionPassword,
               ),
           withReferenceMapper: (p0) => p0
               .map(

@@ -1,10 +1,11 @@
-import 'package:feature_auth/auth/feature/my_ssh_keys/use_case/add_key_use_case.dart';
-import 'package:feature_auth/auth/feature/my_ssh_keys/use_case/delete_key_use_case.dart';
-import 'package:feature_auth/auth/feature/my_ssh_keys/use_case/list_ssh_keys_use_case.dart';
-import 'package:feature_auth/auth/feature/my_ssh_keys/use_case/my_ssh_keys_use_cases.dart';
-import 'package:feature_auth/auth/feature/my_ssh_keys/use_case/rename_key_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../use_case/add_key_use_case.dart';
+import '../use_case/delete_key_use_case.dart';
+import '../use_case/list_ssh_keys_use_case.dart';
+import '../use_case/my_ssh_keys_use_cases.dart';
+import '../use_case/rename_key_use_case.dart';
 
 class MySshKeysProvider extends StatelessWidget {
   final Widget child;

@@ -1,5 +1,5 @@
-import 'package:feature_auth/auth/feature/my_ssh_keys/domain/ssh_key_file.dart';
 import 'package:ui/state/omit.dart';
+import '../domain/ssh_key_file.dart';
 
 class MySshKeysState {
     final List<SshKeyFile> keys;
