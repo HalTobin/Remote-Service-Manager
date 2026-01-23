@@ -1,3 +1,4 @@
+import 'package:feature_auth/feature/my_ssh_keys/presentation/component/ssh_key_item.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:ui/component/title_header.dart';
@@ -25,10 +26,21 @@ class MySshKeysView extends StatelessWidget {
           icon: LucideIcons.folderKey,
           title: "My SSH Keys"
         ),
-        Row(
-          children: [
+        Expanded(
+          child: ListView.separated(
+            itemCount: state.keys.length,
+            itemBuilder: (BuildContext context, int index) {
+              final key = state.keys[index];
 
-          ],
+              final MySshKeysEvent selectEvent = SelectKey(keyPath: key.path);
+
+              return SshKeyItem(
+                sshKeyFile: key,
+                onClick: () => onEvent(selectEvent)
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) => const Divider()
+          )
         )
       ],
     );

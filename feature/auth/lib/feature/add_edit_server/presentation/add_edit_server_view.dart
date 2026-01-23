@@ -85,6 +85,7 @@ class AddEditServerViewState extends State<AddEditServerView> {
           urlController: urlController,
           portController: portController,
           sshController: sshController,
+          disableLocalSshKey: false,
           loadSshFile: (path) => {},
           wrongFields: [],
         ),

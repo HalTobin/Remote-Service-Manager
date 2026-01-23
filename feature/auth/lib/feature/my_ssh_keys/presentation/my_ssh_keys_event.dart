@@ -1,5 +1,10 @@
 sealed class MySshKeysEvent {}
 
+class SelectKey extends MySshKeysEvent {
+    final String keyPath;
+    SelectKey({required this.keyPath});
+}
+
 class AddKey extends MySshKeysEvent {
     final String keyPath;
     AddKey({required this.keyPath});

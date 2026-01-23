@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../presentation/my_ssh_keys_view_model.dart';
 import '../use_case/add_key_use_case.dart';
 import '../use_case/delete_key_use_case.dart';
 import '../use_case/list_ssh_keys_use_case.dart';
@@ -29,6 +30,11 @@ class MySshKeysProvider extends StatelessWidget {
             deleteKeyUseCase: context.read(),
             listSshKeysUseCase: context.read(),
             renameKeyUseCase: context.read()
+          )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MySshKeysViewModel(
+            mySshKeysUseCases: context.read()
           )
         )
       ],

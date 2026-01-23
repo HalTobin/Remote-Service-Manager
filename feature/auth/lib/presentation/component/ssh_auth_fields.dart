@@ -16,6 +16,8 @@ class SshAuthFields extends StatefulWidget {
   final TextEditingController sshController;
   final Function(String) loadSshFile;
 
+  final bool disableLocalSshKey;
+
   final List<SshConnectFields> wrongFields;
 
   const SshAuthFields({
@@ -31,6 +33,8 @@ class SshAuthFields extends StatefulWidget {
     required this.portController,
     required this.sshController,
     required this.loadSshFile,
+
+    required this.disableLocalSshKey,
 
     required this.wrongFields
   });
@@ -178,6 +182,8 @@ class SshAuthFieldsState extends State<SshAuthFields> {
                     SshFilePickerField(
                       enable: widget.enabled,
                       error: widget.wrongFields.contains(SshConnectFields.filePath),
+                      noLocal: widget.disableLocalSshKey,
+                      constraints: constraints,
                       controller: widget.sshController,
                       onFilePicked: (path) => widget.loadSshFile(path),
                     ),
@@ -203,6 +209,8 @@ class SshAuthFieldsState extends State<SshAuthFields> {
                       child: SshFilePickerField(
                         enable: widget.enabled,
                         error: widget.wrongFields.contains(SshConnectFields.filePath),
+                        noLocal: widget.disableLocalSshKey,
+                        constraints: constraints,
                         controller: widget.sshController,
                         onFilePicked: (path) => widget.loadSshFile(path),
                       ),

@@ -48,6 +48,7 @@ class _DirectAuthScreenState extends State<DirectAuthScreen> {
           urlController: urlController,
           portController: portController,
           sshController: sshController,
+          disableLocalSshKey: true,
           loadSshFile: (path) => widget.onEvent(LoadSshFile(sshFilePath: path)),
           wrongFields: widget.state.wrongFields,
         ),

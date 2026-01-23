@@ -1,10 +1,17 @@
+import 'package:provider/provider.dart';
+import 'package:feature_auth/feature/my_ssh_keys/di/my_ssh_keys_provider.dart';
+import 'package:feature_auth/feature/my_ssh_keys/presentation/my_ssh_keys_view.dart';
+import 'package:feature_auth/feature/my_ssh_keys/presentation/my_ssh_keys_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:ui/component/modal/auto_modal.dart';
 
 class SshFilePickerField extends StatelessWidget {
   final bool enable;
   final bool error;
+  final bool noLocal;
+  final BoxConstraints constraints;
   final TextEditingController controller;
   final void Function(String path) onFilePicked;
 
@@ -12,6 +19,8 @@ class SshFilePickerField extends StatelessWidget {
     super.key,
     required this.enable,
     required this.error,
+    required this.noLocal,
+    required this.constraints,
     required this.controller,
     required this.onFilePicked,
   });
@@ -21,24 +30,63 @@ class SshFilePickerField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       readOnly: true,
+      onTap: () async => _pickSshKey(context, constraints),
       decoration: InputDecoration(
         labelText: 'SSH File Path',
         errorText: error ? "Select a valid SSH key" : null,
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
-          icon: const Icon(LucideIcons.folder),
-          onPressed: () async {
-            if (enable) {
-              FilePickerResult? result = await FilePicker.platform.pickFiles();
-              if (result != null && result.files.single.path != null) {
-                final String sshFile = result.files.single.path!;
-                controller.text = sshFile;
-                onFilePicked(sshFile);
-              }
-            }
-          }
+          icon: const Icon(LucideIcons.folderKey),
+          onPressed: () async => _pickSshKey(context, constraints),
         ),
       ),
     );
   }
+
+  Future<void> _pickSshKey(
+    BuildContext context,
+    BoxConstraints constraints,
+  ) async {
+    if (enable) {
+      if (noLocal) {
+        FilePickerResult? result = await FilePicker.platform.pickFiles();
+        if (result != null && result.files.single.path != null) {
+          final String sshFile = result.files.single.path!;
+          _select(sshFile);
+        }
+      } else {
+        _showMySshKeyMenu(context, constraints);
+      }
+    }
+  }
+
+  Future<void> _showMySshKeyMenu(
+    BuildContext context,
+    BoxConstraints constraints,
+  ) async {
+    autoModal(
+      context: context,
+      constraints: constraints,
+      child: MySshKeysProvider(
+        child: Consumer<MySshKeysViewModel>(
+          builder: (context, viewmodel, child) {
+            return Padding(
+              padding: EdgeInsets.all(24),
+              child: MySshKeysView(
+                state: viewmodel.state,
+                onEvent: viewmodel.onEvent,
+                onSelect: (String keyPath) {  },
+              )
+            );
+          }
+        )
+      )
+    );
+  }
+
+  Future<void> _select(String path) async {
+    controller.text = path;
+    onFilePicked(path);
+  }
+
 }

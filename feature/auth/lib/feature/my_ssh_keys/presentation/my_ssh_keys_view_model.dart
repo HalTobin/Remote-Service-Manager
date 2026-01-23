@@ -23,10 +23,18 @@ class MySshKeysViewModel extends ChangeNotifier {
 
     Future<void> onEvent(MySshKeysEvent event) async {
         switch (event) {
+            case SelectKey(): _selectKey(event.keyPath);
             case AddKey(): _addKey(event.keyPath);
             case RenameKey(): _renameKey(event.keyPath, event.newName);
             case DeleteKey(): _deleteKey(event.keyPath);
         }
+    }
+
+    Future<void> _addKey(String keyPath) async {
+      _setLoadingState(true);
+      final newFile = await _useCases.addKeyUseCase.execute(keyPath);
+      _loadSshKeys();
+      _selectKey(newFile);
     }
 
     Future<void> _loadSshKeys() async {
@@ -36,13 +44,6 @@ class MySshKeysViewModel extends ChangeNotifier {
             loading: false
         );
         notifyListeners();
-    }
-
-    Future<void> _addKey(String keyPath) async {
-        _setLoadingState(true);
-        final newFile = await _useCases.addKeyUseCase.execute(keyPath);
-        _loadSshKeys();
-        _selectKey(newFile);
     }
 
     Future<void> _renameKey(String keyPath, String newName) async {
