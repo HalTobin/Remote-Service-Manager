@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:domain/model/server_profile.dart';
 import 'package:domain/use_case/add_edit_server_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -9,21 +12,22 @@ import 'add_edit_server_state.dart';
 class AddEditServerViewModel extends ChangeNotifier {
 
     AddEditServerViewModel({
-        required AddEditServerUseCases addEditServerUseCases,
-        required Function(AddEditServerUiEvent) uiEvent
+        required AddEditServerUseCases addEditServerUseCases
     })
-        : _useCases = addEditServerUseCases,
-          _uiEvent = uiEvent;
+        : _useCases = addEditServerUseCases;
 
     final AddEditServerUseCases _useCases;
 
     AddEditServerState _state = AddEditServerState();
     AddEditServerState get state => _state;
 
-    final Function(AddEditServerUiEvent) _uiEvent;
+    final _uiEvent = StreamController<AddEditServerUiEvent>();
+    Stream<AddEditServerUiEvent> get uiEvent => _uiEvent.stream;
 
     Future<void> onEvent(AddEditServerEvent event) async {
         switch (event) {
+            case LoadServerProfile():
+                _loadServerProfile(event.serverProfileId);
             case SaveEditServer():
                 _addEditServer(
                     serverProfileId: event.serverProfileId,
@@ -36,6 +40,22 @@ class AddEditServerViewModel extends ChangeNotifier {
             case LoadSshFile():
                 _loadSshFile(event.sshFilePath);
         }
+    }
+
+    Future<void> _loadServerProfile(int serverProfileId) async {
+        final ServerProfile? server = await _useCases.loadServerProfileUseCase.execute(serverProfileId);
+         _state = _state.copyWith(serverProfile: server);
+         if (server != null) {
+            final uiEvent = UpdateFields(
+                name: server.name,
+                user: server.user,
+                url: server.url,
+                port: server.port,
+                sshFilePath: server.keyPath
+            );
+            _uiEvent.add(uiEvent);
+         }
+         notifyListeners();
     }
 
     void _addEditServer({
@@ -57,7 +77,7 @@ class AddEditServerViewModel extends ChangeNotifier {
             securedSessionPassword: _state.serverProfile?.securedSessionPassword
         );
         _useCases.addEditServerUseCase.execute(server);
-        _uiEvent(ExitDialog());
+        _uiEvent.add(ExitView());
     }
 
     void _loadSshFile(String filePath) {
@@ -77,4 +97,20 @@ class AddEditServerViewModel extends ChangeNotifier {
 
 sealed class AddEditServerUiEvent {}
 
-class ExitDialog extends AddEditServerUiEvent {}
+class UpdateFields extends AddEditServerUiEvent {
+    final String? name;
+    final String user;
+    final String url;
+    final String port;
+    final String sshFilePath;
+
+    UpdateFields({
+        required this.name,
+        required this.user,
+        required this.url,
+        required this.port,
+        required this.sshFilePath
+    });
+}
+
+class ExitView extends AddEditServerUiEvent {}

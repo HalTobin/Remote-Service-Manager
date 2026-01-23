@@ -6,11 +6,13 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../presentation/component/ssh_auth_fields.dart';
 import 'add_edit_server_event.dart';
 import 'add_edit_server_state.dart';
+import 'add_edit_server_viewmodel.dart';
 
 class AddEditServerView extends StatefulWidget {
   final int? serverProfileId;
   final AddEditServerState state;
   final Function(AddEditServerEvent) onEvent;
+  final Stream<AddEditServerUiEvent> uiEvent;
   final Function() onDismiss;
 
   const AddEditServerView({
@@ -18,6 +20,7 @@ class AddEditServerView extends StatefulWidget {
     this.serverProfileId,
     required this.state,
     required this.onEvent,
+    required this.uiEvent,
     required this.onDismiss
   });
 
@@ -34,6 +37,30 @@ class AddEditServerViewState extends State<AddEditServerView> {
   final TextEditingController sshController = TextEditingController();
 
   late bool isNewServer = widget.serverProfileId == null;
+
+  @override void initState() {
+    super.initState();
+
+    if (widget.serverProfileId != null) {
+      final event = LoadServerProfile(serverProfileId: widget.serverProfileId!);
+      widget.onEvent(event);
+    }
+
+    widget.uiEvent.listen((event) {
+      switch (event) {
+        case UpdateFields(): {
+          nameController.text = event.name ?? "";
+          urlController.text = event.url;
+          portController.text = event.port;
+          userController.text = event.user;
+          sshController.text = event.sshFilePath;
+        }
+        case ExitView(): {
+          widget.onDismiss();
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

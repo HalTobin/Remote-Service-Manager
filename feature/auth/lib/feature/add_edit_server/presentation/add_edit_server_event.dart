@@ -1,5 +1,10 @@
 sealed class AddEditServerEvent {}
 
+class LoadServerProfile extends AddEditServerEvent {
+  final int serverProfileId;
+  LoadServerProfile({required this.serverProfileId});
+}
+
 class SaveEditServer extends AddEditServerEvent {
     final int? serverProfileId;
     final String name;

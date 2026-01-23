@@ -38,12 +38,7 @@ class AddEditServerProvider extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => AddEditServerViewModel(
-            addEditServerUseCases: context.read(),
-            uiEvent: (event) => {
-              switch (event) {
-                ExitDialog() => Navigator.of(context, rootNavigator: true).pop(),
-              }
-            }
+            addEditServerUseCases: context.read()
           )
         )
       ],
@@ -55,6 +50,7 @@ class AddEditServerProvider extends StatelessWidget {
               serverProfileId: serverProfileId,
               state: viewmodel.state,
               onEvent: viewmodel.onEvent,
+              uiEvent: viewmodel.uiEvent,
               onDismiss: onDismiss
             )
           );
