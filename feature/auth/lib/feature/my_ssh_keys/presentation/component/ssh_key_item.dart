@@ -3,47 +3,78 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui/component/selectable.dart';
 
-class SshKeyItem extends StatelessWidget {
+class SshKeyItem extends StatefulWidget {
   final SshKeyFile sshKeyFile;
   final bool selected;
   final Function() onClick;
+  final Function(String newName) onEdit;
 
   const SshKeyItem({
     super.key,
     required this.sshKeyFile,
     required this.selected,
-    required this.onClick
+    required this.onClick,
+    required this.onEdit
   });
+
+  @override
+  State<StatefulWidget> createState() => _SshKeyItemState();
+
+}
+
+class _SshKeyItemState extends State<SshKeyItem> {
+
+  bool isEditing = false;
+  final TextEditingController _nameController = TextEditingController();
+
+  void enableEditMode() {
+    setState(() {
+      _nameController.text = widget.sshKeyFile.name;
+      isEditing = true;
+    });
+  }
+
+  void disableEditMode() {
+    setState(() {
+      isEditing = false;
+    });
+  }
+
+  void confirmEdition() {
+    setState(() {
+      isEditing = false;
+      widget.onEdit(_nameController.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Selectable(
       selectionEnable: true,
-      selected: selected,
-      onSelect: onClick,
+      selected: widget.selected,
+      onSelect: widget.onClick,
       idleChild: Row(
         children: [
-          _BaseKeyItem(sshKeyFile: sshKeyFile),
+          _BaseKeyItem(sshKeyFile: widget.sshKeyFile),
           const Spacer(),
           Icon(LucideIcons.chevronRight)
         ],
       ),
       selectedChild: Row(
         children: [
-          _BaseKeyItem(sshKeyFile: sshKeyFile),
+          _BaseKeyItem(sshKeyFile: widget.sshKeyFile),
           const Spacer(),
           IconButton(
             icon: Icon(LucideIcons.pen),
-            onPressed: onClick,
+            onPressed: widget.onClick,
           ),
           IconButton(
             icon: Icon(LucideIcons.x),
-            onPressed: onClick,
+            onPressed: widget.onClick,
           )
         ],
       )
     );
-
   }
 
 }
@@ -60,13 +91,7 @@ class _BaseKeyItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Icon(
-            LucideIcons.fileKey,
-            size: 32
-          )
-        ),
+        _SshKeyFile(),
 
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,4 +121,21 @@ class _BaseKeyItem extends StatelessWidget {
     );
   }
 
+}
+
+class _SshKeyFile extends StatelessWidget {
+  const _SshKeyFile({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      child: Icon(
+        LucideIcons.fileKey,
+        size: 32
+      )
+    );
+  }
 }

@@ -39,13 +39,16 @@ class MySshKeysView extends StatelessWidget {
             itemCount: state.keys.length,
             itemBuilder: (BuildContext context, int index) {
               final key = state.keys[index];
-
               final MySshKeysEvent selectEvent = SelectKey(keyPath: key.path);
 
               return SshKeyItem(
                 sshKeyFile: key,
                 selected: state.selectedKeyPath == key.path,
-                onClick: () => onEvent(selectEvent)
+                onClick: () => onEvent(selectEvent),
+                onEdit: (newName) {
+                  final MySshKeysEvent editEvent = RenameKey(keyPath: key.path, newName: newName);
+                  onEvent(editEvent);
+                },
               );
             },
             separatorBuilder: (BuildContext context, int index) => const Divider()

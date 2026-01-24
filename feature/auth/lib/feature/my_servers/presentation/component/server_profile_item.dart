@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui/component/selectable.dart';
 
-class ServerProfileItem extends StatefulWidget {
+class ServerProfileItem extends StatelessWidget {
   final ServerProfile profile;
   final bool selected;
   final Function() onClick;
-  final Function(String newName) onEdit;
+  final Function() onEdit;
 
   const ServerProfileItem({
     super.key,
@@ -18,44 +18,35 @@ class ServerProfileItem extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _ServerProfileItemState();
-  
-}
-
-class _ServerProfileItemState extends State<ServerProfileItem> {
-
-  @override
   Widget build(BuildContext context) {
     return Selectable(
       selectionEnable: true,
-      selected: widget.selected,
-      onSelect: widget.onClick,
+      selected: selected,
+      onSelect: onClick,
       idleChild: Row(
         children: [
-          _BaseServerProfileItem(profile: widget.profile),
+          _BaseServerProfileItem(profile: profile),
           const Spacer(),
           Icon(LucideIcons.chevronRight)
         ]
       ),
       selectedChild: Row(
         children: [
-          _BaseServerProfileItem(profile: widget.profile),
+          _BaseServerProfileItem(profile: profile),
           const Spacer(),
           IconButton(
             icon: Icon(LucideIcons.pen),
-            onPressed: () {
-              // TODO(): Edit server profile
-            },
+            onPressed: onEdit
           ),
           IconButton(
             icon: Icon(LucideIcons.x),
-            onPressed: widget.onClick,
+            onPressed: onClick,
           )
         ],
       ),
     );
   }
-
+  
 }
 
 class _BaseServerProfileItem extends StatelessWidget {
