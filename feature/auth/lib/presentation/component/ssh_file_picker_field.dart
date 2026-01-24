@@ -75,7 +75,9 @@ class SshFilePickerField extends StatelessWidget {
               child: MySshKeysView(
                 state: viewmodel.state,
                 onEvent: viewmodel.onEvent,
-                onSelect: (String keyPath) {  },
+                selectionEnable: true,
+                onSelect: (String keyPath) => _select(keyPath),
+                onDismiss: () => Navigator.pop(context),
               )
             );
           }
@@ -84,7 +86,7 @@ class SshFilePickerField extends StatelessWidget {
     );
   }
 
-  Future<void> _select(String path) async {
+  void _select(String path) {
     controller.text = path;
     onFilePicked(path);
   }

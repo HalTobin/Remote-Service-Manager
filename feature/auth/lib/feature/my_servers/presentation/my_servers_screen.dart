@@ -45,6 +45,9 @@ class _MyServersScreenState extends State<MyServersScreen> {
         Expanded(
           child: ListView.separated(
             //padding: const EdgeInsets.all(16),
+            shrinkWrap: true,
+            physics: const AlwaysScrollableScrollPhysics(),
+
             itemCount: widget.state.servers.length,
             itemBuilder: (BuildContext context, int index) {
               final profile = widget.state.servers[index];

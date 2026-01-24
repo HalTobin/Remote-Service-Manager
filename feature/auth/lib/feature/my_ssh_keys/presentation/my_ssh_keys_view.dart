@@ -11,22 +11,28 @@ import 'my_ssh_keys_state.dart';
 class MySshKeysView extends StatelessWidget {
   final MySshKeysState state;
   final Function(MySshKeysEvent) onEvent;
+  final bool selectionEnable;
   final Function(String) onSelect;
+  final Function() onDismiss;
 
   const MySshKeysView({
     super.key,
     required this.state,
     required this.onEvent,
-    required this.onSelect
+    required this.selectionEnable,
+    required this.onSelect,
+    required this.onDismiss
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 16,
       children: [
         TitleHeader(
           icon: LucideIcons.folderKey,
-          title: "My SSH Keys"
+          title: "My SSH Keys",
+          trailingContent: TitleHeaderTrailingContent.dismissable(onDismiss: onDismiss),
         ),
         Expanded(
           child: ListView.separated(
@@ -38,6 +44,7 @@ class MySshKeysView extends StatelessWidget {
 
               return SshKeyItem(
                 sshKeyFile: key,
+                selected: state.selectedKeyPath == key.path,
                 onClick: () => onEvent(selectEvent)
               );
             },

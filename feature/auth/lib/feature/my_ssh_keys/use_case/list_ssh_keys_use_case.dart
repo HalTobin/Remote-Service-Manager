@@ -24,7 +24,8 @@ class ListSshKeysUseCase {
                     secured: LoadSshFile.isKeyProtected(file.path)
                 )
             )
-            .toList();
+            .toList()
+            ..sort((a, b) => a.name.compareTo(b.name));
     }
 
 }
