@@ -5,6 +5,11 @@ class SelectServer extends MyServersEvent {
     SelectServer({required this.serverProfileId});
 }
 
+class EditionMode extends MyServersEvent {
+    final int serverProfileId;
+    EditionMode({required this.serverProfileId});
+}
+
 class Connect extends MyServersEvent {
     final String user;
     final String serverUrl;

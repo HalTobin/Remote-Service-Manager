@@ -22,7 +22,7 @@ class MyServersViewModel extends ChangeNotifier {
 
     Future<void> _selectServer(int serverProfileId) async {
         if (_state.selectedServerId == serverProfileId) {
-           _state = _state.copyWith(selectedServerId: null);
+           _state = _state.copyWith(selectedServerId: null, editionServerId: null);
         }
         else {
             //final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
@@ -34,13 +34,23 @@ class MyServersViewModel extends ChangeNotifier {
         notifyListeners();
     }
 
+    Future<void> _editionMode(int? serverProfileId) async {
+        if (serverProfileId == _state.editionServerId) {
+            _state = _state.copyWith(editionServerId: null);
+        } else {
+          _state = _state.copyWith(editionServerId: serverProfileId, selectedServerId: null);
+        }
+        notifyListeners();
+    }
+
     Future<void> _loadServers() async {
+        _state = _state.copyWith(loading: true);
         _useCases.watchServerProfilesUseCase.execute().forEach((servers) {
-           _state = _state.copyWith(servers: servers);
-           if (kDebugMode) {
-              print("[MyServersViewModel] Profile found: ${_state.servers.length}");
-           }
-           notifyListeners();
+            _state = _state.copyWith(servers: servers, loading: false);
+            if (kDebugMode) {
+                print("[MyServersViewModel] Profile found: ${_state.servers.length}");
+            }
+            notifyListeners();
         });
     }
 
@@ -48,6 +58,8 @@ class MyServersViewModel extends ChangeNotifier {
         switch (event) {
             case SelectServer():
               _selectServer(event.serverProfileId);
+            case EditionMode():
+              _editionMode(event.serverProfileId);
             case Connect():
                 // TODO: Handle this case.
                 throw UnimplementedError();

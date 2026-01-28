@@ -5,6 +5,11 @@ class SelectKey extends MySshKeysEvent {
     SelectKey({required this.keyPath});
 }
 
+class EditionMode extends MySshKeysEvent {
+    final String keyPath;
+    EditionMode({required this.keyPath});
+}
+
 class AddKey extends MySshKeysEvent {
     final String keyPath;
     AddKey({required this.keyPath});

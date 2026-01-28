@@ -42,11 +42,15 @@ class MySshKeysView extends StatelessWidget {
 
               final MySshKeysEvent selectEvent = SelectKey(keyPath: key.path);
               final MySshKeysEvent deleteEvent = DeleteKey(keyPath: key.path);
+              final MySshKeysEvent editEvent = EditionMode(keyPath: key.path);
+
 
               return SshKeyItem(
                 sshKeyFile: key,
                 selected: state.selectedKeyPath == key.path,
                 onClick: () => onEvent(selectEvent),
+                editionMode: state.editionModeKeyPath == key.path,
+                onEditionMode: () => onEvent(editEvent),
                 onEdit: (newName) {
                   final MySshKeysEvent editEvent = RenameKey(keyPath: key.path, newName: newName);
                   onEvent(editEvent);

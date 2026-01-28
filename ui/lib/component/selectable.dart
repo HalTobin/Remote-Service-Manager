@@ -4,16 +4,14 @@ class Selectable extends StatelessWidget {
   final bool selectionEnable;
   final bool selected;
   final Function() onSelect;
-  final Widget idleChild;
-  final Widget selectedChild;
+  final Widget child;
 
   const Selectable({
     super.key,
     required this.selectionEnable,
     required this.selected,
     required this.onSelect,
-    required this.idleChild,
-    required this.selectedChild
+    required this.child
   });
 
   @override
@@ -24,11 +22,11 @@ class Selectable extends StatelessWidget {
       child: AnimatedCrossFade(
         firstChild: _SelectableDecoration(
           enable: false,
-          child: idleChild
+          child: child
         ),
         secondChild: _SelectableDecoration(
           enable: true,
-          child: selectedChild
+          child: child
         ),
         crossFadeState: !selected ? CrossFadeState.showFirst : CrossFadeState.showSecond,
         duration: Duration(milliseconds: 300),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/component/empty_list.dart';
 import 'package:ui/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -33,40 +34,78 @@ class _MyServersScreenState extends State<MyServersScreen> {
       children: [
 
         TitleHeader(
-            icon: LucideIcons.server,
-            title: "My Servers",
-            trailingContent: TitleHeaderTrailingContent.action(
-              title: "Add",
-              icon: LucideIcons.plus,
-              onPressed: () => widget.onAddEditServer(null)
-            )
-        ),
-
-        Expanded(
-          child: ListView.separated(
-            //padding: const EdgeInsets.all(16),
-            shrinkWrap: true,
-            physics: const AlwaysScrollableScrollPhysics(),
-
-            itemCount: widget.state.servers.length,
-            itemBuilder: (BuildContext context, int index) {
-              final profile = widget.state.servers[index];
-
-              final MyServersEvent selectEvent = SelectServer(serverProfileId: profile.id);
-
-              return ServerProfileItem(
-                profile: profile,
-                selected: (widget.state.selectedServerId == profile.id),
-                onClick: () => widget.onEvent(selectEvent),
-                onEdit: () => widget.onAddEditServer(profile.id)
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) => const Divider()
+          icon: LucideIcons.server,
+          title: "My Servers",
+          trailingContent: TitleHeaderTrailingContent.action(
+            title: "Add",
+            icon: LucideIcons.plus,
+            onPressed: () => widget.onAddEditServer(null)
           )
         ),
 
+        AnimatedCrossFade(
+          firstChild: CircularProgressIndicator(),
+          secondChild: AnimatedCrossFade(
+            crossFadeState: widget.state.servers.isEmpty ? CrossFadeState.showSecond : CrossFadeState.showSecond,
+            duration: const Duration(milliseconds: 300),
+            firstChild: _ServerList(
+              state: widget.state,
+              onEvent: widget.onEvent,
+              onAddEditServer: widget.onAddEditServer
+            ),
+            secondChild: EmptyList(
+              message: "No profile found",
+              onAction: () => widget.onAddEditServer(null)
+            ),
+          ),
+          crossFadeState: widget.state.loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          duration: const Duration(milliseconds: 300)
+        )
 
       ],
+    );
+  }
+
+}
+
+class _ServerList extends StatelessWidget {
+  final MyServersState state;
+  final Function(MyServersEvent) onEvent;
+  final Function(int?) onAddEditServer;
+
+  const _ServerList({
+    super.key,
+    required this.state,
+    required this.onEvent,
+    required this.onAddEditServer
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.separated(
+        //padding: const EdgeInsets.all(16),
+        shrinkWrap: true,
+        physics: const AlwaysScrollableScrollPhysics(),
+
+        itemCount: state.servers.length,
+        itemBuilder: (BuildContext context, int index) {
+          final profile = state.servers[index];
+
+          final MyServersEvent selectEvent = SelectServer(serverProfileId: profile.id);
+          final MyServersEvent editEvent = EditionMode(serverProfileId: profile.id);
+
+          return ServerProfileItem(
+            profile: profile,
+            selected: (state.selectedServerId == profile.id),
+            onClick: () => onEvent(selectEvent),
+            editionMode: (state.editionServerId == profile.id),
+            onEditionMode: () => onEvent(editEvent),
+            onEdit: () => onAddEditServer(profile.id)
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider()
+      )
     );
   }
 

@@ -7,6 +7,9 @@ class SshKeyItem extends StatefulWidget {
   final SshKeyFile sshKeyFile;
   final bool selected;
   final Function() onClick;
+
+  final bool editionMode;
+  final Function() onEditionMode;
   final Function(String newName) onEdit;
   final Function() onDelete;
 
@@ -15,6 +18,9 @@ class SshKeyItem extends StatefulWidget {
     required this.sshKeyFile,
     required this.selected,
     required this.onClick,
+
+    required this.editionMode,
+    required this.onEditionMode,
     required this.onEdit,
     required this.onDelete
   });
@@ -63,7 +69,7 @@ class _SshKeyItemState extends State<SshKeyItem> {
     super.dispose();
   }
 
-  void enableEditMode() {
+  void enableRenameMode() {
     setState(() {
       _nameController.text = widget.sshKeyFile.name;
       state = _SshKeyItemInteractionState.editing;
@@ -74,7 +80,7 @@ class _SshKeyItemState extends State<SshKeyItem> {
     });
   }
 
-  void confirmEdition() {
+  void confirmRename() {
     setState(() {
       state = _SshKeyItemInteractionState.idle;
       widget.onEdit(_nameController.text);
@@ -114,94 +120,121 @@ class _SshKeyItemState extends State<SshKeyItem> {
       selectionEnable: true,
       selected: widget.selected,
       onSelect: widget.onClick,
-      idleChild: Row(
-        children: [
-          _BaseKeyItem(sshKeyFile: widget.sshKeyFile),
-          const Spacer(),
-          const Icon(LucideIcons.chevronRight)
-        ],
-      ),
-      selectedChild: switch (state) {
-        _SshKeyItemInteractionState.idle => Row(
+      child: AnimatedCrossFade(
+        crossFadeState: !widget.editionMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        firstChild: Row(
           children: [
             _BaseKeyItem(sshKeyFile: widget.sshKeyFile),
             const Spacer(),
             IconButton(
-              icon: Icon(
-                LucideIcons.pen,
-                color: Colors.orange
+              icon: const Icon(LucideIcons.ellipsisVertical),
+              onPressed: widget.onEditionMode,
+            )
+          ],
+        ),
+        secondChild: switch (state) {
+          _SshKeyItemInteractionState.idle => Row(
+            children: [
+              _BaseKeyItem(sshKeyFile: widget.sshKeyFile),
+              const Spacer(),
+              IconButton(
+                icon: Icon(
+                    LucideIcons.pen,
+                    color: Colors.orange
+                ),
+                onPressed: enableRenameMode,
               ),
-              onPressed: enableEditMode,
-            ),
-            IconButton(
-              icon: Icon(
-                LucideIcons.trash2,
-                color: Colors.red
+              IconButton(
+                icon: Icon(
+                    LucideIcons.trash2,
+                    color: Colors.red
+                ),
+                onPressed: enableDeleteMode,
               ),
-              onPressed: enableDeleteMode,
-            ),
-            IconButton(
-              icon: Icon(LucideIcons.x),
-              onPressed: widget.onClick,
-            )
-          ],
-        ),
-        _SshKeyItemInteractionState.editing => Row(
-          children: [
-            const _SshKeyFile(color: Colors.orange),
-
-            Expanded(
-              child: TextField(
-                maxLines: 1,
-                focusNode: _nameFieldFocusNode,
-                controller: _nameController,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    onPressed: confirmEdition,
-                    icon: const Icon(LucideIcons.check)
-                  )
-                )
+              IconButton(
+                icon: Icon(LucideIcons.x),
+                onPressed: widget.onClick,
+              ),
+              IconButton(
+                icon: const Icon(LucideIcons.undo),
+                onPressed: widget.onEditionMode,
               )
-            ),
+            ],
+          ),
+          _SshKeyItemInteractionState.editing => Row(
+            children: [
+              const _SshKeyFile(color: Colors.orange),
 
-            IconButton(
-              icon: Icon(LucideIcons.x),
-              onPressed: backToIdle,
-            )
-          ],
-        ),
-        _SshKeyItemInteractionState.deleting => Row(
-          children: [
-            const _SshKeyFile(color: Colors.red),
-
-            Expanded(
-              child: TextField(
-                maxLines: 1,
-                focusNode: _deleteFieldFocusNode,
-                controller: _deleteController,
-                decoration: InputDecoration(
-                  hintText: "Enter: \"${widget.sshKeyFile.name}\" to confirm",
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: confirmDeletion,
-                    icon: const Icon(LucideIcons.trash2)
+              Expanded(
+                  child: TextField(
+                      maxLines: 1,
+                      focusNode: _nameFieldFocusNode,
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                              onPressed: confirmRename,
+                              icon: const Icon(LucideIcons.check)
+                          )
+                      )
                   )
-                )
-              )
-            ),
+              ),
 
-            IconButton(
-              icon: Icon(LucideIcons.x),
-              onPressed: backToIdle,
-            )
-          ],
-        ),
-      }
+              IconButton(
+                icon: Icon(LucideIcons.x),
+                onPressed: backToIdle,
+              )
+            ],
+          ),
+          _SshKeyItemInteractionState.deleting => Row(
+            children: [
+              const _SshKeyFile(color: Colors.red),
+
+              Expanded(
+                  child: TextField(
+                      maxLines: 1,
+                      focusNode: _deleteFieldFocusNode,
+                      controller: _deleteController,
+                      decoration: InputDecoration(
+                          hintText: "Enter: \"${widget.sshKeyFile.name}\" to confirm",
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          suffixIcon: IconButton(
+                              onPressed: confirmDeletion,
+                              icon: const Icon(LucideIcons.trash2)
+                          )
+                      )
+                  )
+              ),
+
+              IconButton(
+                icon: Icon(LucideIcons.x),
+                onPressed: backToIdle,
+              )
+            ],
+          ),
+        },
+        duration: Duration(milliseconds: 300),
+        layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              Positioned(
+                  key: bottomChildKey,
+                  top: 0,
+                  child: bottomChild
+              ),
+              Positioned(
+                  key: topChildKey,
+                  child: topChild
+              )
+            ],
+          );
+        }
+      )
     );
-    
+
   }
 
 }
