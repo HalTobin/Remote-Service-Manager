@@ -73,7 +73,13 @@ class MySshKeysViewModel extends ChangeNotifier {
     }
 
     void _editionMode(String? keyPath) {
-        _state = _state.copyWith(editionModeKeyPath: keyPath, selectedKeyPath: null);
+        if (keyPath == _state.editionModeKeyPath) {
+            _state = _state.copyWith(editionModeKeyPath: null);
+        }
+        else {
+          _state = _state.copyWith(editionModeKeyPath: keyPath);
+        }
+        _state = _state.copyWith(selectedKeyPath: null);
         notifyListeners();
     }
 

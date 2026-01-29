@@ -152,10 +152,6 @@ class _SshKeyItemState extends State<SshKeyItem> {
                 onPressed: enableDeleteMode,
               ),
               IconButton(
-                icon: Icon(LucideIcons.x),
-                onPressed: widget.onClick,
-              ),
-              IconButton(
                 icon: const Icon(LucideIcons.undo),
                 onPressed: widget.onEditionMode,
               )
@@ -216,22 +212,6 @@ class _SshKeyItemState extends State<SshKeyItem> {
           ),
         },
         duration: Duration(milliseconds: 300),
-        layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              Positioned(
-                  key: bottomChildKey,
-                  top: 0,
-                  child: bottomChild
-              ),
-              Positioned(
-                  key: topChildKey,
-                  child: topChild
-              )
-            ],
-          );
-        }
       )
     );
 

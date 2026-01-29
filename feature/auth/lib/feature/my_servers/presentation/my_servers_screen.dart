@@ -46,7 +46,7 @@ class _MyServersScreenState extends State<MyServersScreen> {
         AnimatedCrossFade(
           firstChild: CircularProgressIndicator(),
           secondChild: AnimatedCrossFade(
-            crossFadeState: widget.state.servers.isEmpty ? CrossFadeState.showSecond : CrossFadeState.showSecond,
+            crossFadeState: widget.state.servers.isEmpty ? CrossFadeState.showSecond : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 300),
             firstChild: _ServerList(
               state: widget.state,

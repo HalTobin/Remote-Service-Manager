@@ -29,23 +29,7 @@ class Selectable extends StatelessWidget {
           child: child
         ),
         crossFadeState: !selected ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-        duration: Duration(milliseconds: 300),
-        layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              Positioned(
-                  key: bottomChildKey,
-                  top: 0,
-                  child: bottomChild
-              ),
-              Positioned(
-                  key: topChildKey,
-                  child: topChild
-              )
-            ],
-          );
-        }
+        duration: Duration(milliseconds: 300)
       )
     );
   }
