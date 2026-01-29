@@ -36,7 +36,6 @@ enum _SshKeyItemInteractionState {
   deleting
 }
 
-
 class _SshKeyItemState extends State<SshKeyItem> {
 
   _SshKeyItemInteractionState state = _SshKeyItemInteractionState.idle;
@@ -139,15 +138,15 @@ class _SshKeyItemState extends State<SshKeyItem> {
               const Spacer(),
               IconButton(
                 icon: Icon(
-                    LucideIcons.pen,
-                    color: Colors.orange
+                  LucideIcons.pen,
+                  color: Colors.orange
                 ),
                 onPressed: enableRenameMode,
               ),
               IconButton(
                 icon: Icon(
-                    LucideIcons.trash2,
-                    color: Colors.red
+                  LucideIcons.trash2,
+                  color: Colors.red
                 ),
                 onPressed: enableDeleteMode,
               ),

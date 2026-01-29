@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ui/component/empty_list.dart';
 import 'package:ui/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:ui/navigation/auto_expanded.dart';
 
 import 'component/server_profile_item.dart';
 import 'my_servers_event.dart';
@@ -43,23 +44,25 @@ class _MyServersScreenState extends State<MyServersScreen> {
           )
         ),
 
-        AnimatedCrossFade(
-          firstChild: CircularProgressIndicator(),
-          secondChild: AnimatedCrossFade(
-            crossFadeState: widget.state.servers.isEmpty ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-            duration: const Duration(milliseconds: 300),
-            firstChild: _ServerList(
-              state: widget.state,
-              onEvent: widget.onEvent,
-              onAddEditServer: widget.onAddEditServer
+        Expanded(
+          child: AnimatedCrossFade(
+            firstChild: CircularProgressIndicator(),
+            secondChild: AnimatedCrossFade(
+              crossFadeState: widget.state.servers.isEmpty ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 300),
+              firstChild: _ServerList(
+                state: widget.state,
+                onEvent: widget.onEvent,
+                onAddEditServer: widget.onAddEditServer
+              ),
+              secondChild: EmptyList(
+                message: "No profile found",
+                onAction: () => widget.onAddEditServer(null)
+              ),
             ),
-            secondChild: EmptyList(
-              message: "No profile found",
-              onAction: () => widget.onAddEditServer(null)
-            ),
-          ),
-          crossFadeState: widget.state.loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          duration: const Duration(milliseconds: 300)
+            crossFadeState: widget.state.loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            duration: const Duration(milliseconds: 300)
+          )
         )
 
       ],

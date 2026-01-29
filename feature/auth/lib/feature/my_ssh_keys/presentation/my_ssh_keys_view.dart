@@ -3,7 +3,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ui/component/app_button.dart';
+import 'package:ui/component/empty_list.dart';
 import 'package:ui/component/title_header.dart';
+import 'package:ui/navigation/auto_expanded.dart';
 
 import 'my_ssh_keys_event.dart';
 import 'my_ssh_keys_state.dart';
@@ -11,6 +13,7 @@ import 'my_ssh_keys_state.dart';
 class MySshKeysView extends StatelessWidget {
   final MySshKeysState state;
   final Function(MySshKeysEvent) onEvent;
+  final bool isShrink;
   final bool selectionEnable;
   final Function(String) onSelect;
   final Function() onDismiss;
@@ -19,6 +22,7 @@ class MySshKeysView extends StatelessWidget {
     super.key,
     required this.state,
     required this.onEvent,
+    required this.isShrink,
     required this.selectionEnable,
     required this.onSelect,
     required this.onDismiss
@@ -34,33 +38,28 @@ class MySshKeysView extends StatelessWidget {
           title: "My SSH Keys",
           trailingContent: TitleHeaderTrailingContent.dismissable(onDismiss: onDismiss),
         ),
-        Expanded(
-          child: ListView.separated(
-            itemCount: state.keys.length,
-            itemBuilder: (BuildContext context, int index) {
-              final key = state.keys[index];
 
-              final MySshKeysEvent selectEvent = SelectKey(keyPath: key.path);
-              final MySshKeysEvent deleteEvent = DeleteKey(keyPath: key.path);
-              final MySshKeysEvent editEvent = EditionMode(keyPath: key.path);
-
-
-              return SshKeyItem(
-                sshKeyFile: key,
-                selected: state.selectedKeyPath == key.path,
-                onClick: () => onEvent(selectEvent),
-                editionMode: state.editionModeKeyPath == key.path,
-                onEditionMode: () => onEvent(editEvent),
-                onEdit: (newName) {
-                  final MySshKeysEvent editEvent = RenameKey(keyPath: key.path, newName: newName);
-                  onEvent(editEvent);
-                },
-                onDelete: () => onEvent(deleteEvent),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) => const Divider()
-          ),
+        AutoExpanded(
+          isShrink: isShrink,
+          child: AnimatedCrossFade(
+            firstChild: CircularProgressIndicator(),
+            secondChild: AnimatedCrossFade(
+              crossFadeState: state.keys.isEmpty ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 300),
+              firstChild: _KeyList(
+                state: state,
+                onEvent: onEvent
+              ),
+              secondChild: EmptyList(
+                message: "No profile found",
+                onAction: null
+              ),
+            ),
+            crossFadeState: state.loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            duration: const Duration(milliseconds: 300)
+          )
         ),
+
         AppButton(
           onClick: () async {
             FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -76,4 +75,46 @@ class MySshKeysView extends StatelessWidget {
       ],
     );
   }
+}
+
+class _KeyList extends StatelessWidget {
+  final MySshKeysState state;
+  final Function(MySshKeysEvent) onEvent;
+
+  const _KeyList({
+    super.key,
+    required this.state,
+    required this.onEvent
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.separated(
+        itemCount: state.keys.length,
+        itemBuilder: (BuildContext context, int index) {
+          final key = state.keys[index];
+
+          final MySshKeysEvent selectEvent = SelectKey(keyPath: key.path);
+          final MySshKeysEvent deleteEvent = DeleteKey(keyPath: key.path);
+          final MySshKeysEvent editEvent = EditionMode(keyPath: key.path);
+
+          return SshKeyItem(
+            sshKeyFile: key,
+            selected: state.selectedKeyPath == key.path,
+            onClick: () => onEvent(selectEvent),
+            editionMode: state.editionModeKeyPath == key.path,
+            onEditionMode: () => onEvent(editEvent),
+            onEdit: (newName) {
+              final MySshKeysEvent editEvent = RenameKey(keyPath: key.path, newName: newName);
+              onEvent(editEvent);
+            },
+            onDelete: () => onEvent(deleteEvent),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider()
+      ),
+    );
+  }
+
 }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui/navigation/auto_modal.dart';
+import 'package:ui/screen_format/screen_format_helper.dart';
 
 class SshFilePickerField extends StatelessWidget {
   final bool enable;
@@ -64,6 +65,7 @@ class SshFilePickerField extends StatelessWidget {
     BuildContext context,
     BoxConstraints constraints,
   ) async {
+    final bool isShrink = ScreenFormatHelper.isNarrow(constraints);
     autoModal(
       context: context,
       constraints: constraints,
@@ -75,6 +77,7 @@ class SshFilePickerField extends StatelessWidget {
               child: MySshKeysView(
                 state: viewmodel.state,
                 onEvent: viewmodel.onEvent,
+                isShrink: isShrink,
                 selectionEnable: true,
                 onSelect: (String keyPath) => _select(keyPath),
                 onDismiss: () => Navigator.pop(context),
