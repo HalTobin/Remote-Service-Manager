@@ -79,7 +79,10 @@ class SshFilePickerField extends StatelessWidget {
                 onEvent: viewmodel.onEvent,
                 isShrink: isShrink,
                 selectionEnable: true,
-                onSelect: (String keyPath) => _select(keyPath),
+                onSelect: (String? keyPath) {
+                  _select(keyPath ?? "");
+                  Navigator.pop(context);
+                },
                 onDismiss: () => Navigator.pop(context),
               )
             );

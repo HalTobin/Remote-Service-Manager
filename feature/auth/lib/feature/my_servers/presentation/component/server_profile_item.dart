@@ -50,10 +50,6 @@ class ServerProfileItem extends StatelessWidget {
               onPressed: onEdit
             ),
             IconButton(
-              icon: const Icon(LucideIcons.x),
-              onPressed: onClick,
-            ),
-            IconButton(
               icon: const Icon(LucideIcons.undo),
               onPressed: onEditionMode,
             )

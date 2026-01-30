@@ -6,7 +6,7 @@ class SelectServer extends MyServersEvent {
 }
 
 class EditionMode extends MyServersEvent {
-    final int serverProfileId;
+    final int? serverProfileId;
     EditionMode({required this.serverProfileId});
 }
 

@@ -25,9 +25,9 @@ class MyServersViewModel extends ChangeNotifier {
            _state = _state.copyWith(selectedServerId: null, editionServerId: null);
         }
         else {
-            //final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
+            final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
             _state = _state.copyWith(
-                //sshPasswordRequired: passwordRequired,
+                sshPasswordRequired: passwordRequired,
                 selectedServerId: serverProfileId
             );
         }
@@ -46,10 +46,12 @@ class MyServersViewModel extends ChangeNotifier {
     Future<void> _loadServers() async {
         _state = _state.copyWith(loading: true);
         _useCases.watchServerProfilesUseCase.execute().forEach((servers) {
-            _state = _state.copyWith(servers: servers, loading: false);
+            _state = _state.copyWith(servers: servers);
             if (kDebugMode) {
                 print("[MyServersViewModel] Profile found: ${_state.servers.length}");
             }
+            notifyListeners();
+            _state = _state.copyWith(loading: false);
             notifyListeners();
         });
     }

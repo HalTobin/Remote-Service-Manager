@@ -15,7 +15,8 @@ class MySshKeysView extends StatelessWidget {
   final Function(MySshKeysEvent) onEvent;
   final bool isShrink;
   final bool selectionEnable;
-  final Function(String) onSelect;
+
+  final Function(String?) onSelect;
   final Function() onDismiss;
 
   const MySshKeysView({
@@ -60,17 +61,11 @@ class MySshKeysView extends StatelessWidget {
           )
         ),
 
-        AppButton(
-          onClick: () async {
-            FilePickerResult? result = await FilePicker.platform.pickFiles();
-            if (result != null && result.files.single.path != null) {
-              final String sshFile = result.files.single.path!;
-              final event = AddKey(keyPath: sshFile);
-              onEvent(event);
-            }
-          },
-          icon: LucideIcons.key,
-          text: "ADD"
+        _ModalBottomActions(
+          state: state,
+          onEvent: onEvent,
+          isShrink: isShrink,
+          onKeySelect: onSelect
         )
       ],
     );
@@ -114,6 +109,66 @@ class _KeyList extends StatelessWidget {
         },
         separatorBuilder: (BuildContext context, int index) => const Divider()
       ),
+    );
+  }
+
+}
+
+class _ModalBottomActions extends StatelessWidget {
+  final MySshKeysState state;
+  final Function(MySshKeysEvent) onEvent;
+  final bool isShrink;
+
+  final Function(String?) onKeySelect;
+
+  const _ModalBottomActions({
+    super.key,
+    required this.state,
+    required this.onEvent,
+    required this.isShrink,
+    required this.onKeySelect
+  });
+
+  @override
+  Widget build(BuildContext context) {
+
+    Widget wrapButton(Widget button) {
+      if (isShrink) {
+        return Expanded(child: button);
+      } else {
+        return SizedBox(width: 180, child: button);
+      }
+    }
+
+    return Row(
+      spacing: 16,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        wrapButton(
+          AppButton(
+            onClick: () async {
+              FilePickerResult? result = await FilePicker.platform.pickFiles();
+              if (result != null && result.files.single.path != null) {
+                final String sshFile = result.files.single.path!;
+                final event = AddKey(keyPath: sshFile);
+                onEvent(event);
+              }
+            },
+            icon: LucideIcons.plus,
+            text: "ADD",
+            stretch: true
+          )
+        ),
+        wrapButton(
+          AppButton(
+            onClick: () => onKeySelect(state.selectedKeyPath),
+            icon: LucideIcons.key,
+            text: "SELECT",
+            enabled: state.selectedKeyPath != null,
+            stretch: true
+          )
+        )
+      ],
     );
   }
 

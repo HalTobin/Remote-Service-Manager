@@ -53,7 +53,10 @@ class _MyServersScreenState extends State<MyServersScreen> {
               firstChild: _ServerList(
                 state: widget.state,
                 onEvent: widget.onEvent,
-                onAddEditServer: widget.onAddEditServer
+                onAddEditServer: (profileId) {
+                  widget.onAddEditServer(profileId);
+                  widget.onEvent(EditionMode(serverProfileId: null));
+                }
               ),
               secondChild: EmptyList(
                 message: "No profile found",
