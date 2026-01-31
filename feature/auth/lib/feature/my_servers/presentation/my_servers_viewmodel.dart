@@ -91,8 +91,8 @@ class MyServersViewModel extends ChangeNotifier {
     Future<void> _connectWithProfile(String? password) async {
         try {
             _state = _state.copyWith(connecting: true);
-            final profile = _state.servers.firstWhere((element) => element.id == _state.selectedServerId);
             notifyListeners();
+            final profile = _state.servers.firstWhere((element) => element.id == _state.selectedServerId);
             final request = SshConnectRequest(
                 user: profile.user,
                 url: profile.url,
@@ -101,6 +101,8 @@ class MyServersViewModel extends ChangeNotifier {
                 password: password
             );
             _useCases.sshConnectUseCase.execute(request);
+            _state = _state.copyWith(connecting: true);
+            notifyListeners();
         } catch (e) {
             if (kDebugMode) {
                 print("[MyServersViewModel] Error: $e");
