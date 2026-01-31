@@ -10,17 +10,28 @@ class EditionMode extends MyServersEvent {
     EditionMode({required this.serverProfileId});
 }
 
-class Connect extends MyServersEvent {
-    final String user;
-    final String serverUrl;
-    final String serverPort;
-    final String sshFilePath;
-    final String? password;
-    Connect({
-        required this.user,
-        required this.serverUrl,
-        required this.serverPort,
-        required this.sshFilePath,
-        required this.password
-    });
+class ConnectWithProfile extends MyServersEvent {
+    final ConnectWithProfilePasswordMethod method;
+    ConnectWithProfile({required this.method});
 }
+
+sealed class ConnectWithProfilePasswordMethod {
+    static ConnectWithProfilePasswordMethod none() {
+        return None();
+    }
+    static ConnectWithProfilePasswordMethod password(String password) {
+        return Password(password: password);
+    }
+    static ConnectWithProfilePasswordMethod biometric() {
+        return Biometrics();
+    }
+}
+
+class None extends ConnectWithProfilePasswordMethod {}
+
+class Password extends ConnectWithProfilePasswordMethod {
+    final String password;
+    Password({required this.password});
+}
+
+class Biometrics extends ConnectWithProfilePasswordMethod {}

@@ -1,9 +1,10 @@
+import 'package:feature_auth/feature/my_servers/presentation/component/password_required_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:ui/component/empty_list.dart';
 import 'package:ui/component/title_header.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:ui/navigation/auto_expanded.dart';
 
+import '../../../presentation/component/ssh_connect_button.dart';
 import 'component/server_profile_item.dart';
 import 'my_servers_event.dart';
 import 'my_servers_state.dart';
@@ -66,8 +67,36 @@ class _MyServersScreenState extends State<MyServersScreen> {
             crossFadeState: widget.state.loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
             duration: const Duration(milliseconds: 300)
           )
-        )
+        ),
 
+        Column(
+          children: [
+            SshConnectButton(
+              loading: widget.state.connecting,
+              onPressed: widget.state.selectedServerId != null
+                ? () {
+                  if (widget.state.sshPasswordRequired) {
+                    if (widget.state.biometricsAvailable) {
+
+                    }
+                    else {
+                      // TODO - Open modal for password
+                    }
+                  }
+                  else {
+                    final method = ConnectWithProfilePasswordMethod.none();
+                    final event = ConnectWithProfile(method: method);
+                    widget.onEvent(event);
+                  }
+                }
+              : null,
+            ),
+
+            PasswordRequiredIndicator(
+              enable: widget.state.sshPasswordRequired,
+            )
+          ],
+        )
       ],
     );
   }

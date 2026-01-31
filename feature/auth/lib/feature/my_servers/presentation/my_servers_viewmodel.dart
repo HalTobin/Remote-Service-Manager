@@ -1,3 +1,4 @@
+import 'package:domain/use_case/ssh_connect_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import '../use_case/my_servers_use_cases.dart';
@@ -20,29 +21,6 @@ class MyServersViewModel extends ChangeNotifier {
         _loadServers();
     }
 
-    Future<void> _selectServer(int serverProfileId) async {
-        if (_state.selectedServerId == serverProfileId) {
-           _state = _state.copyWith(selectedServerId: null, editionServerId: null);
-        }
-        else {
-            final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
-            _state = _state.copyWith(
-                sshPasswordRequired: passwordRequired,
-                selectedServerId: serverProfileId
-            );
-        }
-        notifyListeners();
-    }
-
-    Future<void> _editionMode(int? serverProfileId) async {
-        if (serverProfileId == _state.editionServerId) {
-            _state = _state.copyWith(editionServerId: null);
-        } else {
-          _state = _state.copyWith(editionServerId: serverProfileId, selectedServerId: null);
-        }
-        notifyListeners();
-    }
-
     Future<void> _loadServers() async {
         _state = _state.copyWith(loading: true);
         _useCases.watchServerProfilesUseCase.execute().forEach((servers) {
@@ -62,9 +40,60 @@ class MyServersViewModel extends ChangeNotifier {
               _selectServer(event.serverProfileId);
             case EditionMode():
               _editionMode(event.serverProfileId);
-            case Connect():
+            case ConnectWithProfile():
                 // TODO: Handle this case.
                 throw UnimplementedError();
+        }
+    }
+
+    Future<void> _selectServer(int serverProfileId) async {
+        if (_state.selectedServerId == serverProfileId) {
+           _state = _state.copyWith(selectedServerId: null, editionServerId: null, sshPasswordRequired: false);
+        }
+        else {
+            try {
+                final serverProfile = _state.servers.firstWhere((element) => element.id == serverProfileId);
+                final bool passwordRequired = await _useCases.checkPasswordRequirementByServerProfileIdUseCase.execute(serverProfileId);
+                _state = _state.copyWith(
+                    sshPasswordRequired: passwordRequired,
+                    selectedServerId: serverProfileId,
+                    biometricsAvailable: serverProfile.securedSshKeyPassword != null
+                );
+            } catch (e) {
+                if (kDebugMode) {
+                    print("[MyServersViewModel] Error: $e");
+                }
+            }
+        }
+        notifyListeners();
+    }
+
+    Future<void> _editionMode(int? serverProfileId) async {
+        if (serverProfileId == _state.editionServerId) {
+          _state = _state.copyWith(editionServerId: null);
+        } else {
+          _state = _state.copyWith(editionServerId: serverProfileId, selectedServerId: null);
+        }
+        notifyListeners();
+    }
+
+    Future<void> _connectWithProfile(String? password) async {
+        try {
+            _state = _state.copyWith(connecting: true);
+            final profile = _state.servers.firstWhere((element) => element.id == _state.selectedServerId);
+            notifyListeners();
+            final request = SshConnectRequest(
+                user: profile.user,
+                url: profile.url,
+                port: profile.port,
+                filePath: profile.keyPath,
+                password: password
+            );
+            _useCases.sshConnectUseCase.execute(request);
+        } catch (e) {
+            if (kDebugMode) {
+                print("[MyServersViewModel] Error: $e");
+            }
         }
     }
 

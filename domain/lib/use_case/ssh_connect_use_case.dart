@@ -14,7 +14,7 @@ class SshConnectUseCase {
         final String serverPort = request.port;
         final String user = request.user;
         final String sshFilePath = request.filePath;
-        final String password = request.password;
+        final String? password = request.password;
 
         return await _sshService.connect(
             user: user,
@@ -31,7 +31,7 @@ class SshConnectRequest {
     final String url;
     final String port;
     final String filePath;
-    final String password;
+    final String? password;
 
     SshConnectRequest({
         required this.user,
