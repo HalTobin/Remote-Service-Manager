@@ -1,6 +1,9 @@
-# Moino Service Manager
+# MoinoSSH
 
-Simple app to administrate services on a remote server through SSH
+Simple app to administrate services on a remote server through SSH.
+
+### Warning
+The application is still in active development and is not ready yet.
 
 ## About this project
 
