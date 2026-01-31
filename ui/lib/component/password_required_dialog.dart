@@ -7,10 +7,15 @@ class PasswordRequiredDialog extends StatefulWidget {
   final Function(String) onPasswordEntered;
   final Function() onDismiss;
 
+  final String confirmText;
+  final Function()? onBiometricsRequest;
+
   const PasswordRequiredDialog({
     super.key,
     required this.onPasswordEntered,
     required this.onDismiss,
+    this.confirmText = "AUTHENTICATE",
+    this.onBiometricsRequest = null,
   });
 
   @override
@@ -41,6 +46,12 @@ class _PasswordRequiredDialogState extends State<PasswordRequiredDialog> {
             decoration: InputDecoration(
               labelText: 'Password',
               border: const OutlineInputBorder(),
+              prefixIcon: (widget.onBiometricsRequest != null)
+                ? IconButton(
+                  onPressed: widget.onBiometricsRequest,
+                  icon: const Icon(LucideIcons.fingerprintPattern)
+                )
+                : null,
               suffixIcon: IconButton(
                 onPressed: () => setState(() {
                   obscurePassword = !obscurePassword;
@@ -56,7 +67,7 @@ class _PasswordRequiredDialogState extends State<PasswordRequiredDialog> {
           Center(
             child: AppButton(
               icon: LucideIcons.keyRound,
-              text: "AUTHENTICATE",
+              text: widget.confirmText,
               onClick: () => widget.onPasswordEntered(passwordController.text)
             )
           ),

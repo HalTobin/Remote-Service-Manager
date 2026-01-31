@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:ui/component/app_dialog_layout.dart';
-import 'package:ls_server_app/presentation/component/password_required_dialog.dart';
+import 'package:ui/component/password_required_dialog.dart';
 import 'package:ls_server_app/presentation/component/status_bar/connection_status_bar.dart';
 import 'package:ls_server_app/presentation/main_event.dart';
 import 'package:ls_server_app/presentation/main_state.dart';

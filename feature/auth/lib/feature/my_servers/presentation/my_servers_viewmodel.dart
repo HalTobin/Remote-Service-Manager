@@ -37,12 +37,11 @@ class MyServersViewModel extends ChangeNotifier {
     Future<void> onEvent(MyServersEvent event) async {
         switch (event) {
             case SelectServer():
-              _selectServer(event.serverProfileId);
+                _selectServer(event.serverProfileId);
             case EditionMode():
-              _editionMode(event.serverProfileId);
+                _editionMode(event.serverProfileId);
             case ConnectWithProfile():
-                // TODO: Handle this case.
-                throw UnimplementedError();
+                _connectWithProfileAndMethod(event.method);
         }
     }
 
@@ -75,6 +74,18 @@ class MyServersViewModel extends ChangeNotifier {
           _state = _state.copyWith(editionServerId: serverProfileId, selectedServerId: null);
         }
         notifyListeners();
+    }
+
+    Future<void> _connectWithProfileAndMethod(ConnectWithProfilePasswordMethod method) async {
+        switch (method) {
+            case None():
+                _connectWithProfile(null);
+            case Password():
+                _connectWithProfile(method.password);
+            case Biometrics():
+                // TODO: Handle this case.
+                throw UnimplementedError();
+        }
     }
 
     Future<void> _connectWithProfile(String? password) async {

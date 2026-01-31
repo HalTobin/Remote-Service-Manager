@@ -22,7 +22,7 @@ sealed class ConnectWithProfilePasswordMethod {
     static ConnectWithProfilePasswordMethod password(String password) {
         return Password(password: password);
     }
-    static ConnectWithProfilePasswordMethod biometric() {
+    static ConnectWithProfilePasswordMethod biometrics() {
         return Biometrics();
     }
 }
